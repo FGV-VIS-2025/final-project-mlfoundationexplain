@@ -1,7 +1,8 @@
 <!-- src/routes/+page.svelte -->
 
 <script>
-  import ScrollStory from '$lib/components/ScrollStory.svelte';
+  import ScrollStory from '$lib/components/ScrollStory1.svelte';
+  import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
 </script>
 
 <div class="max-w-4xl mx-auto p-6 text-justify">
@@ -46,6 +47,7 @@
     Curabitur vel odio nec metus egestas rutrum. Quisque nec lorem ut elit tincidunt eleifend. Aenean pretium, justo sed volutpat pulvinar, eros justo sollicitudin arcu, ut sagittis nulla elit sit amet ante. Duis sit amet urna sed orci scelerisque tincidunt.
   </p>
 
-  <ScrollStory />
+  
+  <ScrollStory2 />
 
 </div>

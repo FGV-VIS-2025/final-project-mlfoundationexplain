@@ -1,32 +1,25 @@
+<!-- src/lib/components/ScrollStory2.svelte -->
 <script>
   import { onMount } from 'svelte';
 
   let currentStep = 0;
-  const colors = ['steelblue', 'orange', 'green', 'purple'];
-  const positions = [100, 250, 100, 250];
-
-  // Armazena as referências dos elementos DOM de cada etapa (step)
+  const colors = ['red', 'blue', 'green', 'orange'];
+  const positions = [80, 120, 160, 200];
   let stepRefs = [];
 
   onMount(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        // Callback chamado sempre que um "step" entra ou sai da viewport
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Verifica se o elemento está visível na tela
             const index = stepRefs.findIndex((el) => el === entry.target);
             if (index !== -1) {
-                // Atualiza o step atual para mudar a visualização
               currentStep = index;
             }
           }
         });
       },
-      {
-        // Define o quanto do elemento precisa estar visível (50%) para ser considerado "visível"
-        threshold: 0.5, 
-      }
+      { threshold: 0.5 }
     );
 
     stepRefs.forEach((el) => {
@@ -35,14 +28,9 @@
 
     return () => observer.disconnect();
   });
-
-
 </script>
 
-<!-- Container principal com layout horizontal (lado a lado) -->
 <div class="scroll-container">
-
-   <!-- Coluna com o conteúdo textual rolável -->
   <div class="steps">
     {#each [0, 1, 2, 3] as stepIndex}
       <div
@@ -50,13 +38,14 @@
         bind:this={stepRefs[stepIndex]}
         class:active={stepIndex === currentStep}
       >
-        <h3>Etapa {stepIndex + 1}</h3>
-        <p>Texto para a etapa Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus delectus aliquid voluptates commodi maxime iure, quam aut consectetur voluptatum, porro laborum voluptas incidunt illum earum pariatur repellat numquam debitis eum? {stepIndex + 1}.</p>
+        <h3>Bloco 2 - Etapa {stepIndex + 1}</h3>
+        <p>Conteúdo diferente para o bloco 2 - etapa {stepIndex + 1}
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        </p>
       </div>
     {/each}
   </div>
 
-  <!-- Coluna com visualização (SVG) que fica fixa ao rolar -->
   <div class="viz">
     <svg width="400" height="300">
       <circle
@@ -73,12 +62,13 @@
   .scroll-container {
     display: flex;
     height: 100vh;
+    margin-bottom: 2rem;
   }
 
   .steps {
     width: 40%;
     padding: 2rem;
-    overflow-y: auto;
+    /* overflow-y: auto; */
   }
 
   .viz {
@@ -86,7 +76,7 @@
     position: sticky;
     top: 72px;
     height: calc(100vh - 72px);
-    background: #f3f4f6;
+    background: #e0f2f1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -100,7 +90,7 @@
   }
 
   .step.active {
-    border-color: #1e3a8a;
+    border-color: #b91c1c;
     font-weight: bold;
   }
 </style>
