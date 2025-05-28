@@ -5,7 +5,7 @@
   import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
 </script>
 
-<div class="max-w-4xl mx-auto p-6 text-justify">
+<div class="max-w-7xl mx-auto p-6 text-justify">
   <h2 class="text-2xl font-bold mb-4">Página de Teste</h2>
 
   <p>
