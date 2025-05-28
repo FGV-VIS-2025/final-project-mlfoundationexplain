@@ -72,8 +72,10 @@
 <style>
   .scroll-container {
     display: flex;
-    height: 100vh;
-    margin-bottom: 50rem;
+    position: relative;
+    gap: 2rem;
+    margin-bottom: 10rem; 
+    margin-top: 10rem;   
   }
 
   .steps {

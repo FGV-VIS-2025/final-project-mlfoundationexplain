@@ -61,8 +61,10 @@
 <style>
   .scroll-container {
     display: flex;
-    height: 100vh;
-    margin-bottom: 2rem;
+    position: relative;
+    gap: 2rem;
+    margin-bottom: 10rem; 
+    margin-top: 10rem;
   }
 
   .steps {
@@ -76,7 +78,7 @@
     position: sticky;
     top: 72px;
     height: calc(100vh - 72px);
-    background: #e0f2f1;
+    background: #f3f4f6;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -90,7 +92,8 @@
   }
 
   .step.active {
-    border-color: #b91c1c;
+    border-color: #1e3a8a;
     font-weight: bold;
   }
 </style>
+
