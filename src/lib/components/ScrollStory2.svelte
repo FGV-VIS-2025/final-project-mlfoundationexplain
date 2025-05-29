@@ -30,6 +30,7 @@
   });
 </script>
 
+<div>
 <div class="scroll-container">
   <div class="steps">
     {#each [0, 1, 2, 3] as stepIndex}
@@ -58,6 +59,8 @@
   </div>
 </div>
 
+</div>
+
 <style>
   .scroll-container {
     display: flex;
@@ -78,7 +81,8 @@
     position: sticky;
     top: 72px;
     height: calc(100vh - 72px);
-    background: #1e293b;
+    /* background: #1e293b; */
+    background: #2e3e5a; 
     display: flex;
     justify-content: center;
     align-items: center;

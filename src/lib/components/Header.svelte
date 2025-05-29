@@ -74,7 +74,7 @@
   }
   .lang-button,
   .theme-button {
-    background-color: #601374;
+    background-color: var(--color-primary); /*#601374*/
     color: var( --color-text-auxiliary);
     font-weight: 600;
     padding: 0.4rem 0.75rem;
@@ -140,12 +140,13 @@
   display: flex;
   align-items: center;
   flex: 1;
+  margin-right: 0rem;
 }
 
 .right {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 </style>

@@ -11,8 +11,8 @@
   --color-text-title:#13062b;
   --color-text: #1c0e36;
   --color-text-auxiliary:#8c7da7;
-  --color-primary: #601374;
-  --color-secondary: #916f99;
+  --color-primary: #4d1374; /* 601374*/
+  --color-secondary: #7e6f99 ;/* #916f99 */
   --color-accent: #461353;
 }
 
@@ -55,7 +55,8 @@ body {
 }
 
 .scroll-wrapper-dark {
-  background-color: #1e293b;
+  /* background-color: #1e293b; */
+  background-color: #2e3e5a;
   color: white;
   /* padding: 2rem 0; */
 }
