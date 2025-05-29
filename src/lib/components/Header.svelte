@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
 
   let scrollProgress = 0;
+  let darkMode = false;
 
   function updateScrollProgress() {
     const scrollTop = window.scrollY;
@@ -10,13 +11,29 @@
   }
 
   onMount(() => {
-    updateScrollProgress(); // inicializa corretamente
+    // Inicializa barra de rolagem
+    updateScrollProgress();
     window.addEventListener('scroll', updateScrollProgress);
-    return () => window.removeEventListener('scroll', updateScrollProgress);
+
+    // Inicializa tema
+    darkMode = localStorage.getItem('theme') === 'dark';
+    updateTheme();
+
+    return () => {
+      window.removeEventListener('scroll', updateScrollProgress);
+    };
   });
+
+  function toggleTheme() {
+    darkMode = !darkMode;
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+    updateTheme();
+  }
+
+  function updateTheme() {
+    document.documentElement.classList.toggle('dark', darkMode);
+  }
 </script>
-
-
 
 <header class="header">
   <!-- Barra de progresso -->
@@ -35,6 +52,12 @@
     <button class="lang-button" aria-label="Selecionar idioma">
       🌐 Idioma
     </button>
+
+    <!-- Botão de tema -->
+      <button class="theme-button" on:click={toggleTheme} aria-label="Alternar tema">
+        {darkMode ? '☀️ Claro' : '🌙 Escuro'}
+      </button>
+
   </div>
 
   <div class="scroll-progress" style="width: {scrollProgress}%;"></div>
@@ -45,29 +68,31 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background-color: #182c64;
+    /* background-color:  #7a4e86; #461353; */
+    background-color: var(--color-secondary);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
-  .lang-button {
-  background-color: #0e4f9e; /* azul vibrante */
-  color: white;
-  font-weight: 600;
-  padding: 0.4rem 0.75rem;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  margin-left: 1rem;
-}
+  .lang-button,
+  .theme-button {
+    background-color: #601374;
+    color: var( --color-text-auxiliary);
+    font-weight: 600;
+    padding: 0.4rem 0.75rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
 
-  .lang-button:hover {
-    background-color: #07143f; /* azul mais escuro no hover */
+  .lang-button:hover,
+  .theme-button:hover {
+    background-color: #07143f;
   }
 
 
   .scroll-progress {
     height: 4px;
-    background-color: #1660bb; /* azul claro */
+    background-color: var(--color-accent); /* azul claro */
     transition: width 0.2s ease;
   }
 
@@ -81,9 +106,9 @@
   }
 
   .site-title {
-    font-size: 1.5rem;
+    font-size: 2.3em;
     font-weight: 800;
-    color: white;
+    color: var(--color-text-title);
     letter-spacing: 0.05em;
   }
 
@@ -93,7 +118,7 @@
   }
 
   .nav-links a {
-    color: white;
+    color: var(--color-text);
     font-weight: 600;
     text-decoration: none;
     transition: color 0.3s;
@@ -102,4 +127,11 @@
   .nav-links a:hover {
     color: #93c5fd;
   }
+
+  .header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
 </style>
