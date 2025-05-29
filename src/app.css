@@ -6,13 +6,13 @@
 
 /* Tema claro */
 :root {
-  --color-background: #70b984;
+  --color-background: #84c495;
   --color-background-viz-light: #67ad7a;
   --color-text-title:#13062b;
   --color-text: #1c0e36;
   --color-text-auxiliary:#8c7da7;
-  --color-primary: #601374;
-  --color-secondary: #7a4e86;
+  --color-primary: #4d1374; /* 601374*/
+  --color-secondary: #7e6f99 ;/* #916f99 */
   --color-accent: #461353;
 }
 
@@ -24,7 +24,7 @@
   --color-text: #ffffff;
   --color-text-auxiliary:#bbb4b4;
   --color-primary: #601374;
-  --color-secondary: #684572;
+  --color-secondary: #6b4c74;
   --color-accent: #cb0dff;
 }
 
@@ -55,7 +55,8 @@ body {
 }
 
 .scroll-wrapper-dark {
-  background-color: #1e293b;
+  /* background-color: #1e293b; */
+  background-color: #2e3e5a;
   color: white;
   /* padding: 2rem 0; */
 }
