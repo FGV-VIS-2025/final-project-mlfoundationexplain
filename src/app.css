@@ -1,3 +1,71 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+/* Tema claro */
+:root {
+  --color-background: #70b984;
+  --color-background-viz-light: #67ad7a;
+  --color-text-title:#13062b;
+  --color-text: #1c0e36;
+  --color-text-auxiliary:#8c7da7;
+  --color-primary: #601374;
+  --color-secondary: #7a4e86;
+  --color-accent: #461353;
+}
+
+/* Tema escuro (aplicado quando <html class="dark">) */
+.dark {
+  --color-background: #1e293b;
+  --color-background-viz-light: #5b4f6b;
+  --color-text-title:#ffffff;
+  --color-text: #ffffff;
+  --color-text-auxiliary:#bbb4b4;
+  --color-primary: #601374;
+  --color-secondary: #684572;
+  --color-accent: #cb0dff;
+}
+
+/* Aplicação global */
+body {
+  @apply bg-[var(--color-background)] text-[var(--color-text)];
+  font-family: system-ui, sans-serif;
+}
+
+
+/* body {
+  background-color: #70b984;      
+  color: #ffffff;               
+  font-family: system-ui, sans-serif;
+} */
+
+/* body_dark {
+  background-color: #1e293b;     
+  color: #ffffff;               
+  font-family: system-ui, sans-serif;
+} */
+
+/* Estilos extras */
+
+.scroll-wrapper-default {
+  background-color: var(--color-background-viz-light);
+  padding: 2rem 0;
+}
+
+.scroll-wrapper-dark {
+  background-color: #1e293b;
+  color: white;
+  /* padding: 2rem 0; */
+}
+
+
+/* :root {
+  --color-primary: #601374;
+  --color-secondary: #7a4e86;
+  --color-accent: #461353;
+  --color-background: #70b984;
+  --color-background_dark: #1e293b;
+  --color-text: #ffffff;
+} */

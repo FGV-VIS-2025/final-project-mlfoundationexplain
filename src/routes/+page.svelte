@@ -5,7 +5,9 @@
   import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
 </script>
 
-<div class="max-w-7xl mx-auto p-6 text-justify">
+<!-- <div class="max-w-7xl mx-auto p-6 text-justify"> -->
+ <div class="max-w-7xl mx-auto p-6 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300">
+
   <h2 class="text-2xl font-bold mb-4">Página de Teste</h2>
 
   <p>
@@ -33,7 +35,9 @@
   </p>
   
 
+  <div class="scroll-wrapper-yellow">
   <ScrollStory />
+ </div>
 
   <p>
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse euismod, nunc a fermentum dapibus, lacus nisi pretium justo, nec dignissim ipsum libero eget tortor. Etiam vehicula facilisis augue, ac accumsan libero dictum nec.
@@ -48,6 +52,8 @@
   </p>
 
   
+  <div class="scroll-wrapper-dark">
   <ScrollStory2 />
+  </div>
 
 </div>

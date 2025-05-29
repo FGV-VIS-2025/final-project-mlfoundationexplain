@@ -89,7 +89,8 @@
     position: sticky;
     top: 72px;
     height: calc(100vh - 72px);
-    background: #f3f4f6;
+    background: var(--color-background-viz-light);      /* ← cor de fundo do site inteiro */
+;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -103,7 +104,7 @@
   }
 
   .step.active {
-    border-color: #1e3a8a;
+    border-color: #7b2291;
     font-weight: bold;
   }
 </style>
