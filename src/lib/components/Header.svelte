@@ -39,26 +39,26 @@
   <!-- Barra de progresso -->
   <!-- <div class="scroll-progress" style="width: {scrollProgress}%;"></div> -->
 
-  <div class="container">
+ <div class="container">
+  <div class="left">
     <h1 class="site-title">Árvore de decisão</h1>
+  </div>
 
+  <div class="right">
     <nav class="nav-links">
       <a href="/">Início</a>
-      <a href="/https://github.com/FGV-VIS-2025/final-project-mlfoundationexplain#">GitHub</a>
-      <!-- <a href="/contato">Contato</a> -->
+      <a href="https://github.com/FGV-VIS-2025/final-project-mlfoundationexplain">GitHub</a>
     </nav>
 
-    <!-- Botão de idioma -->
-    <button class="lang-button" aria-label="Selecionar idioma">
-      🌐 Idioma
-    </button>
-
-    <!-- Botão de tema -->
+    <div class="header-buttons">
+      <button class="lang-button" aria-label="Selecionar idioma">🌐 Idioma</button>
       <button class="theme-button" on:click={toggleTheme} aria-label="Alternar tema">
         {darkMode ? '☀️ Claro' : '🌙 Escuro'}
       </button>
-
+    </div>
   </div>
+</div>
+
 
   <div class="scroll-progress" style="width: {scrollProgress}%;"></div>
 </header>
@@ -101,8 +101,8 @@
     margin: 0 auto;
     padding: 0.5rem 1.2rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
   }
 
   .site-title {
@@ -110,6 +110,7 @@
     font-weight: 800;
     color: var(--color-text-title);
     letter-spacing: 0.05em;
+    margin: 0;
   }
 
   .nav-links {
@@ -133,5 +134,18 @@
     align-items: center;
     gap: 0.5rem;
   }
+
+  /* Nova configuração para alinhar corretamente */
+  .left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
 
 </style>
