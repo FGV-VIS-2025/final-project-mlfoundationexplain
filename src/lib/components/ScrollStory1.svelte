@@ -1,25 +1,54 @@
 <script>
   import { onMount } from 'svelte';
+  import * as d3 from 'd3';
 
+  // definição de variáveis
   let currentStep = 0;
   let data = [];
   let error = null;
-
+  let colorScale;
+  let cities = [];
   let stepRefs = [];
 
   const xKey = 'total_rooms';
   const yKey = 'median_house_value';
+  const cityKey = 'city';
 
-  // Dimensões do gráfico
+  // dimensões do gráfico
   const width = 700;
-  const height = 500;
-  const margin = { top: 20, right: 20, bottom: 40, left: 70 };
+  const height = 650;
+  const margin = { top: 100, right: 70, bottom: 100, left: 70 };
 
-  // Escalas (serão definidas após o carregamento)
+  // posição da legenda
+  let legendX = width - margin.right - 150; 
+  let legendY = margin.top + 20;  
+
+  // escalas
   let xScale, yScale;
   let xTicks = [], yTicks = [];
 
+  // para calcular a densidade dos dados
+  let xDensity = {};
+  let yDensity = {};
+
+  function kernelDensityEstimator(kernel, xValues) {
+    return function (sample) {
+      return xValues.map(x => [
+        x,
+        d3.mean(sample, v => kernel(x - v))
+      ]);
+    };
+  }
+
+  function kernelEpanechnikov(bandwidth) {
+    return function (u) {
+      u /= bandwidth;
+      return Math.abs(u) <= 1 ? 0.75 * (1 - u * u) / bandwidth : 0;
+    };
+  }
+
   onMount(async () => {
+    // conteúdo visível
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -35,29 +64,33 @@
     stepRefs.forEach(el => { if(el) observer.observe(el) });
 
     try {
+      // carrega dados e texto
       const res = await fetch('/data/housing_limpo.csv');
       const text = await res.text();
 
       const lines = text.trim().split('\n');
-      const headers = lines[0].split(',');
+      const headers = lines[0].trim().split(',');
 
       const xIndex = headers.indexOf(xKey);
       const yIndex = headers.indexOf(yKey);
+      const cityIndex = headers.indexOf(cityKey);
 
-      if (xIndex === -1 || yIndex === -1) {
-        error = `Colunas "${xKey}" ou "${yKey}" não encontradas no CSV`;
+      if (xIndex === -1 || yIndex === -1 || cityIndex === -1) {
+        error = `Colunas "${xKey}", "${yKey}" ou "${cityKey}" não encontradas no CSV`;
         return;
       }
-
+      
+      //carrega linhas do dataset
       data = lines.slice(1).map(line => {
         const cols = line.split(',');
         return {
           x: parseFloat(cols[xIndex]),
-          y: parseFloat(cols[yIndex])
+          y: parseFloat(cols[yIndex]),
+          city: cols[cityIndex]?.trim()
         };
-      }).filter(d => !isNaN(d.x) && !isNaN(d.y));
+      }).filter(d => !isNaN(d.x) && !isNaN(d.y) && d.city);
 
-      // Definir domínio e escalas
+      // definir domínio e escalas
       const xValues = data.map(d => d.x);
       const yValues = data.map(d => d.y);
 
@@ -66,13 +99,28 @@
       const yMin = Math.min(...yValues);
       const yMax = Math.max(...yValues);
 
-      // Funções escala simples (linear)
+      // escala linear
       xScale = x => margin.left + ((x - xMin) / (xMax - xMin)) * (width - margin.left - margin.right);
       yScale = y => height - margin.bottom - ((y - yMin) / (yMax - yMin)) * (height - margin.top - margin.bottom);
 
-      // Ticks simples para eixo X e Y (5 ticks cada)
+      // ticks para eixo X e Y (5 ticks cada)
       xTicks = Array.from({length:5}, (_,i) => xMin + i*(xMax - xMin)/4);
       yTicks = Array.from({length:5}, (_,i) => yMin + i*(yMax - yMin)/4);
+
+      cities = [...new Set(data.map(d => d.city))];
+      colorScale = d3.scaleOrdinal()
+        .domain(cities)
+        .range(d3.schemeCategory10);
+
+      // cálculo da linha de densidade
+      const kde = kernelDensityEstimator(kernelEpanechnikov(500), xScale.ticks?.(40) || d3.range(xMin, xMax, (xMax - xMin) / 40));
+      const kdeY = kernelDensityEstimator(kernelEpanechnikov(10000), yScale.ticks?.(40) || d3.range(yMin, yMax, (yMax - yMin) / 40));
+
+      cities.forEach(city => {
+        const subset = data.filter(d => d.city === city);
+        xDensity[city] = kde(subset.map(d => d.x));
+        yDensity[city] = kdeY(subset.map(d => d.y));
+      });
 
     } catch(e) {
       error = 'Erro ao carregar CSV: ' + e.message;
@@ -80,6 +128,10 @@
 
     return () => observer.disconnect();
   });
+
+  function colorForCity(city) {
+    return colorScale ? colorScale(city) : 'gray';
+  }
 </script>
 
 
@@ -115,8 +167,8 @@
           cx={xScale(point.x)}
           cy={yScale(point.y)}
           r="3"
-          fill="steelblue"
-          opacity="0.7"
+          fill={colorForCity(point.city)}
+          opacity="0.4"
         />
       {/each}
 
@@ -175,12 +227,12 @@
       <!-- Legenda eixo X -->
       <text
         x={(width + margin.left - margin.right) / 2}
-        y={height - 5}
+        y={height-50}
         font-size="12"
         text-anchor="middle"
         font-weight="bold"
       >
-        Total Rooms
+        Total rooms
       </text>
 
       <!-- Legenda eixo Y -->
@@ -190,8 +242,46 @@
         text-anchor="middle"
         font-weight="bold"
       >
-        Median House Value
+        Median house value
       </text>
+      
+      <!-- Legenda para os pontos  -->
+      <g transform={`translate(${legendX}, ${legendY})`}>
+        {#each colorScale.domain() as city, i}
+          <g transform={`translate(0, ${i * 20})`}>
+            <rect width="15" height="15" fill={colorScale(city)} />
+            <text x="20" y="12" font-size="12">{city}</text>
+          </g>
+        {/each}
+      </g>
+
+
+  <!-- Densidade no topo (X) -->
+  {#each cities as city}
+    <path
+      d={`M ${xScale(xDensity[city][0][0])} ${margin.top}
+        ${xDensity[city].map(([x, y]) =>
+          `L ${xScale(x)} ${margin.top - y * 200000}`
+        ).join(' ')}`}
+      fill="none"
+      stroke={city === cities[0] ? 'steelblue' : 'coral'}
+      stroke-width="2"
+    />
+  {/each}
+
+  <!-- Densidade na direita (Y) -->
+  {#each cities as city}
+    <path
+      d={`M ${width - margin.right} ${yScale(yDensity[city][0][0])}
+        ${yDensity[city].map(([y, d]) =>
+          `L ${width - margin.right + d * 5000000} ${yScale(y)}`
+        ).join(' ')}`}
+      fill="none"
+      stroke={city === cities[0] ? 'steelblue' : 'coral'}
+      stroke-width="2"
+    />
+  {/each}
+
     </svg>
   {/if}
 </div>
@@ -236,5 +326,5 @@
   .step.active {
     border-color: #7b2291;
     font-weight: bold;
-  }
+  } 
 </style>
