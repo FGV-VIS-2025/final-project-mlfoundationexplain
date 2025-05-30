@@ -1,0 +1,26 @@
+{
+    "header": {
+        "title": "Decision Tree",
+        "home": "Home",
+        "language": "🌐 Language",
+        "theme": {
+            "dark": "🌙 Dark",
+            "light": "☀️ Light"
+        }
+    },
+    "page": {
+        "testTitle": "Test Page",
+        "step": "Step {number}",
+        "stage": "Stage {number}"
+    },
+    "scroll": {
+        "block1": {
+            "title": "Stage {number}",
+            "content": "Text for stage {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        },
+        "block2": {
+            "title": "Block 2 - Stage {number}",
+            "content": "Different content for block 2 - stage {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        }
+    }
+}
