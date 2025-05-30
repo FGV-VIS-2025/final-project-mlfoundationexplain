@@ -1,7 +1,7 @@
 <!-- src/routes/+page.svelte -->
 
 <script>
-  import ScrollStory from '$lib/components/ScrollStory1.svelte';
+  import ScrollStory1 from '$lib/components/ScrollStory1.svelte';
   import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
   import Introduction from '../lib/components/Introduction.svelte';
 </script>
@@ -58,7 +58,7 @@
 
  <div class="scroll-wrapper-default">
   <div class="max-w-7xl mx-auto px-6">
-    <ScrollStory />
+    <ScrollStory1 />
   </div>
  </div>
 

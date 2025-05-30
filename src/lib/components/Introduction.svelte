@@ -56,15 +56,6 @@
     nodes.append('circle')
       .attr('r', 25)
       .attr('fill', 'var(--color-primary)');
-
-    // nodes.append('text')
-    //   .attr('dy', 5)
-    //   .attr('x', d => d.children ? -15 : 15)
-    //   .attr('text-anchor', d => d.children ? 'end' : 'start')
-    //   .attr('fill', 'white')
-    //   .style('font-family', 'sans-serif')
-    //   .style('font-size', '12px')
-    //   .text(d => d.data.name);
   });
 </script>
 
@@ -94,7 +85,6 @@
     min-height: 100vh;
     padding: 4rem 2rem;
     background-color: var(--color-background-intro);
-    /* color: var(--color-text-inverse); */
     gap: 4rem;
   }
 

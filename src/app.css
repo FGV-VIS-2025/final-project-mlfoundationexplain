@@ -53,7 +53,7 @@
   --color-text-title: #1e293b;                /* Azul escuro - título */
   --color-text-main: #374962;                 /* Azul acinzentado - texto principal */
   --color-text-auxiliary: #7e6f99;            /* Roxo acinzentado - texto auxiliar */
-  --color-text-inverse: #d9d6d0;    /* Cinza claro - texto em fundos escuros */
+  --color-text-inverse: #d9d6d0;              /* Cinza claro - texto em fundos escuros */
   /* #21685B            
   #A298BD */
 }
@@ -69,25 +69,11 @@ body {
 /* Estilos extras */
 
 .scroll-wrapper-default {
-  /* background-color: var(--color-background-viz-light); */
-
   background-color: var(--color-background-viz-light);
   padding: 2rem 0;
 }
 
 .scroll-wrapper-dark {
-  /* background-color: #1e293b; */
   background-color: #2e3e5a;
   color: white;
-  /* padding: 2rem 0; */
 }
-
-
-/* :root {
-  --color-primary: #601374;
-  --color-secondary: #7a4e86;
-  --color-accent: #461353;
-  --color-background: #70b984;
-  --color-background_dark: #1e293b;
-  --color-text: #ffffff;
-} */
