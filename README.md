@@ -1,37 +1,20 @@
-```{}
-src/
-├─ lib/
-│  └─ components/
-│     ├─ ScrollStory.svelte  ← lógica de scroll + visualização
-│     ├─ Viz.svelte          ← visualização D3
-│     └─ Step.svelte         ← seção com texto de cada passo
-├─ routes/
-│  └─ +page.svelte           ← importa ScrollStory
-
-```
-
-
-
-
 # ScrollStory - Visualização Interativa com Scroll
 
 ## Estrutura do Repositório
 
-
-```{}
 src/
 ├─ lib/
-│ └─ components/
-│ ├─ ScrollStory1.svelte ← lógica de scroll + visualização para o primeiro storytelling
-│ ├─ ScrollStory2.svelte ← lógica de scroll + visualização para o segundo storytelling
-│ ├─ Viz1.svelte ← Componente de visualização gráfica do primeiro storytelling
-│ ├─ Viz1.svelte ← Componente de visualização gráfica do segundo storytelling
-│ ├─ Step1.svelte ← Componente para exibir o conteúdo textual do ScrollStory1
-│ └─ Step2.svelte ← Componente para exibir o conteúdo textual do ScrollStory2
+│  └─ components/
+│     ├─ Introduction.svelte ← Bloco de introdução visual com título
+│     ├─ ScrollStory1.svelte ← lógica de scroll + visualização para o primeiro storytelling
+│     ├─ ScrollStory2.svelte ← lógica de scroll + visualização para o segundo storytelling
+│     ├─ Viz1.svelte ← Componente de visualização gráfica do primeiro storytelling
+│     ├─ Viz2.svelte ← Componente de visualização gráfica do segundo storytelling
+│     ├─ Step1.svelte ← Componente para exibir o conteúdo textual do ScrollStory1
+│     └─ Step2.svelte ← Componente para exibir o conteúdo textual do ScrollStory2
 ├─ routes/
-│ └─ +page.svelte ← Página principal que importa e usa ScrollStory1 e ScrollStory2
+│  └─ +page.svelte ← Página principal que importa e usa Introduction, ScrollStory1 e ScrollStory2
 
-```
 
 
 
