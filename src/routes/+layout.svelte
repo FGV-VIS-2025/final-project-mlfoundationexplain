@@ -11,6 +11,6 @@
 
 <style>
   main {
-    padding-top: 72px; /* Compensar altura do cabeçalho fixo */
+    /* padding-top: 72px;  */
   }
 </style>

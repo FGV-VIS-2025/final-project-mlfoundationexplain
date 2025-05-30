@@ -8,11 +8,14 @@
 :root {
   --color-background: #84c495;
   --color-background-viz-light: #67ad7a;
+  --color-background-intro: #62926f;
   --color-text-title:#13062b;
   --color-text: #1c0e36;
   --color-text-auxiliary:#8c7da7;
   --color-primary: #4d1374; /* 601374*/
+  --color-primary2:#391253; 
   --color-secondary: #7e6f99 ;/* #916f99 */
+  --color-secondary2: #6b4c74 ;/* #916f99 */
   --color-accent: #461353;
 }
 
@@ -20,13 +23,41 @@
 .dark {
   --color-background: #1e293b;
   --color-background-viz-light: #5b4f6b;
+  --color-background-intro: #557e60;
   --color-text-title:#ffffff;
   --color-text: #ffffff;
   --color-text-auxiliary:#bbb4b4;
   --color-primary: #601374;
   --color-secondary: #6b4c74;
+  --color-secondary2: #6b4c74 ;/* #916f99 */
   --color-accent: #cb0dff;
 }
+
+
+
+:exemplo {
+  --color-background: #1e293b;              /* Azul escuro - fundo principal */
+  --color-background-light: #374962;        /* Azul acinzentado - fundo claro */
+  --color-background-softer: #d9d6d0;       /* Cinza neutro - fundo suave */
+
+
+  --color-primary2: #571368;
+  --color-primary3: #84c495;                  /* Verde claro - cor principal */
+  --color-primary-light: #a7d3b2;            /* Verde claro mais suave */
+
+  --color-secondary: #7e6f99;                /* Roxo acinzentado - secundária */
+  --color-secondary-light: #a296b9;          /* Lilás claro - secundária clara */
+
+  --color-accent: #c4a384;                   /* Bege quente - cor de destaque */
+
+  --color-text-title: #1e293b;                /* Azul escuro - título */
+  --color-text-main: #374962;                 /* Azul acinzentado - texto principal */
+  --color-text-auxiliary: #7e6f99;            /* Roxo acinzentado - texto auxiliar */
+  --color-text-inverse: #d9d6d0;    /* Cinza claro - texto em fundos escuros */
+  /* #21685B            
+  #A298BD */
+}
+
 
 /* Aplicação global */
 body {
@@ -35,21 +66,11 @@ body {
 }
 
 
-/* body {
-  background-color: #70b984;      
-  color: #ffffff;               
-  font-family: system-ui, sans-serif;
-} */
-
-/* body_dark {
-  background-color: #1e293b;     
-  color: #ffffff;               
-  font-family: system-ui, sans-serif;
-} */
-
 /* Estilos extras */
 
 .scroll-wrapper-default {
+  /* background-color: var(--color-background-viz-light); */
+
   background-color: var(--color-background-viz-light);
   padding: 2rem 0;
 }

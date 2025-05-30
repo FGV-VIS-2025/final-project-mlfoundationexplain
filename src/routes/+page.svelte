@@ -3,7 +3,16 @@
 <script>
   import ScrollStory from '$lib/components/ScrollStory1.svelte';
   import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
+  import Introduction from '../lib/components/Introduction.svelte';
 </script>
+
+<!-- <div class="scroll-wrapper-default"> -->
+  <div 
+  style="background-color: var(--color-background-intro); margin-left: 8rem;">
+    <Introduction />
+  </div>
+<!-- </div> -->
+
 
 <!-- <div class="max-w-7xl mx-auto p-6 text-justify"> -->
  <div class="max-w-7xl mx-auto p-6 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300">
@@ -47,7 +56,7 @@
   </p>
 </div>
 
- <div class="scroll-wrapper-yellow">
+ <div class="scroll-wrapper-default">
   <div class="max-w-7xl mx-auto px-6">
     <ScrollStory />
   </div>
