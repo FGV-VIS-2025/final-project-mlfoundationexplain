@@ -2,6 +2,7 @@
 
 ## Estrutura do Repositório
 
+```{}
 src/
 ├─ lib/
 │  └─ components/
@@ -14,7 +15,7 @@ src/
 │     └─ Step2.svelte ← Componente para exibir o conteúdo textual do ScrollStory2
 ├─ routes/
 │  └─ +page.svelte ← Página principal que importa e usa Introduction, ScrollStory1 e ScrollStory2
-
+```
 
 
 
