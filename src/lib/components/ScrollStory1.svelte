@@ -46,7 +46,6 @@
 
   let xDensity = {};
   let yDensity = {};
-
   
   // selecionar o svg de visualização
   const svg = d3.select('.viz svg')
@@ -239,6 +238,88 @@
         .attr('fill', 'none')
         .attr('stroke', i === 0 ? 'steelblue' : 'coral')
         .attr('stroke-width', 2);
+    });
+
+    // Path invisível para interação
+  svg.append('path')
+    // .datum(pathData)
+    .attr('fill', 'none')
+    .attr('stroke', 'transparent')
+    .attr('stroke-width', 10) // área sensível ao mouse
+    .on('mousemove', (event, d) => {
+      const [mouseX] = d3.pointer(event);
+      const xValue = xScale.invert(mouseX);
+
+      // encontrar densidade mais próxima
+      const closest = d.reduce((a, b) =>
+        Math.abs(b[0] - xValue) < Math.abs(a[0] - xValue) ? b : a
+      );
+
+      densityTooltip
+        .style('display', null)
+        .attr('transform', `translate(${xScale(closest[0]) + 10},${margin.top - closest[1] * 200000 - 45})`);
+
+      densityText.text(`${city}`);
+      densityText2.text(`Density X: ${closest[1].toFixed(5)}`);
+    })
+    .on('mouseout', () => {
+      densityTooltip.style('display', 'none');
+    });
+
+    // interatividade 
+    // Criação do tooltip SVG
+  const tooltip = svg.append('g')
+    .style('display', 'none');
+
+
+  const tooltipBox = tooltip.append('rect')
+    .attr('width', 140)
+    .attr('height', 40)
+    .attr('fill', '#fefefe')
+    .attr('stroke', '#ccc')
+    .attr('rx', 5);
+
+  const tooltipText = tooltip.append('text')
+    .attr('x', 10)
+    .attr('y', 18)
+    .attr('font-size', 12)
+    .attr('fill', '#333');
+
+  const tooltipText2 = tooltip.append('text')
+    .attr('x', 10)
+    .attr('y', 34)
+    .attr('font-size', 12)
+    .attr('fill', '#333');
+
+  // Eventos nos círculos
+  svg.selectAll('circle')
+    .on('mouseover', (event, d) => {
+      tooltip.style('display', null); // mostra tooltip
+      d3.select(event.currentTarget)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1.5);
+    })
+    .on('mousemove', (event, d) => {
+      const [mouseX, mouseY] = d3.pointer(event);
+
+      tooltip
+        .attr('transform', `translate(${mouseX + 10},${mouseY - 20})`);
+
+      tooltip.select('.hover-line')
+        .attr('x1', mouseX)
+        .attr('x2', mouseX);
+
+      tooltipText.text(`Median: ${d.y}`);
+      tooltipText2.text(`Total rooms: ${d.x}`);
+
+      tooltipBox
+        .attr('x', 0)
+        .attr('y', 0);
+    })
+    .on('mouseout', (event, d) => {
+      tooltip.style('display', 'none');
+      d3.select(event.currentTarget)
+        .attr('stroke', null);
     });
   } catch (e) {
     error = e.message;
@@ -853,7 +934,7 @@ if (feature === 'feature 1') {
     .attr('width', area.xMax - area.xMin)
     .attr('height', yTop - area.yMin)
     .attr('fill', colorScale(city_cima))
-    .attr('opacity', 0.2);
+    .attr('opacity', 0.3);
 
   // retângulo da parte do meio (left.threshold ≤ y ≤ threshold)
   svg.append('rect')
@@ -862,7 +943,7 @@ if (feature === 'feature 1') {
     .attr('width', area.xMax - area.xMin)
     .attr('height', yMid - yTop)
     .attr('fill', colorScale(city_meio))
-    .attr('opacity', 0.2);
+    .attr('opacity', 0.3);
 
   // retângulo da parte de baixo (y < left.threshold)
   svg.append('rect')
@@ -871,7 +952,7 @@ if (feature === 'feature 1') {
     .attr('width', area.xMax - area.xMin)
     .attr('height', area.yMax - yMid)
     .attr('fill', colorScale(city_baixo))
-    .attr('opacity', 0.2);
+    .attr('opacity', 0.3);
 
     }
 
@@ -1125,7 +1206,7 @@ if (feature === 'feature 1') {
           .attr("width", xScale(bbox.x1) - xScale(bbox.x0))
           .attr("height", yScale(bbox.y0) - yScale(bbox.y1)) // y0 é o fundo
           .attr("fill", colorScale(cidadeMajoritaria))
-          .attr("opacity", 0.1); // transparência para não apagar pontos
+          .attr("opacity", 0.3); // transparência para não apagar pontos
       }
     return;
   }
@@ -1209,6 +1290,7 @@ if (feature === 'feature 1') {
 </script>
 
 <div class="scroll-container">
+  <!-- Coluna com o conteúdo textual rolável -->
   <div class="steps">
     {#each [0, 1, 2, 3] as stepIndex}
       <div
@@ -1217,7 +1299,11 @@ if (feature === 'feature 1') {
         class:active={stepIndex === currentStep}
       >
         <h3>Etapa {stepIndex + 1}</h3>
-        <p>Texto explicativo para etapa {stepIndex + 1}.</p>
+        <p>Texto para a etapa Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus delectus aliquid voluptates commodi maxime iure, quam aut consectetur voluptatum, porro laborum voluptas incidunt illum earum pariatur repellat numquam debitis eum? {stepIndex + 1}.</p>
+      <p>Texto para a etapa Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus delectus aliquid voluptates commodi maxime iure, quam aut consectetur voluptatum, porro laborum voluptas incidunt illum earum pariatur repellat numquam debitis eum? {stepIndex + 1}.</p>
+      <p>Texto para a etapa Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus delectus aliquid voluptates commodi maxime iure, quam aut consectetur voluptatum, porro laborum voluptas incidunt illum earum pariatur repellat numquam debitis eum? {stepIndex + 1}.</p>
+      <p>Texto para a etapa Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus delectus aliquid voluptates commodi maxime iure, quam aut consectetur voluptatum, porro laborum voluptas incidunt illum earum pariatur repellat numquam debitis eum? {stepIndex + 1}.</p>
+      
       </div>
     {/each}
   </div>
