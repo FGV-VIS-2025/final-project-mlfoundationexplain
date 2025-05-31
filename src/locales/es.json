@@ -1,0 +1,27 @@
+
+{
+    "header": {
+        "title": "Árbol de Decisión",
+        "home": "Inicio",
+        "language": "🌐 Idioma",
+        "theme": {
+        "dark": "🌙 Oscuro",
+        "light": "☀️ Claro"
+    }
+    },
+    "page": {
+        "testTitle": "Página de Teste",
+        "step": "Passo {number}",
+        "stage": "Etapa {number}"
+    },
+    "scroll": {
+        "block1": {
+            "title": "Etapa {number}",
+            "content": "Texto para a etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        },
+        "block2": {
+            "title": "Bloco 2 - Etapa {number}",
+            "content": "Conteúdo diferente para o bloco 2 - etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
+        }
+    }
+}
