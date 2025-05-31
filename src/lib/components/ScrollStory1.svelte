@@ -47,7 +47,7 @@
   let xDensity = {};
   let yDensity = {};
   
-
+    const svg = d3.select(containerEl)
     .html('') // limpa conteúdo
     .append('svg')
     .attr('width', width)
