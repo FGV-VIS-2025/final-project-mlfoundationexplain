@@ -4,6 +4,7 @@
   import ScrollStory1 from '$lib/components/ScrollStory1.svelte';
   import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
   import Introduction from '../lib/components/Introduction.svelte';
+  import Gini from '../lib/components/gini.svelte';
   import { _ } from 'svelte-i18n';
 </script>
 
@@ -86,3 +87,9 @@
     <ScrollStory2 />
   </div>
 </div>
+
+ <div class="scroll-wrapper-default">
+  <div class="max-w-7xl mx-auto px-6">
+    <Gini />
+  </div>
+ </div>
