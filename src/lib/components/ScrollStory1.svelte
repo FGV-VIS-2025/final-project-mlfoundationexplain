@@ -48,7 +48,7 @@
   let yDensity = {};
   
   // selecionar o svg de visualização
-  const svg = d3.select('.viz svg')
+  const svg = d3.select(containerEl)
     .html('') // limpa conteúdo
     .append('svg')
     .attr('width', width)
@@ -388,7 +388,7 @@
     let yDensity = {};
 
     // selecionar o svg de visualização
-    const svg = d3.select('.viz svg')
+    const svg = d3.select(containerEl)
       .html('') // limpa conteúdo
       .append('svg')
       .attr('width', width)
@@ -856,7 +856,7 @@
 
     
     // selecionar o svg de visualização
-    const svg = d3.select('.viz svg')
+    const svg = d3.select(containerEl)
       .html('') // limpa conteúdo
       .append('svg')
       .attr('width', width)
@@ -1382,7 +1382,7 @@
 
   
   // selecionar o svg de visualização
-  const svg = d3.select('.viz svg')
+  const svg = d3.select(containerEl)
     .html('') // limpa conteúdo
     .append('svg')
     .attr('width', width)
@@ -1902,7 +1902,7 @@
       },
       { 
         // Define o quanto do elemento precisa estar visível (50%) para ser considerado "visível"
-        threshold: 0.7,  
+        threshold: 0.5,  
       }
     );
 
@@ -1931,9 +1931,8 @@
   </div>
 
   <div class="viz">
-    <div bind:this={containerEl}></div>
-    <svg width=700 height=650></svg>
-  </div>
+  <svg bind:this={containerEl} width="700" height="650"></svg>
+</div>
 </div>
 
 <style>
