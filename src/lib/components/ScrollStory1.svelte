@@ -47,8 +47,7 @@
   let xDensity = {};
   let yDensity = {};
   
-  // selecionar o svg de visualização
-  const svg = d3.select(containerEl)
+
     .html('') // limpa conteúdo
     .append('svg')
     .attr('width', width)
@@ -1933,6 +1932,7 @@
   <div class="viz">
   <svg bind:this={containerEl} width="700" height="650"></svg>
 </div>
+
 </div>
 
 <style>

@@ -41,6 +41,19 @@
     const newLang = $locale === "pt" ? "en" : "pt";
     changeLocale(newLang);
   }
+
+  // Opções de idioma (código + nome exibido)
+  const languages = [
+    { code: "en", label: "🇺🇸 English" },
+    { code: "pt", label: "🇧🇷 Português" },
+    { code: "es", label: "🇪🇸 Español" }
+  ];
+
+  // Troca idioma ao selecionar
+  function onLanguageChange(event) {
+    const newLang = event.target.value;
+    changeLocale(newLang);
+  }
 </script>
 
 <header class="header">
@@ -62,13 +75,18 @@
       </nav>
 
       <div class="header-buttons">
-        <button
-          class="lang-button"
+        <!-- Seletor de idioma -->
+        <select
+          class="lang-select"
+          bind:value={$locale}
+          on:change={onLanguageChange}
           aria-label={$_("header.language")}
-          on:click={toggleLanguage}
         >
-          {$locale === "pt" ? "🇺🇸 English" : "🇧🇷 Português"}
-        </button>
+          {#each languages as lang}
+            <option value={lang.code}>{lang.label}</option>
+          {/each}
+        </select>
+
         <button
           class="theme-button"
           on:click={toggleTheme}
@@ -88,13 +106,12 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    /* background-color:  #7a4e86; #461353; */
     background-color: var(--color-secondary);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   }
-  .lang-button,
+  .lang-select,
   .theme-button {
-    background-color: var(--color-primary); /*#601374*/
+    background-color: var(--color-primary);
     color: var(--color-text-auxiliary);
     font-weight: 600;
     padding: 0.4rem 0.75rem;
@@ -104,14 +121,14 @@
     transition: background-color 0.3s;
   }
 
-  .lang-button:hover,
+  .lang-select:hover,
   .theme-button:hover {
     background-color: #07143f;
   }
 
   .scroll-progress {
     height: 4px;
-    background-color: var(--color-accent); /* azul claro */
+    background-color: var(--color-accent);
     transition: width 0.2s ease;
   }
 
@@ -154,7 +171,6 @@
     gap: 0.5rem;
   }
 
-  /* Nova configuração para alinhar corretamente */
   .left {
     display: flex;
     align-items: center;
