@@ -1,37 +1,45 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
+  import { _, locale, locales } from "svelte-i18n";
+  import { changeLocale } from "../../i18n.js";
 
   let scrollProgress = 0;
   let darkMode = false;
 
   function updateScrollProgress() {
     const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const docHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
     scrollProgress = (scrollTop / docHeight) * 100;
   }
 
   onMount(() => {
     // Inicializa barra de rolagem
     updateScrollProgress();
-    window.addEventListener('scroll', updateScrollProgress);
+    window.addEventListener("scroll", updateScrollProgress);
 
     // Inicializa tema
-    darkMode = localStorage.getItem('theme') === 'dark';
+    darkMode = localStorage.getItem("theme") === "dark";
     updateTheme();
 
     return () => {
-      window.removeEventListener('scroll', updateScrollProgress);
+      window.removeEventListener("scroll", updateScrollProgress);
     };
   });
 
   function toggleTheme() {
     darkMode = !darkMode;
-    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+    localStorage.setItem("theme", darkMode ? "dark" : "light");
     updateTheme();
   }
 
   function updateTheme() {
-    document.documentElement.classList.toggle('dark', darkMode);
+    document.documentElement.classList.toggle("dark", darkMode);
+  }
+
+  async function toggleLanguage() {
+    const newLang = $locale === "pt" ? "en" : "pt";
+    changeLocale(newLang);
   }
 </script>
 
@@ -39,26 +47,38 @@
   <!-- Barra de progresso -->
   <!-- <div class="scroll-progress" style="width: {scrollProgress}%;"></div> -->
 
- <div class="container">
-  <div class="left">
-    <h1 class="site-title">Árvore de decisão</h1>
-  </div>
+  <div class="container">
+    <div class="left">
+      <h1 class="site-title">{$_("header.title")}</h1>
+    </div>
 
-  <div class="right">
-    <nav class="nav-links">
-      <a href="/">Início</a>
-      <a href="https://github.com/FGV-VIS-2025/final-project-mlfoundationexplain">GitHub</a>
-    </nav>
+    <div class="right">
+      <nav class="nav-links">
+        <a href="/">{$_("header.home")}</a>
+        <a
+          href="https://github.com/FGV-VIS-2025/final-project-mlfoundationexplain"
+          >GitHub</a
+        >
+      </nav>
 
-    <div class="header-buttons">
-      <button class="lang-button" aria-label="Selecionar idioma">🌐 Idioma</button>
-      <button class="theme-button" on:click={toggleTheme} aria-label="Alternar tema">
-        {darkMode ? '☀️ Claro' : '🌙 Escuro'}
-      </button>
+      <div class="header-buttons">
+        <button
+          class="lang-button"
+          aria-label={$_("header.language")}
+          on:click={toggleLanguage}
+        >
+          {$locale === "pt" ? "🇺🇸 English" : "🇧🇷 Português"}
+        </button>
+        <button
+          class="theme-button"
+          on:click={toggleTheme}
+          aria-label="Alternar tema"
+        >
+          {darkMode ? $_("header.theme.light") : $_("header.theme.dark")}
+        </button>
+      </div>
     </div>
   </div>
-</div>
-
 
   <div class="scroll-progress" style="width: {scrollProgress}%;"></div>
 </header>
@@ -75,7 +95,7 @@
   .lang-button,
   .theme-button {
     background-color: var(--color-primary); /*#601374*/
-    color: var( --color-text-auxiliary);
+    color: var(--color-text-auxiliary);
     font-weight: 600;
     padding: 0.4rem 0.75rem;
     border-radius: 6px;
@@ -88,7 +108,6 @@
   .theme-button:hover {
     background-color: #07143f;
   }
-
 
   .scroll-progress {
     height: 4px;
@@ -137,16 +156,15 @@
 
   /* Nova configuração para alinhar corretamente */
   .left {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  margin-right: 0rem;
-}
+    display: flex;
+    align-items: center;
+    flex: 1;
+    margin-right: 0rem;
+  }
 
-.right {
-  display: flex;
-  align-items: center;
-  gap: 4rem;
-}
-
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+  }
 </style>
