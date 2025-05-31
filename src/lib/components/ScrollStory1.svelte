@@ -2,35 +2,22 @@
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
 
-  // definição de variáveis
+  // variáveis de scroll
+  // Armazena as referências dos elementos DOM de cada etapa (step)
   let currentStep = 0;
-  let data = [];
-  let error = null;
-  let colorScale;
-  let cities = [];
   let stepRefs = [];
-
-  const xKey = 'total_rooms';
-  const yKey = 'median_house_value';
-  const cityKey = 'city';
 
   // dimensões do gráfico
   const width = 700;
   const height = 650;
   const margin = { top: 100, right: 70, bottom: 100, left: 70 };
 
-  // posição da legenda
-  let legendX = width - margin.right - 150; 
-  let legendY = margin.top + 20;  
+  // colunas para os cortes em 2d
+  const xKey = 'total_rooms';
+  const yKey = 'median_house_value';
+  const cityKey = 'city';
 
-  // escalas
-  let xScale, yScale;
-  let xTicks = [], yTicks = [];
-
-  // para calcular a densidade dos dados
-  let xDensity = {};
-  let yDensity = {};
-
+  // função auxiliar para calcular a densidade
   function kernelDensityEstimator(kernel, xValues) {
     return function (sample) {
       return xValues.map(x => [
@@ -46,25 +33,242 @@
       return Math.abs(u) <= 1 ? 0.75 * (1 - u * u) / bandwidth : 0;
     };
   }
+  
+  // gráfico de scatter e densidade
+  export async function scatterDensity() {
+  // inicialização
+  let xScale, yScale;
+  let xTicks = [], yTicks = [];
+  let data = [];
+  let error = null;
+  let colorScale;
+  let cities = [];
 
-  onMount(async () => {
-    // conteúdo visível
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = stepRefs.findIndex(el => el === entry.target);
-            if (index !== -1) currentStep = index;
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
+  let xDensity = {};
+  let yDensity = {};
 
-    stepRefs.forEach(el => { if(el) observer.observe(el) });
+  
+  // selecionar o svg de visualização
+  const svg = d3.select('.viz svg')
+    .html('') // limpa conteúdo
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .style('background', 'transparent');
+
+  try {
+    // Carrega e processa CSV
+    const res = await fetch('/data/housing_limpo.csv');
+    const text = await res.text();
+
+    const lines = text.trim().split('\n');
+    const headers = lines[0].trim().split(',');
+
+    const xIndex = headers.indexOf(xKey);
+    const yIndex = headers.indexOf(yKey);
+    const cityIndex = headers.indexOf(cityKey);
+
+    if (xIndex === -1 || yIndex === -1 || cityIndex === -1) {
+      throw new Error(`Colunas "${xKey}", "${yKey}" ou "${cityKey}" não encontradas`);
+    }
+
+    data = lines.slice(1).map(line => {
+      const cols = line.split(',');
+      return {
+        x: parseFloat(cols[xIndex]),
+        y: parseFloat(cols[yIndex]),
+        city: cols[cityIndex]?.trim()
+      };
+    }).filter(d => !isNaN(d.x) && !isNaN(d.y) && d.city);
+
+    // valores horizontal e vertical
+    const xValues = data.map(d => d.x);
+    const yValues = data.map(d => d.y);
+
+    // extremos das escalas
+    const xMin = d3.min(xValues);
+    const xMax = d3.max(xValues);
+    const yMin = d3.min(yValues);
+    const yMax = d3.max(yValues);
+
+    xScale = d3.scaleLinear()
+      .domain([xMin, xMax])
+      .range([margin.left, width - margin.right]);
+
+    yScale = d3.scaleLinear()
+      .domain([yMin, yMax])
+      .range([height - margin.bottom, margin.top]);
+
+    xTicks = xScale.ticks(5);
+    yTicks = yScale.ticks(5);
+
+    cities = [...new Set(data.map(d => d.city))];
+    colorScale = d3.scaleOrdinal()
+      .domain(cities)
+      .range(d3.schemeCategory10);
+
+    // Densidade dos dados
+    const kde = kernelDensityEstimator(kernelEpanechnikov(500), xScale.ticks(40));
+    const kdeY = kernelDensityEstimator(kernelEpanechnikov(10000), yScale.ticks(40));
+    cities.forEach(city => {
+      const subset = data.filter(d => d.city === city);
+      xDensity[city] = kde(subset.map(d => d.x));
+      yDensity[city] = kdeY(subset.map(d => d.y));
+    });
+
+    // Pontos scatterplot
+    svg.selectAll('circle')
+      .data(data)
+      .join('circle')
+      .attr('cx', d => xScale(d.x))
+      .attr('cy', d => yScale(d.y))
+      .attr('r', 3)
+      .attr('fill', d => colorScale(d.city))
+      .attr('opacity', 0.4);
+
+    // Eixo X
+    svg.append('line')
+      .attr('x1', margin.left)
+      .attr('y1', height - margin.bottom)
+      .attr('x2', width - margin.right)
+      .attr('y2', height - margin.bottom)
+      .attr('stroke', 'black');
+
+    svg.selectAll('xTicks')
+      .data(xTicks)
+      .join('line')
+      .attr('x1', d => xScale(d))
+      .attr('y1', height - margin.bottom)
+      .attr('x2', d => xScale(d))
+      .attr('y2', height - margin.bottom + 6)
+      .attr('stroke', 'black');
+
+    svg.selectAll('xTickLabels')
+      .data(xTicks)
+      .join('text')
+      .attr('x', d => xScale(d))
+      .attr('y', height - margin.bottom + 20)
+      .attr('font-size', 10)
+      .attr('text-anchor', 'middle')
+      .text(d => Math.round(d));
+
+    // Eixo Y
+    svg.append('line')
+      .attr('x1', margin.left)
+      .attr('y1', margin.top)
+      .attr('x2', margin.left)
+      .attr('y2', height - margin.bottom)
+      .attr('stroke', 'black');
+
+    svg.selectAll('yTicks')
+      .data(yTicks)
+      .join('line')
+      .attr('x1', margin.left)
+      .attr('y1', d => yScale(d))
+      .attr('x2', margin.left - 6)
+      .attr('y2', d => yScale(d))
+      .attr('stroke', 'black');
+
+    svg.selectAll('yTickLabels')
+      .data(yTicks)
+      .join('text')
+      .attr('x', margin.left - 10)
+      .attr('y', d => yScale(d) + 3)
+      .attr('font-size', 10)
+      .attr('text-anchor', 'end')
+      .text(d => Math.round(d));
+
+    // Legendas dos eixos
+    svg.append('text')
+      .attr('x', (width + margin.left - margin.right) / 2)
+      .attr('y', height - 50)
+      .attr('font-size', 12)
+      .attr('text-anchor', 'middle')
+      .attr('font-weight', 'bold')
+      .text('Total rooms');
+
+    svg.append('text')
+      .attr('transform', `translate(15, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
+      .attr('font-size', 12)
+      .attr('text-anchor', 'middle')
+      .attr('font-weight', 'bold')
+      .text('Median house value');
+
+    // Legenda cores por cidade
+    const legendX = width - margin.right - 150;
+    const legendY = margin.top + 20;
+
+    const legend = svg.append('g')
+      .attr('transform', `translate(${legendX},${legendY})`);
+
+    cities.forEach((city, i) => {
+      const g = legend.append('g')
+        .attr('transform', `translate(0,${i * 20})`);
+
+      g.append('rect')
+        .attr('width', 15)
+        .attr('height', 15)
+        .attr('fill', colorScale(city));
+
+      g.append('text')
+        .attr('x', 20)
+        .attr('y', 12)
+        .attr('font-size', 12)
+        .text(city);
+    });
+
+    // Densidade no topo (X)
+    cities.forEach((city, i) => {
+      svg.append('path')
+        .attr('d', d3.line()
+          .x(d => xScale(d[0]))
+          .y(d => margin.top - d[1] * 200000)(xDensity[city])
+        )
+        .attr('fill', 'none')
+        .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+        .attr('stroke-width', 2);
+    });
+
+    // Densidade na direita (Y)
+    cities.forEach((city, i) => {
+      svg.append('path')
+        .attr('d', d3.line()
+          .x(d => width - margin.right + d[1] * 5000000)
+          .y(d => yScale(d[0]))(yDensity[city])
+        )
+        .attr('fill', 'none')
+        .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+        .attr('stroke-width', 2);
+    });
+  } catch (e) {
+    error = e.message;
+  }
+  }
+
+  export async function corte1() {
+    
+  // inicialização
+    let xScale, yScale;
+    let xTicks = [], yTicks = [];
+    let data = [];
+    let error = null;
+    let colorScale;
+    let cities = [];
+
+    let xDensity = {};
+    let yDensity = {};
+
+    
+    // selecionar o svg de visualização
+    const svg = d3.select('.viz svg')
+      .html('') // limpa conteúdo
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .style('background', 'transparent');
 
     try {
-      // carrega dados e texto
+      // Carrega e processa CSV
       const res = await fetch('/data/housing_limpo.csv');
       const text = await res.text();
 
@@ -76,11 +280,9 @@
       const cityIndex = headers.indexOf(cityKey);
 
       if (xIndex === -1 || yIndex === -1 || cityIndex === -1) {
-        error = `Colunas "${xKey}", "${yKey}" ou "${cityKey}" não encontradas no CSV`;
-        return;
+        throw new Error(`Colunas "${xKey}", "${yKey}" ou "${cityKey}" não encontradas`);
       }
-      
-      //carrega linhas do dataset
+
       data = lines.slice(1).map(line => {
         const cols = line.split(',');
         return {
@@ -90,56 +292,923 @@
         };
       }).filter(d => !isNaN(d.x) && !isNaN(d.y) && d.city);
 
-      // definir domínio e escalas
+      // valores horizontal e vertical
       const xValues = data.map(d => d.x);
       const yValues = data.map(d => d.y);
 
-      const xMin = Math.min(...xValues);
-      const xMax = Math.max(...xValues);
-      const yMin = Math.min(...yValues);
-      const yMax = Math.max(...yValues);
+      // extremos das escalas
+      const xMin = d3.min(xValues);
+      const xMax = d3.max(xValues);
+      const yMin = d3.min(yValues);
+      const yMax = d3.max(yValues);
 
-      // escala linear
-      xScale = x => margin.left + ((x - xMin) / (xMax - xMin)) * (width - margin.left - margin.right);
-      yScale = y => height - margin.bottom - ((y - yMin) / (yMax - yMin)) * (height - margin.top - margin.bottom);
+      xScale = d3.scaleLinear()
+        .domain([xMin, xMax])
+        .range([margin.left, width - margin.right]);
 
-      // ticks para eixo X e Y (5 ticks cada)
-      xTicks = Array.from({length:5}, (_,i) => xMin + i*(xMax - xMin)/4);
-      yTicks = Array.from({length:5}, (_,i) => yMin + i*(yMax - yMin)/4);
+      yScale = d3.scaleLinear()
+        .domain([yMin, yMax])
+        .range([height - margin.bottom, margin.top]);
+
+      xTicks = xScale.ticks(5);
+      yTicks = yScale.ticks(5);
 
       cities = [...new Set(data.map(d => d.city))];
       colorScale = d3.scaleOrdinal()
         .domain(cities)
         .range(d3.schemeCategory10);
 
-      // cálculo da linha de densidade
-      const kde = kernelDensityEstimator(kernelEpanechnikov(500), xScale.ticks?.(40) || d3.range(xMin, xMax, (xMax - xMin) / 40));
-      const kdeY = kernelDensityEstimator(kernelEpanechnikov(10000), yScale.ticks?.(40) || d3.range(yMin, yMax, (yMax - yMin) / 40));
-
+      // Densidade dos dados
+      const kde = kernelDensityEstimator(kernelEpanechnikov(500), xScale.ticks(40));
+      const kdeY = kernelDensityEstimator(kernelEpanechnikov(10000), yScale.ticks(40));
       cities.forEach(city => {
         const subset = data.filter(d => d.city === city);
         xDensity[city] = kde(subset.map(d => d.x));
         yDensity[city] = kdeY(subset.map(d => d.y));
       });
 
-    } catch(e) {
-      error = 'Erro ao carregar CSV: ' + e.message;
+      // Pontos scatterplot
+      svg.selectAll('circle')
+        .data(data)
+        .join('circle')
+        .attr('cx', d => xScale(d.x))
+        .attr('cy', d => yScale(d.y))
+        .attr('r', 3)
+        .attr('fill', d => colorScale(d.city))
+        .attr('opacity', 0.4);
+
+      // Eixo X
+      svg.append('line')
+        .attr('x1', margin.left)
+        .attr('y1', height - margin.bottom)
+        .attr('x2', width - margin.right)
+        .attr('y2', height - margin.bottom)
+        .attr('stroke', 'black');
+
+      svg.selectAll('xTicks')
+        .data(xTicks)
+        .join('line')
+        .attr('x1', d => xScale(d))
+        .attr('y1', height - margin.bottom)
+        .attr('x2', d => xScale(d))
+        .attr('y2', height - margin.bottom + 6)
+        .attr('stroke', 'black');
+
+      svg.selectAll('xTickLabels')
+        .data(xTicks)
+        .join('text')
+        .attr('x', d => xScale(d))
+        .attr('y', height - margin.bottom + 20)
+        .attr('font-size', 10)
+        .attr('text-anchor', 'middle')
+        .text(d => Math.round(d));
+
+      // Eixo Y
+      svg.append('line')
+        .attr('x1', margin.left)
+        .attr('y1', margin.top)
+        .attr('x2', margin.left)
+        .attr('y2', height - margin.bottom)
+        .attr('stroke', 'black');
+
+      svg.selectAll('yTicks')
+        .data(yTicks)
+        .join('line')
+        .attr('x1', margin.left)
+        .attr('y1', d => yScale(d))
+        .attr('x2', margin.left - 6)
+        .attr('y2', d => yScale(d))
+        .attr('stroke', 'black');
+
+      svg.selectAll('yTickLabels')
+        .data(yTicks)
+        .join('text')
+        .attr('x', margin.left - 10)
+        .attr('y', d => yScale(d) + 3)
+        .attr('font-size', 10)
+        .attr('text-anchor', 'end')
+        .text(d => Math.round(d));
+
+      // Legendas dos eixos
+      svg.append('text')
+        .attr('x', (width + margin.left - margin.right) / 2)
+        .attr('y', height - 50)
+        .attr('font-size', 12)
+        .attr('text-anchor', 'middle')
+        .attr('font-weight', 'bold')
+        .text('Total rooms');
+
+      svg.append('text')
+        .attr('transform', `translate(15, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
+        .attr('font-size', 12)
+        .attr('text-anchor', 'middle')
+        .attr('font-weight', 'bold')
+        .text('Median house value');
+
+      // Legenda cores por cidade
+      const legendX = width - margin.right - 150;
+      const legendY = margin.top + 20;
+
+      const legend = svg.append('g')
+        .attr('transform', `translate(${legendX},${legendY})`);
+
+      cities.forEach((city, i) => {
+        const g = legend.append('g')
+          .attr('transform', `translate(0,${i * 20})`);
+
+        g.append('rect')
+          .attr('width', 15)
+          .attr('height', 15)
+          .attr('fill', colorScale(city));
+
+        g.append('text')
+          .attr('x', 20)
+          .attr('y', 12)
+          .attr('font-size', 12)
+          .text(city);
+      });
+
+      // Densidade no topo (X)
+      cities.forEach((city, i) => {
+        svg.append('path')
+          .attr('d', d3.line()
+            .x(d => xScale(d[0]))
+            .y(d => margin.top - d[1] * 200000)(xDensity[city])
+          )
+          .attr('fill', 'none')
+          .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+          .attr('stroke-width', 2);
+      });
+
+      // Densidade na direita (Y)
+      cities.forEach((city, i) => {
+        svg.append('path')
+          .attr('d', d3.line()
+            .x(d => width - margin.right + d[1] * 5000000)
+            .y(d => yScale(d[0]))(yDensity[city])
+          )
+          .attr('fill', 'none')
+          .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+          .attr('stroke-width', 2);
+      });
+
+    } catch (e) {
+      error = e.message;
+    }
+    // Carrega a árvore
+    const treeRes = await fetch('/trees/cortes_2d.json');
+    const tree = await treeRes.json();
+
+    const { feature, threshold } = tree;
+
+  // traça o primeiro corte com mairo pureza
+  if (feature === 'feature 0') {
+    const thresholdX = threshold;
+
+    // Divide os dados em dois grupos pela coordenada x
+    const esquerda = data.filter(d => d.x <= thresholdX);
+    const direita = data.filter(d => d.x > thresholdX);
+
+    // Classe majoritária de cada lado
+    const majorEsquerda = d3.rollups(esquerda, v => v.length, d => d.city)
+                            .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
+
+    const majorDireita = d3.rollups(direita, v => v.length, d => d.city)
+                            .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
+
+      const x = xScale(thresholdX);
+
+    // Retângulo da esquerda
+    svg.append('rect')
+      .attr('x', margin.left)
+      .attr('y', margin.top)
+      .attr('width', x - margin.left)
+      .attr('height', height - margin.bottom - margin.top)
+      .attr('fill', colorScale(majorEsquerda))
+      .attr('opacity', 0.3);
+
+    // Retângulo da direita
+    svg.append('rect')
+      .attr('x', x)
+      .attr('y', margin.top)
+      .attr('width', width - margin.right - x)
+      .attr('height', height - margin.bottom - margin.top)
+      .attr('fill', colorScale(majorDireita))
+      .attr('opacity', 0.3);
+
+    // Linha de corte
+    svg.append('line')
+      .attr('x1', x)
+      .attr('x2', x)
+      .attr('y1', margin.top)
+      .attr('y2', height - margin.bottom)
+      .attr('stroke', 'black')
+      .attr('stroke-width', 2);
+  }
+
+if (feature === 'feature 1') {
+  const thresholdY = threshold;
+
+  // Divide os dados em dois grupos pela coordenada y
+  const abaixo = data.filter(d => d.y <= thresholdY);
+  const acima = data.filter(d => d.y > thresholdY);
+
+  const majorAbaixo = d3.rollups(abaixo, v => v.length, d => d.city)
+                        .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
+
+  const majorAcima = d3.rollups(acima, v => v.length, d => d.city)
+                        .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
+
+  const y = yScale(thresholdY);
+
+  // Retângulo de cima
+  svg.append('rect')
+    .attr('x', margin.left)
+    .attr('y', margin.top)
+    .attr('width', width - margin.left - margin.right)
+    .attr('height', y - margin.top)
+    .attr('fill', colorScale(majorAcima))
+    .attr('opacity', 0.3);
+
+  // Retângulo de baixo
+  svg.append('rect')
+    .attr('x', margin.left)
+    .attr('y', y)
+    .attr('width', width - margin.left - margin.right)
+    .attr('height', height - y - margin.bottom)
+    .attr('fill', colorScale(majorAbaixo))
+    .attr('opacity', 0.3);
+
+  // Linha de corte
+  svg.append('line')
+    .attr('x1', margin.left)
+    .attr('x2', width - margin.right)
+    .attr('y1', y)
+    .attr('y2', y)
+    .attr('stroke', 'black')
+    .attr('stroke-width', 2);
+  }
+
+  }
+
+  export async function corte2() {
+  // inicialização
+    let xScale, yScale;
+    let xTicks = [], yTicks = [];
+    let data = [];
+    let error = null;
+    let colorScale;
+    let cities = [];
+
+    let xDensity = {};
+    let yDensity = {};
+
+    
+    // selecionar o svg de visualização
+    const svg = d3.select('.viz svg')
+      .html('') // limpa conteúdo
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height)
+      .style('background', 'transparent');
+
+    try {
+      // Carrega e processa CSV
+      const res = await fetch('/data/housing_limpo.csv');
+      const text = await res.text();
+
+      const lines = text.trim().split('\n');
+      const headers = lines[0].trim().split(',');
+
+      const xIndex = headers.indexOf(xKey);
+      const yIndex = headers.indexOf(yKey);
+      const cityIndex = headers.indexOf(cityKey);
+
+      if (xIndex === -1 || yIndex === -1 || cityIndex === -1) {
+        throw new Error(`Colunas "${xKey}", "${yKey}" ou "${cityKey}" não encontradas`);
+      }
+
+      data = lines.slice(1).map(line => {
+        const cols = line.split(',');
+        return {
+          x: parseFloat(cols[xIndex]),
+          y: parseFloat(cols[yIndex]),
+          city: cols[cityIndex]?.trim()
+        };
+      }).filter(d => !isNaN(d.x) && !isNaN(d.y) && d.city);
+
+      // valores horizontal e vertical
+      const xValues = data.map(d => d.x);
+      const yValues = data.map(d => d.y);
+
+      // extremos das escalas
+      const xMin = d3.min(xValues);
+      const xMax = d3.max(xValues);
+      const yMin = d3.min(yValues);
+      const yMax = d3.max(yValues);
+
+      xScale = d3.scaleLinear()
+        .domain([xMin, xMax])
+        .range([margin.left, width - margin.right]);
+
+      yScale = d3.scaleLinear()
+        .domain([yMin, yMax])
+        .range([height - margin.bottom, margin.top]);
+
+      xTicks = xScale.ticks(5);
+      yTicks = yScale.ticks(5);
+
+      cities = [...new Set(data.map(d => d.city))];
+      colorScale = d3.scaleOrdinal()
+        .domain(cities)
+        .range(d3.schemeCategory10);
+
+      // Densidade dos dados
+      const kde = kernelDensityEstimator(kernelEpanechnikov(500), xScale.ticks(40));
+      const kdeY = kernelDensityEstimator(kernelEpanechnikov(10000), yScale.ticks(40));
+      cities.forEach(city => {
+        const subset = data.filter(d => d.city === city);
+        xDensity[city] = kde(subset.map(d => d.x));
+        yDensity[city] = kdeY(subset.map(d => d.y));
+      });
+
+      // Pontos scatterplot
+      svg.selectAll('circle')
+        .data(data)
+        .join('circle')
+        .attr('cx', d => xScale(d.x))
+        .attr('cy', d => yScale(d.y))
+        .attr('r', 3)
+        .attr('fill', d => colorScale(d.city))
+        .attr('opacity', 0.4);
+
+      // Eixo X
+      svg.append('line')
+        .attr('x1', margin.left)
+        .attr('y1', height - margin.bottom)
+        .attr('x2', width - margin.right)
+        .attr('y2', height - margin.bottom)
+        .attr('stroke', 'black');
+
+      svg.selectAll('xTicks')
+        .data(xTicks)
+        .join('line')
+        .attr('x1', d => xScale(d))
+        .attr('y1', height - margin.bottom)
+        .attr('x2', d => xScale(d))
+        .attr('y2', height - margin.bottom + 6)
+        .attr('stroke', 'black');
+
+      svg.selectAll('xTickLabels')
+        .data(xTicks)
+        .join('text')
+        .attr('x', d => xScale(d))
+        .attr('y', height - margin.bottom + 20)
+        .attr('font-size', 10)
+        .attr('text-anchor', 'middle')
+        .text(d => Math.round(d));
+
+      // Eixo Y
+      svg.append('line')
+        .attr('x1', margin.left)
+        .attr('y1', margin.top)
+        .attr('x2', margin.left)
+        .attr('y2', height - margin.bottom)
+        .attr('stroke', 'black');
+
+      svg.selectAll('yTicks')
+        .data(yTicks)
+        .join('line')
+        .attr('x1', margin.left)
+        .attr('y1', d => yScale(d))
+        .attr('x2', margin.left - 6)
+        .attr('y2', d => yScale(d))
+        .attr('stroke', 'black');
+
+      svg.selectAll('yTickLabels')
+        .data(yTicks)
+        .join('text')
+        .attr('x', margin.left - 10)
+        .attr('y', d => yScale(d) + 3)
+        .attr('font-size', 10)
+        .attr('text-anchor', 'end')
+        .text(d => Math.round(d));
+
+      // Legendas dos eixos
+      svg.append('text')
+        .attr('x', (width + margin.left - margin.right) / 2)
+        .attr('y', height - 50)
+        .attr('font-size', 12)
+        .attr('text-anchor', 'middle')
+        .attr('font-weight', 'bold')
+        .text('Total rooms');
+
+      svg.append('text')
+        .attr('transform', `translate(15, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
+        .attr('font-size', 12)
+        .attr('text-anchor', 'middle')
+        .attr('font-weight', 'bold')
+        .text('Median house value');
+
+      // Legenda cores por cidade
+      const legendX = width - margin.right - 150;
+      const legendY = margin.top + 20;
+
+      const legend = svg.append('g')
+        .attr('transform', `translate(${legendX},${legendY})`);
+
+      cities.forEach((city, i) => {
+        const g = legend.append('g')
+          .attr('transform', `translate(0,${i * 20})`);
+
+        g.append('rect')
+          .attr('width', 15)
+          .attr('height', 15)
+          .attr('fill', colorScale(city));
+
+        g.append('text')
+          .attr('x', 20)
+          .attr('y', 12)
+          .attr('font-size', 12)
+          .text(city);
+      });
+
+      // Densidade no topo (X)
+      cities.forEach((city, i) => {
+        svg.append('path')
+          .attr('d', d3.line()
+            .x(d => xScale(d[0]))
+            .y(d => margin.top - d[1] * 200000)(xDensity[city])
+          )
+          .attr('fill', 'none')
+          .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+          .attr('stroke-width', 2);
+      });
+
+      // Densidade na direita (Y)
+      cities.forEach((city, i) => {
+        svg.append('path')
+          .attr('d', d3.line()
+            .x(d => width - margin.right + d[1] * 5000000)
+            .y(d => yScale(d[0]))(yDensity[city])
+          )
+          .attr('fill', 'none')
+          .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+          .attr('stroke-width', 2);
+      });
+
+    } catch (e) {
+      error = e.message;
+    }
+    // Carrega a árvore
+    const treeRes = await fetch('/trees/cortes_2d.json');
+    const tree = await treeRes.json();
+
+    // Pega o primeiro corte
+    // 1º corte (nível raiz)
+    const { feature, threshold, left, right } = tree;
+
+    let area = {
+      xMin: margin.left,
+      xMax: width - margin.right,
+      yMin: margin.top,
+      yMax: height - margin.bottom
+    };
+    
+
+    if (feature === 'feature 0') {
+      const x = xScale(threshold);
+      svg.append('line')
+        .attr('x1', x)
+        .attr('x2', x)
+        .attr('y1', area.yMin)
+        .attr('y2', area.yMax)
+        .attr('stroke', 'red')
+        .attr('stroke-width', 2)
+        .attr('stroke-dasharray', '5,5');
+
+      // 2º corte no lado esquerdo (aninhado)
+      if (left.feature === 'feature 1') {
+        const y2 = yScale(left.threshold);
+        svg.append('line')
+          .attr('x1', area.xMin)
+          .attr('x2', x)
+          .attr('y1', y2)
+          .attr('y2', y2)
+          .attr('stroke', 'blue')
+          .attr('stroke-width', 2)
+          .attr('stroke-dasharray', '4,4');
+      }
+
+    } else if (feature === 'feature 1') {
+      const y = yScale(threshold);
+      svg.append('line')
+        .attr('x1', area.xMin)
+        .attr('x2', area.xMax)
+        .attr('y1', y)
+        .attr('y2', y)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 2);
+
+      // 2º corte no lado inferior (y < threshold)
+      if (left.feature === 'feature 1') {
+        const y2 = yScale(left.threshold);
+        svg.append('line')
+        .attr('x1', area.xMin)
+        .attr('x2', area.xMax)
+        .attr('y1', y2)
+        .attr('y2', y2)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 2);
+      }
+
+    }
+  
+  // para saber a classe mais prevista  
+  function moda(arr) {
+    if (!arr || arr.length === 0) return null;
+    const counts = {};
+    arr.forEach(v => {
+      counts[v] = (counts[v] || 0) + 1;
+    });
+      return Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+  }
+
+  const yTop = yScale(threshold);
+  const yMid = yScale(left.threshold);
+
+  // definindo as regiões no domínio dos dados
+  const reg_cima = data.filter(d => d.y > threshold);
+  const reg_meio = data.filter(d => d.y <= threshold && d.y >= left.threshold);
+  const reg_baixo = data.filter(d => d.y < left.threshold);
+
+  const city_cima = moda(reg_cima.map(d => d.city));
+  const city_meio = moda(reg_meio.map(d => d.city));
+  const city_baixo = moda(reg_baixo.map(d => d.city));
+
+  // retângulo da parte de cima (y > threshold)
+  svg.append('rect')
+    .attr('x', area.xMin)
+    .attr('y', area.yMin)
+    .attr('width', area.xMax - area.xMin)
+    .attr('height', yTop - area.yMin)
+    .attr('fill', colorScale(city_cima))
+    .attr('opacity', 0.2);
+
+  // retângulo da parte do meio (left.threshold ≤ y ≤ threshold)
+  svg.append('rect')
+    .attr('x', area.xMin)
+    .attr('y', yTop)
+    .attr('width', area.xMax - area.xMin)
+    .attr('height', yMid - yTop)
+    .attr('fill', colorScale(city_meio))
+    .attr('opacity', 0.2);
+
+  // retângulo da parte de baixo (y < left.threshold)
+  svg.append('rect')
+    .attr('x', area.xMin)
+    .attr('y', yMid)
+    .attr('width', area.xMax - area.xMin)
+    .attr('height', area.yMax - yMid)
+    .attr('fill', colorScale(city_baixo))
+    .attr('opacity', 0.2);
+
     }
 
+  export async function todosCortes() {
+    // inicialização
+  let xScale, yScale;
+  let xTicks = [], yTicks = [];
+  let data = [];
+  let error = null;
+  let colorScale;
+  let cities = [];
+
+  let xDensity = {};
+  let yDensity = {};
+
+  
+  // selecionar o svg de visualização
+  const svg = d3.select('.viz svg')
+    .html('') // limpa conteúdo
+    .append('svg')
+    .attr('width', width)
+    .attr('height', height)
+    .style('background', 'transparent');
+
+  try {
+    // Carrega e processa CSV
+    const res = await fetch('/data/housing_limpo.csv');
+    const text = await res.text();
+
+    const lines = text.trim().split('\n');
+    const headers = lines[0].trim().split(',');
+
+    const xIndex = headers.indexOf(xKey);
+    const yIndex = headers.indexOf(yKey);
+    const cityIndex = headers.indexOf(cityKey);
+
+    if (xIndex === -1 || yIndex === -1 || cityIndex === -1) {
+      throw new Error(`Colunas "${xKey}", "${yKey}" ou "${cityKey}" não encontradas`);
+    }
+
+    data = lines.slice(1).map(line => {
+      const cols = line.split(',');
+      return {
+        x: parseFloat(cols[xIndex]),
+        y: parseFloat(cols[yIndex]),
+        city: cols[cityIndex]?.trim()
+      };
+    }).filter(d => !isNaN(d.x) && !isNaN(d.y) && d.city);
+
+    // valores horizontal e vertical
+    const xValues = data.map(d => d.x);
+    const yValues = data.map(d => d.y);
+
+    // extremos das escalas
+    const xMin = d3.min(xValues);
+    const xMax = d3.max(xValues);
+    const yMin = d3.min(yValues);
+    const yMax = d3.max(yValues);
+
+    xScale = d3.scaleLinear()
+      .domain([xMin, xMax])
+      .range([margin.left, width - margin.right]);
+
+    yScale = d3.scaleLinear()
+      .domain([yMin, yMax])
+      .range([height - margin.bottom, margin.top]);
+
+    xTicks = xScale.ticks(5);
+    yTicks = yScale.ticks(5);
+
+    cities = [...new Set(data.map(d => d.city))];
+    colorScale = d3.scaleOrdinal()
+      .domain(cities)
+      .range(d3.schemeCategory10);
+
+    // Densidade dos dados
+    const kde = kernelDensityEstimator(kernelEpanechnikov(500), xScale.ticks(40));
+    const kdeY = kernelDensityEstimator(kernelEpanechnikov(10000), yScale.ticks(40));
+    cities.forEach(city => {
+      const subset = data.filter(d => d.city === city);
+      xDensity[city] = kde(subset.map(d => d.x));
+      yDensity[city] = kdeY(subset.map(d => d.y));
+    });
+
+    // Pontos scatterplot
+    svg.selectAll('circle')
+      .data(data)
+      .join('circle')
+      .attr('cx', d => xScale(d.x))
+      .attr('cy', d => yScale(d.y))
+      .attr('r', 3)
+      .attr('fill', d => colorScale(d.city))
+      .attr('opacity', 0.4);
+
+    // Eixo X
+    svg.append('line')
+      .attr('x1', margin.left)
+      .attr('y1', height - margin.bottom)
+      .attr('x2', width - margin.right)
+      .attr('y2', height - margin.bottom)
+      .attr('stroke', 'black');
+
+    svg.selectAll('xTicks')
+      .data(xTicks)
+      .join('line')
+      .attr('x1', d => xScale(d))
+      .attr('y1', height - margin.bottom)
+      .attr('x2', d => xScale(d))
+      .attr('y2', height - margin.bottom + 6)
+      .attr('stroke', 'black');
+
+    svg.selectAll('xTickLabels')
+      .data(xTicks)
+      .join('text')
+      .attr('x', d => xScale(d))
+      .attr('y', height - margin.bottom + 20)
+      .attr('font-size', 10)
+      .attr('text-anchor', 'middle')
+      .text(d => Math.round(d));
+
+    // Eixo Y
+    svg.append('line')
+      .attr('x1', margin.left)
+      .attr('y1', margin.top)
+      .attr('x2', margin.left)
+      .attr('y2', height - margin.bottom)
+      .attr('stroke', 'black');
+
+    svg.selectAll('yTicks')
+      .data(yTicks)
+      .join('line')
+      .attr('x1', margin.left)
+      .attr('y1', d => yScale(d))
+      .attr('x2', margin.left - 6)
+      .attr('y2', d => yScale(d))
+      .attr('stroke', 'black');
+
+    svg.selectAll('yTickLabels')
+      .data(yTicks)
+      .join('text')
+      .attr('x', margin.left - 10)
+      .attr('y', d => yScale(d) + 3)
+      .attr('font-size', 10)
+      .attr('text-anchor', 'end')
+      .text(d => Math.round(d));
+
+    // Legendas dos eixos
+    svg.append('text')
+      .attr('x', (width + margin.left - margin.right) / 2)
+      .attr('y', height - 50)
+      .attr('font-size', 12)
+      .attr('text-anchor', 'middle')
+      .attr('font-weight', 'bold')
+      .text('Total rooms');
+
+    svg.append('text')
+      .attr('transform', `translate(15, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
+      .attr('font-size', 12)
+      .attr('text-anchor', 'middle')
+      .attr('font-weight', 'bold')
+      .text('Median house value');
+
+    // Legenda cores por cidade
+    const legendX = width - margin.right - 150;
+    const legendY = margin.top + 20;
+
+    const legend = svg.append('g')
+      .attr('transform', `translate(${legendX},${legendY})`);
+
+    cities.forEach((city, i) => {
+      const g = legend.append('g')
+        .attr('transform', `translate(0,${i * 20})`);
+
+      g.append('rect')
+        .attr('width', 15)
+        .attr('height', 15)
+        .attr('fill', colorScale(city));
+
+      g.append('text')
+        .attr('x', 20)
+        .attr('y', 12)
+        .attr('font-size', 12)
+        .text(city);
+    });
+
+    // Densidade no topo (X)
+    cities.forEach((city, i) => {
+      svg.append('path')
+        .attr('d', d3.line()
+          .x(d => xScale(d[0]))
+          .y(d => margin.top - d[1] * 200000)(xDensity[city])
+        )
+        .attr('fill', 'none')
+        .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+        .attr('stroke-width', 2);
+    });
+
+    // Densidade na direita (Y)
+    cities.forEach((city, i) => {
+      svg.append('path')
+        .attr('d', d3.line()
+          .x(d => width - margin.right + d[1] * 5000000)
+          .y(d => yScale(d[0]))(yDensity[city])
+        )
+        .attr('fill', 'none')
+        .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+        .attr('stroke-width', 2);
+    });
+
+    // Carrega a árvore de cortes
+    const treeRes = await fetch('/trees/cortes_2d.json');
+    const cortes = await treeRes.json();
+
+    // Domínio dos dados
+    const bbox = {
+      x0: xMin,
+      y0: yMin,
+      x1: xMax,
+      y1: yMax
+    };
+  
+  // desenhar os cortes recursivamente e destava a classe mais prevista
+  function desenharCortes(bbox, node) {
+    if (!node) return;
+
+    const feature = node.feature;
+    const threshold = +node.threshold;
+
+    // Se for folha
+    if (!node.left && !node.right) {
+      const dadosNaRegiao = data.filter(d =>
+        d.x >= bbox.x0 && d.x <= bbox.x1 &&
+        d.y >= bbox.y0 && d.y <= bbox.y1
+      );
+
+      if (dadosNaRegiao.length > 0) {
+        // Conta quantos pontos de cada cidade
+        const contagem = {};
+        dadosNaRegiao.forEach(d => {
+          contagem[d.city] = (contagem[d.city] || 0) + 1;
+        });
+
+        // Determina cidade majoritária
+        const cidadeMajoritaria = Object.entries(contagem)
+          .sort((a, b) => b[1] - a[1])[0][0];
+
+        // Desenha retângulo da região com cor da cidade
+        svg.append("rect")
+          .attr("x", xScale(bbox.x0))
+          .attr("y", yScale(bbox.y1)) // y1 é o topo
+          .attr("width", xScale(bbox.x1) - xScale(bbox.x0))
+          .attr("height", yScale(bbox.y0) - yScale(bbox.y1)) // y0 é o fundo
+          .attr("fill", colorScale(cidadeMajoritaria))
+          .attr("opacity", 0.1); // transparência para não apagar pontos
+      }
+    return;
+  }
+
+    if (feature === "feature 0") { // corte vertical
+      if (!(bbox.x0 < threshold && threshold < bbox.x1)) return;
+
+      const x = xScale(threshold);
+      svg.append("line")
+        .attr("class", "cut-line")
+        .attr("x1", x).attr("x2", x)
+        .attr("y1", yScale(bbox.y0))
+        .attr("y2", yScale(bbox.y1))
+        .attr("stroke", "black")
+        .attr("stroke-width", 2);
+
+      desenharCortes({ x0: bbox.x0, y0: bbox.y0, x1: threshold, y1: bbox.y1 }, node.left);
+      desenharCortes({ x0: threshold, y0: bbox.y0, x1: bbox.x1, y1: bbox.y1 }, node.right);
+
+    } else if (feature === "feature 1") { // corte horizontal
+      if (!(bbox.y0 < threshold && threshold < bbox.y1)) return;
+
+      const y = yScale(threshold);
+      svg.append("line")
+        .attr("class", "cut-line")
+        .attr("x1", xScale(bbox.x0)).attr("x2", xScale(bbox.x1))
+        .attr("y1", y).attr("y2", y)
+        .attr("stroke", "black")
+        .attr("stroke-width", 1);
+
+      desenharCortes({ x0: bbox.x0, y0: bbox.y0, x1: bbox.x1, y1: threshold }, node.left);
+      desenharCortes({ x0: bbox.x0, y0: threshold, x1: bbox.x1, y1: bbox.y1 }, node.right);
+    }
+  }
+
+  desenharCortes(bbox, cortes);
+
+
+  } catch (e) {
+    error = e.message;
+  }
+  }
+
+
+  const renderFunctions = [
+    scatterDensity,         // Gráfico 0: com densidade
+    corte1,     // Gráfico 1: um corte
+    corte2,     // Gráfico 2: dois cortes
+    todosCortes      // Gráfico 3: todos os cortes preenchidos
+  ];
+
+  let containerEl;
+
+  onMount(() => {
+    renderFunctions[currentStep](containerEl);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+         // Callback chamado sempre que um "step" entra ou sai da viewport
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Verifica se o elemento está visível na tela
+            const index = stepRefs.findIndex((el) => el === entry.target);
+            if (index !== -1 && index !== currentStep) {
+              // Atualiza o step atual para mudar a visualização
+              currentStep = index;
+              renderFunctions[currentStep](containerEl);
+            }
+          }
+        });
+      },
+      { 
+        // Define o quanto do elemento precisa estar visível (50%) para ser considerado "visível"
+        threshold: 0.7,  
+      }
+    );
+
+    stepRefs.forEach(el => el && observer.observe(el));
     return () => observer.disconnect();
   });
-
-  function colorForCity(city) {
-    return colorScale ? colorScale(city) : 'gray';
-  }
 </script>
 
-
-
-<!-- Container principal com layout horizontal (lado a lado) -->
 <div class="scroll-container">
-
-   <!-- Coluna com o conteúdo textual rolável -->
   <div class="steps">
     {#each [0, 1, 2, 3] as stepIndex}
       <div
@@ -148,145 +1217,15 @@
         class:active={stepIndex === currentStep}
       >
         <h3>Etapa {stepIndex + 1}</h3>
-        <p>Texto para a etapa Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus delectus aliquid voluptates commodi maxime iure, quam aut consectetur voluptatum, porro laborum voluptas incidunt illum earum pariatur repellat numquam debitis eum? {stepIndex + 1}.</p>
+        <p>Texto explicativo para etapa {stepIndex + 1}.</p>
       </div>
     {/each}
   </div>
 
-  <!-- Coluna com visualização (SVG) que fica fixa ao rolar -->
-<div class="viz">
-  {#if error}
-    <p style="color: red">{error}</p>
-  {:else if data.length === 0}
-    <p>Carregando dados...</p>
-  {:else}
-    <svg width={width} height={height} style="background: transparent;">
-      <!-- Pontos do scatterplot -->
-      {#each data as point}
-        <circle
-          cx={xScale(point.x)}
-          cy={yScale(point.y)}
-          r="3"
-          fill={colorForCity(point.city)}
-          opacity="0.4"
-        />
-      {/each}
-
-      <!-- Eixo X -->
-      <line 
-        x1={margin.left} 
-        y1={height - margin.bottom} 
-        x2={width - margin.right} 
-        y2={height - margin.bottom} 
-        stroke="black" 
-      />
-      {#each xTicks as tick}
-        <line 
-          x1={xScale(tick)} 
-          y1={height - margin.bottom} 
-          x2={xScale(tick)} 
-          y2={height - margin.bottom + 6} 
-          stroke="black" 
-        />
-        <text 
-          x={xScale(tick)} 
-          y={height - margin.bottom + 20} 
-          font-size="10" 
-          text-anchor="middle"
-        >
-          {Math.round(tick)}
-        </text>
-      {/each}
-
-      <!-- Eixo Y -->
-      <line
-        x1={margin.left}
-        y1={margin.top}
-        x2={margin.left}
-        y2={height - margin.bottom}
-        stroke="black"
-      />
-      {#each yTicks as tick}
-        <line
-          x1={margin.left}
-          y1={yScale(tick)}
-          x2={margin.left - 6}
-          y2={yScale(tick)}
-          stroke="black"
-        />
-        <text
-          x={margin.left - 10}
-          y={yScale(tick) + 3}
-          font-size="10"
-          text-anchor="end"
-        >
-          {Math.round(tick)}
-        </text>
-      {/each}
-
-      <!-- Legenda eixo X -->
-      <text
-        x={(width + margin.left - margin.right) / 2}
-        y={height-50}
-        font-size="12"
-        text-anchor="middle"
-        font-weight="bold"
-      >
-        Total rooms
-      </text>
-
-      <!-- Legenda eixo Y -->
-      <text
-        transform={`translate(15, ${(height - margin.bottom + margin.top)/2}) rotate(-90)`}
-        font-size="12"
-        text-anchor="middle"
-        font-weight="bold"
-      >
-        Median house value
-      </text>
-      
-      <!-- Legenda para os pontos  -->
-      <g transform={`translate(${legendX}, ${legendY})`}>
-        {#each colorScale.domain() as city, i}
-          <g transform={`translate(0, ${i * 20})`}>
-            <rect width="15" height="15" fill={colorScale(city)} />
-            <text x="20" y="12" font-size="12">{city}</text>
-          </g>
-        {/each}
-      </g>
-
-
-  <!-- Densidade no topo (X) -->
-  {#each cities as city}
-    <path
-      d={`M ${xScale(xDensity[city][0][0])} ${margin.top}
-        ${xDensity[city].map(([x, y]) =>
-          `L ${xScale(x)} ${margin.top - y * 200000}`
-        ).join(' ')}`}
-      fill="none"
-      stroke={city === cities[0] ? 'steelblue' : 'coral'}
-      stroke-width="2"
-    />
-  {/each}
-
-  <!-- Densidade na direita (Y) -->
-  {#each cities as city}
-    <path
-      d={`M ${width - margin.right} ${yScale(yDensity[city][0][0])}
-        ${yDensity[city].map(([y, d]) =>
-          `L ${width - margin.right + d * 5000000} ${yScale(y)}`
-        ).join(' ')}`}
-      fill="none"
-      stroke={city === cities[0] ? 'steelblue' : 'coral'}
-      stroke-width="2"
-    />
-  {/each}
-
-    </svg>
-  {/if}
-</div>
-
-
+  <div class="viz">
+    <div bind:this={containerEl}></div>
+    <svg width=700 height=650></svg>
+  </div>
 </div>
 
 <style>
