@@ -240,37 +240,10 @@
         .attr('stroke-width', 2);
     });
 
-    // Path invisível para interação
-  svg.append('path')
-    // .datum(pathData)
-    .attr('fill', 'none')
-    .attr('stroke', 'transparent')
-    .attr('stroke-width', 10) // área sensível ao mouse
-    .on('mousemove', (event, d) => {
-      const [mouseX] = d3.pointer(event);
-      const xValue = xScale.invert(mouseX);
-
-      // encontrar densidade mais próxima
-      const closest = d.reduce((a, b) =>
-        Math.abs(b[0] - xValue) < Math.abs(a[0] - xValue) ? b : a
-      );
-
-      densityTooltip
-        .style('display', null)
-        .attr('transform', `translate(${xScale(closest[0]) + 10},${margin.top - closest[1] * 200000 - 45})`);
-
-      densityText.text(`${city}`);
-      densityText2.text(`Density X: ${closest[1].toFixed(5)}`);
-    })
-    .on('mouseout', () => {
-      densityTooltip.style('display', 'none');
-    });
-
-    // interatividade 
-    // Criação do tooltip SVG
+  // interatividade 
+  // Criação do tooltip SVG
   const tooltip = svg.append('g')
     .style('display', 'none');
-
 
   const tooltipBox = tooltip.append('rect')
     .attr('width', 140)
@@ -291,10 +264,11 @@
     .attr('font-size', 12)
     .attr('fill', '#333');
 
-  // Eventos nos círculos
+  // tooltip dos pontos
   svg.selectAll('circle')
     .on('mouseover', (event, d) => {
-      tooltip.style('display', null); // mostra tooltip
+      // mostra tooltip
+      tooltip.style('display', null); 
       d3.select(event.currentTarget)
         .attr('stroke', 'black')
         .attr('stroke-width', 1.5);
@@ -321,6 +295,80 @@
       d3.select(event.currentTarget)
         .attr('stroke', null);
     });
+
+  // Tooltip para densidade
+  const densityTooltip = svg.append('g')
+    .style('display', 'none');
+
+  const densityBox = densityTooltip.append('rect')
+    .attr('width', 160)
+    .attr('height', cities.length * 20 + 10)
+    .attr('fill', '#fefefe')
+    .attr('stroke', '#ccc')
+    .attr('rx', 5);
+
+  const densityLines = cities.map((city, i) =>
+    densityTooltip.append('text')
+      .attr('x', 10)
+      .attr('y', 20 + i * 18)
+      .attr('font-size', 12)
+      .attr('fill', colorScale(city))
+  );
+    //  Interação com curva de densidade no eixo X
+    svg.append('rect')
+    .attr('x', margin.left)
+    .attr('y', margin.top - 60)
+    .attr('width', width - margin.left - margin.right)
+    .attr('height', 60)
+    .attr('fill', 'transparent')
+    .on('mousemove', event => {
+      const [mouseX] = d3.pointer(event);
+      const xVal = xScale.invert(mouseX);
+
+      densityTooltip.style('display', null)
+        .attr('transform', `translate(${mouseX + 10},${margin.top - 80})`);
+
+      cities.forEach((city, i) => {
+        const density = xDensity[city];
+        const closest = density.reduce((a, b) =>
+          Math.abs(b[0] - xVal) < Math.abs(a[0] - xVal) ? b : a
+        );
+
+        densityLines[i].text(`${city}: ${closest[1].toFixed(5)}`);
+      });
+    })
+    .on('mouseout', () => {
+      densityTooltip.style('display', 'none');
+    });
+
+  // Interação com curva de densidade no eixo Y
+  svg.append('rect')
+  .attr('x', width - margin.right)
+  .attr('y', margin.top)
+  .attr('width', 60)
+  .attr('height', height - margin.top - margin.bottom)
+  .attr('fill', 'transparent')
+  .on('mousemove', event => {
+    const [, mouseY] = d3.pointer(event);
+    const yVal = yScale.invert(mouseY);
+
+    densityTooltip.style('display', null)
+      .attr('transform', `translate(${width - margin.right -100},${mouseY - 20})`);
+
+    cities.forEach((city, i) => {
+      const density = yDensity[city];
+    const closest = density.reduce((a, b) =>
+      Math.abs(b[0] - yVal) < Math.abs(a[0] - yVal) ? b : a
+    );
+
+    densityLines[i].text(`${city}: ${closest[1].toFixed(6)}`);
+        });
+      })
+      .on('mouseout', () => {
+        densityTooltip.style('display', 'none');
+  });
+
+
   } catch (e) {
     error = e.message;
   }
@@ -328,7 +376,7 @@
 
   export async function corte1() {
     
-  // inicialização
+    // inicialização
     let xScale, yScale;
     let xTicks = [], yTicks = [];
     let data = [];
@@ -339,7 +387,6 @@
     let xDensity = {};
     let yDensity = {};
 
-    
     // selecionar o svg de visualização
     const svg = d3.select('.viz svg')
       .html('') // limpa conteúdo
@@ -347,6 +394,9 @@
       .attr('width', width)
       .attr('height', height)
       .style('background', 'transparent');
+
+    // camada de fundo
+    const backgroundLayer = svg.append('g').lower();
 
     try {
       // Carrega e processa CSV
@@ -408,7 +458,7 @@
         yDensity[city] = kdeY(subset.map(d => d.y));
       });
 
-      // Pontos scatterplot
+      // desenha pontos scatterplot
       svg.selectAll('circle')
         .data(data)
         .join('circle')
@@ -533,6 +583,133 @@
           .attr('stroke-width', 2);
       });
 
+    // interatividade 
+    // Criação do tooltip SVG
+    const tooltip = svg.append('g')
+      .style('display', 'none');
+
+    const tooltipBox = tooltip.append('rect')
+      .attr('width', 140)
+      .attr('height', 40)
+      .attr('fill', '#fefefe')
+      .attr('stroke', '#ccc')
+      .attr('rx', 5);
+
+    const tooltipText = tooltip.append('text')
+      .attr('x', 10)
+      .attr('y', 18)
+      .attr('font-size', 12)
+      .attr('fill', '#333');
+
+    const tooltipText2 = tooltip.append('text')
+      .attr('x', 10)
+      .attr('y', 34)
+      .attr('font-size', 12)
+      .attr('fill', '#333');
+
+    // tooltip dos pontos
+    svg.selectAll('circle')
+      .on('mouseover', (event, d) => {
+        // mostra tooltip
+        tooltip.style('display', null); 
+        d3.select(event.currentTarget)
+          .attr('stroke', 'black')
+          .attr('stroke-width', 1.5);
+      })
+      .on('mousemove', (event, d) => {
+        const [mouseX, mouseY] = d3.pointer(event);
+        tooltip.attr('transform', `translate(${mouseX + 10},${mouseY - 20})`);
+
+        tooltip.select('.hover-line')
+          .attr('x1', mouseX)
+          .attr('x2', mouseX);
+
+        tooltipText.text(`Median: ${d.y}`);
+        tooltipText2.text(`Total rooms: ${d.x}`);
+
+        tooltipBox
+          .attr('x', 0)
+          .attr('y', 0);
+      })
+      .on('mouseout', (event, d) => {
+        tooltip.style('display', 'none');
+        d3.select(event.currentTarget)
+          .attr('stroke', null);
+      });
+
+    // Tooltip para densidade
+    const densityTooltip = svg.append('g')
+      .style('display', 'none');
+
+    const densityBox = densityTooltip.append('rect')
+      .attr('width', 160)
+      .attr('height', cities.length * 20 + 10)
+      .attr('fill', '#fefefe')
+      .attr('stroke', '#ccc')
+      .attr('rx', 5);
+
+    const densityLines = cities.map((city, i) =>
+      densityTooltip.append('text')
+        .attr('x', 10)
+        .attr('y', 20 + i * 18)
+        .attr('font-size', 12)
+        .attr('fill', colorScale(city))
+    );
+    //  Interação com curva de densidade no eixo X
+    svg.append('rect')
+    .attr('x', margin.left)
+    .attr('y', margin.top - 60)
+    .attr('width', width - margin.left - margin.right)
+    .attr('height', 60)
+    .attr('fill', 'transparent')
+    .on('mousemove', event => {
+      const [mouseX] = d3.pointer(event);
+      const xVal = xScale.invert(mouseX);
+
+      densityTooltip.style('display', null)
+        .attr('transform', `translate(${mouseX + 10},${margin.top - 80})`);
+
+      cities.forEach((city, i) => {
+        const density = xDensity[city];
+        const closest = density.reduce((a, b) =>
+          Math.abs(b[0] - xVal) < Math.abs(a[0] - xVal) ? b : a
+        );
+
+        densityLines[i].text(`${city}: ${closest[1].toFixed(5)}`);
+      });
+    })
+    .on('mouseout', () => {
+      densityTooltip.style('display', 'none');
+    });
+
+    // Interação com curva de densidade no eixo Y
+    svg.append('rect')
+    .attr('x', width - margin.right)
+    .attr('y', margin.top)
+    .attr('width', 60)
+    .attr('height', height - margin.top - margin.bottom)
+    .attr('fill', 'transparent')
+    .on('mousemove', event => {
+      const [, mouseY] = d3.pointer(event);
+      const yVal = yScale.invert(mouseY);
+
+      densityTooltip.style('display', null)
+        .attr('transform', `translate(${width - margin.right -100},${mouseY - 20})`);
+
+      cities.forEach((city, i) => {
+        const density = yDensity[city];
+      const closest = density.reduce((a, b) =>
+        Math.abs(b[0] - yVal) < Math.abs(a[0] - yVal) ? b : a
+      );
+
+      densityLines[i].text(`${city}: ${closest[1].toFixed(6)}`);
+          });
+        })
+        .on('mouseout', () => {
+          densityTooltip.style('display', 'none');
+    });
+
+
     } catch (e) {
       error = e.message;
     }
@@ -542,98 +719,131 @@
 
     const { feature, threshold } = tree;
 
-  // traça o primeiro corte com mairo pureza
-  if (feature === 'feature 0') {
-    const thresholdX = threshold;
+    // traça o primeiro corte com mairo pureza
+    if (feature === 'feature 0') {
+      const thresholdX = threshold;
 
-    // Divide os dados em dois grupos pela coordenada x
-    const esquerda = data.filter(d => d.x <= thresholdX);
-    const direita = data.filter(d => d.x > thresholdX);
+      // Divide os dados em dois grupos pela coordenada x
+      const esquerda = data.filter(d => d.x <= thresholdX);
+      const direita = data.filter(d => d.x > thresholdX);
 
-    // Classe majoritária de cada lado
-    const majorEsquerda = d3.rollups(esquerda, v => v.length, d => d.city)
-                            .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
+      // Classe majoritária de cada lado
+      const majorEsquerda = d3.rollups(esquerda, v => v.length, d => d.city)
+                              .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
 
-    const majorDireita = d3.rollups(direita, v => v.length, d => d.city)
-                            .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
+      const majorDireita = d3.rollups(direita, v => v.length, d => d.city)
+                              .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
 
       const x = xScale(thresholdX);
 
-    // Retângulo da esquerda
-    svg.append('rect')
+      // Retângulo da esquerda
+      backgroundLayer.append('rect')
+        .attr('x', margin.left)
+        .attr('y', margin.top)
+        .attr('width', x - margin.left)
+        .attr('height', height - margin.bottom - margin.top)
+        .attr('fill', colorScale(majorEsquerda))
+        .attr('opacity', 0.3);
+
+      // Retângulo da direita
+      backgroundLayer.append('rect')
+        .attr('x', x)
+        .attr('y', margin.top)
+        .attr('width', width - margin.right - x)
+        .attr('height', height - margin.bottom - margin.top)
+        .attr('fill', colorScale(majorDireita))
+        .attr('opacity', 0.3);
+
+      // Linha de corte
+      backgroundLayer.append('line')
+        .attr('x1', x)
+        .attr('x2', x)
+        .attr('y1', margin.top)
+        .attr('y2', height - margin.bottom)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 2);
+    }
+
+  if (feature === 'feature 1') {
+    const thresholdY = threshold;
+
+    // Divide os dados em dois grupos pela coordenada y
+    const abaixo = data.filter(d => d.y <= thresholdY);
+    const acima = data.filter(d => d.y > thresholdY);
+
+    const majorAbaixo = d3.rollups(abaixo, v => v.length, d => d.city)
+                          .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
+
+    const majorAcima = d3.rollups(acima, v => v.length, d => d.city)
+                          .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
+
+    const y = yScale(thresholdY);
+
+    // Retângulo de cima
+    backgroundLayer.append('rect')
       .attr('x', margin.left)
       .attr('y', margin.top)
-      .attr('width', x - margin.left)
-      .attr('height', height - margin.bottom - margin.top)
-      .attr('fill', colorScale(majorEsquerda))
+      .attr('width', width - margin.left - margin.right)
+      .attr('height', y - margin.top)
+      .attr('fill', colorScale(majorAcima))
       .attr('opacity', 0.3);
 
-    // Retângulo da direita
-    svg.append('rect')
-      .attr('x', x)
-      .attr('y', margin.top)
-      .attr('width', width - margin.right - x)
-      .attr('height', height - margin.bottom - margin.top)
-      .attr('fill', colorScale(majorDireita))
+    // Retângulo de baixo
+    backgroundLayer.append('rect')
+      .attr('x', margin.left)
+      .attr('y', y)
+      .attr('width', width - margin.left - margin.right)
+      .attr('height', height - y - margin.bottom)
+      .attr('fill', colorScale(majorAbaixo))
       .attr('opacity', 0.3);
 
     // Linha de corte
-    svg.append('line')
-      .attr('x1', x)
-      .attr('x2', x)
-      .attr('y1', margin.top)
-      .attr('y2', height - margin.bottom)
+    backgroundLayer.append('line')
+      .attr('x1', margin.left)
+      .attr('x2', width - margin.right)
+      .attr('y1', y)
+      .attr('y2', y)
       .attr('stroke', 'black')
       .attr('stroke-width', 2);
-  }
+    }
+    // Tooltip para a linha de corte
+  const cutLineTooltip = svg.append('g')
+    .style('display', 'none');
 
-if (feature === 'feature 1') {
-  const thresholdY = threshold;
+  const tooltipBox = cutLineTooltip.append('rect')
+    .attr('width', 170)
+    .attr('height', 24)
+    .attr('fill', '#f9f9f9')
+    .attr('stroke', '#999')
+    .attr('rx', 4);
 
-  // Divide os dados em dois grupos pela coordenada y
-  const abaixo = data.filter(d => d.y <= thresholdY);
-  const acima = data.filter(d => d.y > thresholdY);
+  const tooltipText = cutLineTooltip.append('text')
+    .attr('x', 6)
+    .attr('y', 16)
+    .attr('font-size', 12)
+    .attr('fill', '#333');
 
-  const majorAbaixo = d3.rollups(abaixo, v => v.length, d => d.city)
-                        .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
-
-  const majorAcima = d3.rollups(acima, v => v.length, d => d.city)
-                        .sort((a, b) => d3.descending(a[1], b[1]))[0][0];
-
-  const y = yScale(thresholdY);
-
-  // Retângulo de cima
-  svg.append('rect')
+    svg.append('rect')
     .attr('x', margin.left)
-    .attr('y', margin.top)
+    .attr('y', yScale(threshold) - 5)
     .attr('width', width - margin.left - margin.right)
-    .attr('height', y - margin.top)
-    .attr('fill', colorScale(majorAcima))
-    .attr('opacity', 0.3);
-
-  // Retângulo de baixo
-  svg.append('rect')
-    .attr('x', margin.left)
-    .attr('y', y)
-    .attr('width', width - margin.left - margin.right)
-    .attr('height', height - y - margin.bottom)
-    .attr('fill', colorScale(majorAbaixo))
-    .attr('opacity', 0.3);
-
-  // Linha de corte
-  svg.append('line')
-    .attr('x1', margin.left)
-    .attr('x2', width - margin.right)
-    .attr('y1', y)
-    .attr('y2', y)
-    .attr('stroke', 'black')
-    .attr('stroke-width', 2);
-  }
-
+    .attr('height', 10)
+    .attr('fill', 'transparent')
+    .on('mouseover', () => {
+      cutLineTooltip.style('display', null);
+    })
+    .on('mousemove', event => {
+      const [mouseX, mouseY] = d3.pointer(event);
+      cutLineTooltip.attr('transform', `translate(${mouseX + 10},${mouseY - 20})`);
+      tooltipText.text(`Median house value: ${threshold}`);
+    })
+    .on('mouseout', () => {
+      cutLineTooltip.style('display', 'none');
+    });
   }
 
   export async function corte2() {
-  // inicialização
+    // inicialização
     let xScale, yScale;
     let xTicks = [], yTicks = [];
     let data = [];
@@ -652,6 +862,9 @@ if (feature === 'feature 1') {
       .attr('width', width)
       .attr('height', height)
       .style('background', 'transparent');
+
+    // camada de fundo
+    const backgroundLayer = svg.append('g').lower();
 
     try {
       // Carrega e processa CSV
@@ -891,6 +1104,41 @@ if (feature === 'feature 1') {
         .attr('stroke', 'black')
         .attr('stroke-width', 2);
 
+      // Tooltip para a linha de corte
+    const cutLineTooltip = svg.append('g')
+      .style('display', 'none');
+
+    const tooltipBox = cutLineTooltip.append('rect')
+      .attr('width', 170)
+      .attr('height', 24)
+      .attr('fill', '#f9f9f9')
+      .attr('stroke', '#999')
+      .attr('rx', 4);
+
+    const tooltipText = cutLineTooltip.append('text')
+      .attr('x', 6)
+      .attr('y', 16)
+      .attr('font-size', 12)
+      .attr('fill', '#333');
+
+      svg.append('rect')
+      .attr('x', margin.left)
+      .attr('y', yScale(threshold) - 5)
+      .attr('width', width - margin.left - margin.right)
+      .attr('height', 10)
+      .attr('fill', 'transparent')
+      .on('mouseover', () => {
+        cutLineTooltip.style('display', null);
+      })
+      .on('mousemove', event => {
+        const [mouseX, mouseY] = d3.pointer(event);
+        cutLineTooltip.attr('transform', `translate(${mouseX + 10},${mouseY - 20})`);
+        tooltipText.text(`Median house value: ${threshold}`);
+      })
+      .on('mouseout', () => {
+        cutLineTooltip.style('display', 'none');
+      });
+
       // 2º corte no lado inferior (y < threshold)
       if (left.feature === 'feature 1') {
         const y2 = yScale(left.threshold);
@@ -901,6 +1149,41 @@ if (feature === 'feature 1') {
         .attr('y2', y2)
         .attr('stroke', 'black')
         .attr('stroke-width', 2);
+
+        // Tooltip para a linha de corte
+        const cutLineTooltip = svg.append('g')
+          .style('display', 'none');
+
+        const tooltipBox = cutLineTooltip.append('rect')
+          .attr('width', 170)
+          .attr('height', 24)
+          .attr('fill', '#f9f9f9')
+          .attr('stroke', '#999')
+          .attr('rx', 4);
+
+        const tooltipText = cutLineTooltip.append('text')
+          .attr('x', 6)
+          .attr('y', 16)
+          .attr('font-size', 12)
+          .attr('fill', '#333');
+
+          svg.append('rect')
+          .attr('x', margin.left)
+          .attr('y', yScale(left.threshold) - 5)
+          .attr('width', width - margin.left - margin.right)
+          .attr('height', 10)
+          .attr('fill', 'transparent')
+          .on('mouseover', () => {
+            cutLineTooltip.style('display', null);
+          })
+          .on('mousemove', event => {
+            const [mouseX, mouseY] = d3.pointer(event);
+            cutLineTooltip.attr('transform', `translate(${mouseX + 10},${mouseY - 20})`);
+            tooltipText.text(`Median house value: ${left.threshold}`);
+          })
+          .on('mouseout', () => {
+            cutLineTooltip.style('display', 'none');
+          });
       }
 
     }
@@ -928,7 +1211,7 @@ if (feature === 'feature 1') {
   const city_baixo = moda(reg_baixo.map(d => d.city));
 
   // retângulo da parte de cima (y > threshold)
-  svg.append('rect')
+  backgroundLayer.append('rect')
     .attr('x', area.xMin)
     .attr('y', area.yMin)
     .attr('width', area.xMax - area.xMin)
@@ -937,7 +1220,7 @@ if (feature === 'feature 1') {
     .attr('opacity', 0.3);
 
   // retângulo da parte do meio (left.threshold ≤ y ≤ threshold)
-  svg.append('rect')
+  backgroundLayer.append('rect')
     .attr('x', area.xMin)
     .attr('y', yTop)
     .attr('width', area.xMax - area.xMin)
@@ -946,7 +1229,7 @@ if (feature === 'feature 1') {
     .attr('opacity', 0.3);
 
   // retângulo da parte de baixo (y < left.threshold)
-  svg.append('rect')
+  backgroundLayer.append('rect')
     .attr('x', area.xMin)
     .attr('y', yMid)
     .attr('width', area.xMax - area.xMin)
@@ -954,19 +1237,148 @@ if (feature === 'feature 1') {
     .attr('fill', colorScale(city_baixo))
     .attr('opacity', 0.3);
 
-    }
+    // interatividade 
+  // Criação do tooltip SVG
+  const tooltip = svg.append('g')
+    .style('display', 'none');
+
+
+  const tooltipBox = tooltip.append('rect')
+    .attr('width', 140)
+    .attr('height', 40)
+    .attr('fill', '#fefefe')
+    .attr('stroke', '#ccc')
+    .attr('rx', 5);
+
+  const tooltipText = tooltip.append('text')
+    .attr('x', 10)
+    .attr('y', 18)
+    .attr('font-size', 12)
+    .attr('fill', '#333');
+
+  const tooltipText2 = tooltip.append('text')
+    .attr('x', 10)
+    .attr('y', 34)
+    .attr('font-size', 12)
+    .attr('fill', '#333');
+
+  // tooltip dos pontos
+  svg.selectAll('circle')
+    .on('mouseover', (event, d) => {
+      // mostra tooltip
+      tooltip.style('display', null); 
+      d3.select(event.currentTarget)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1.5);
+    })
+    .on('mousemove', (event, d) => {
+      const [mouseX, mouseY] = d3.pointer(event);
+
+      tooltip
+        .attr('transform', `translate(${mouseX + 10},${mouseY - 20})`);
+
+      tooltip.select('.hover-line')
+        .attr('x1', mouseX)
+        .attr('x2', mouseX);
+
+      tooltipText.text(`Median: ${d.y}`);
+      tooltipText2.text(`Total rooms: ${d.x}`);
+
+      tooltipBox
+        .attr('x', 0)
+        .attr('y', 0);
+    })
+    .on('mouseout', (event, d) => {
+      tooltip.style('display', 'none');
+      d3.select(event.currentTarget)
+        .attr('stroke', null);
+    });
+
+  // Tooltip para densidade
+  const densityTooltip = svg.append('g')
+    .style('display', 'none');
+
+  const densityBox = densityTooltip.append('rect')
+    .attr('width', 160)
+    .attr('height', cities.length * 20 + 10)
+    .attr('fill', '#fefefe')
+    .attr('stroke', '#ccc')
+    .attr('rx', 5);
+
+  const densityLines = cities.map((city, i) =>
+    densityTooltip.append('text')
+      .attr('x', 10)
+      .attr('y', 20 + i * 18)
+      .attr('font-size', 12)
+      .attr('fill', colorScale(city))
+  );
+    //  Interação com curva de densidade no eixo X
+    svg.append('rect')
+    .attr('x', margin.left)
+    .attr('y', margin.top - 60)
+    .attr('width', width - margin.left - margin.right)
+    .attr('height', 60)
+    .attr('fill', 'transparent')
+    .on('mousemove', event => {
+      const [mouseX] = d3.pointer(event);
+      const xVal = xScale.invert(mouseX);
+
+      densityTooltip.style('display', null)
+        .attr('transform', `translate(${mouseX + 10},${margin.top - 80})`);
+
+      cities.forEach((city, i) => {
+        const density = xDensity[city];
+        const closest = density.reduce((a, b) =>
+          Math.abs(b[0] - xVal) < Math.abs(a[0] - xVal) ? b : a
+        );
+
+        densityLines[i].text(`${city}: ${closest[1].toFixed(5)}`);
+      });
+    })
+    .on('mouseout', () => {
+      densityTooltip.style('display', 'none');
+    });
+
+  // Interação com curva de densidade no eixo Y
+  svg.append('rect')
+  .attr('x', width - margin.right)
+  .attr('y', margin.top)
+  .attr('width', 60)
+  .attr('height', height - margin.top - margin.bottom)
+  .attr('fill', 'transparent')
+  .on('mousemove', event => {
+    const [, mouseY] = d3.pointer(event);
+    const yVal = yScale.invert(mouseY);
+
+    densityTooltip.style('display', null)
+      .attr('transform', `translate(${width - margin.right -100},${mouseY - 20})`);
+
+    cities.forEach((city, i) => {
+      const density = yDensity[city];
+    const closest = density.reduce((a, b) =>
+      Math.abs(b[0] - yVal) < Math.abs(a[0] - yVal) ? b : a
+    );
+
+    densityLines[i].text(`${city}: ${closest[1].toFixed(6)}`);
+        });
+      })
+      .on('mouseout', () => {
+        densityTooltip.style('display', 'none');
+  });
+
+  }
 
   export async function todosCortes() {
     // inicialização
-  let xScale, yScale;
-  let xTicks = [], yTicks = [];
-  let data = [];
-  let error = null;
-  let colorScale;
-  let cities = [];
+    let xScale, yScale;
+    let xTicks = [], yTicks = [];
+    let data = [];
+    let error = null;
+    let colorScale;
+    let cities = [];
 
-  let xDensity = {};
-  let yDensity = {};
+    let xDensity = {};
+    let yDensity = {};
 
   
   // selecionar o svg de visualização
@@ -976,6 +1388,9 @@ if (feature === 'feature 1') {
     .attr('width', width)
     .attr('height', height)
     .style('background', 'transparent');
+
+  // camada de fundo
+  const backgroundLayer = svg.append('g').lower();
 
   try {
     // Carrega e processa CSV
@@ -1174,7 +1589,7 @@ if (feature === 'feature 1') {
       y1: yMax
     };
   
-  // desenhar os cortes recursivamente e destava a classe mais prevista
+  // desenhar os cortes recursivamente e destaca a classe mais prevista
   function desenharCortes(bbox, node) {
     if (!node) return;
 
@@ -1200,7 +1615,7 @@ if (feature === 'feature 1') {
           .sort((a, b) => b[1] - a[1])[0][0];
 
         // Desenha retângulo da região com cor da cidade
-        svg.append("rect")
+        backgroundLayer.append("rect")
           .attr("x", xScale(bbox.x0))
           .attr("y", yScale(bbox.y1)) // y1 é o topo
           .attr("width", xScale(bbox.x1) - xScale(bbox.x0))
@@ -1211,22 +1626,65 @@ if (feature === 'feature 1') {
     return;
   }
 
-    if (feature === "feature 0") { // corte vertical
-      if (!(bbox.x0 < threshold && threshold < bbox.x1)) return;
+    // corte vertical
+    if (feature === "feature 0") { 
+    if (!(bbox.x0 < threshold && threshold < bbox.x1)) return;
 
-      const x = xScale(threshold);
-      svg.append("line")
-        .attr("class", "cut-line")
-        .attr("x1", x).attr("x2", x)
-        .attr("y1", yScale(bbox.y0))
-        .attr("y2", yScale(bbox.y1))
-        .attr("stroke", "black")
-        .attr("stroke-width", 2);
+    const x = xScale(threshold);
 
-      desenharCortes({ x0: bbox.x0, y0: bbox.y0, x1: threshold, y1: bbox.y1 }, node.left);
-      desenharCortes({ x0: threshold, y0: bbox.y0, x1: bbox.x1, y1: bbox.y1 }, node.right);
+    // Linha de corte
+    svg.append("line")
+      .attr("class", "cut-line")
+      .attr("x1", x).attr("x2", x)
+      .attr("y1", yScale(bbox.y0))
+      .attr("y2", yScale(bbox.y1))
+      .attr("stroke", "black")
+      .attr("stroke-width", 2);
 
-    } else if (feature === "feature 1") { // corte horizontal
+    // Grupo do tooltip
+    const cutLineTooltip = svg.append('g')
+      .style('display', 'none');
+
+    const tooltipBox = cutLineTooltip.append('rect')
+      .attr('width', 180)
+      .attr('height', 24)
+      .attr('fill', '#f9f9f9')
+      .attr('stroke', '#999')
+      .attr('rx', 4)
+      .attr('ry', 4);
+
+    const tooltipText = cutLineTooltip.append('text')
+      .attr('x', 8)
+      .attr('y', 16)
+      .attr('font-size', 12)
+      .attr('fill', '#333');
+
+    // Área sensível ao mouse (estreita, sobre a linha de corte)
+    svg.append('rect')
+    .attr('x', x - 5)
+    .attr('y', Math.min(yScale(bbox.y0), yScale(bbox.y1)))
+    .attr('width', 10)
+    .attr('height', Math.abs(yScale(bbox.y1) - yScale(bbox.y0)))
+    .attr('fill', 'transparent')
+    .on('mouseover', () => {
+      cutLineTooltip.style('display', null);
+    })
+    .on('mousemove', event => {
+      const [mouseX, mouseY] = d3.pointer(event);
+      cutLineTooltip
+        .attr('transform', `translate(${mouseX + 10},${mouseY - 30})`);
+      tooltipText.text(`Median house value: ${threshold.toFixed(2)}`);
+    })
+    .on('mouseout', () => {
+      cutLineTooltip.style('display', 'none');
+    });
+
+
+  desenharCortes({ x0: bbox.x0, y0: bbox.y0, x1: threshold, y1: bbox.y1 }, node.left);
+  desenharCortes({ x0: threshold, y0: bbox.y0, x1: bbox.x1, y1: bbox.y1 }, node.right);
+}
+// corte horizontal
+ else if (feature === "feature 1") { 
       if (!(bbox.y0 < threshold && threshold < bbox.y1)) return;
 
       const y = yScale(threshold);
@@ -1236,6 +1694,41 @@ if (feature === 'feature 1') {
         .attr("y1", y).attr("y2", y)
         .attr("stroke", "black")
         .attr("stroke-width", 1);
+
+    // Tooltip para a linha de corte
+    const cutLineTooltip = svg.append('g')
+      .style('display', 'none');
+
+    const tooltipBox = cutLineTooltip.append('rect')
+      .attr('width', 170)
+      .attr('height', 24)
+      .attr('fill', '#f9f9f9')
+      .attr('stroke', '#999')
+      .attr('rx', 4);
+
+    const tooltipText = cutLineTooltip.append('text')
+      .attr('x', 6)
+      .attr('y', 16)
+      .attr('font-size', 12)
+      .attr('fill', '#333');
+
+      svg.append('rect')
+      .attr('x', margin.left)
+      .attr('y', yScale(threshold) - 5)
+      .attr('width', width - margin.left - margin.right)
+      .attr('height', 10)
+      .attr('fill', 'transparent')
+      .on('mouseover', () => {
+        cutLineTooltip.style('display', null);
+      })
+      .on('mousemove', event => {
+        const [mouseX, mouseY] = d3.pointer(event);
+        cutLineTooltip.attr('transform', `translate(${mouseX + 10},${mouseY - 20})`);
+        tooltipText.text(`Median house value: ${threshold}`);
+      })
+      .on('mouseout', () => {
+        cutLineTooltip.style('display', 'none');
+      });
 
       desenharCortes({ x0: bbox.x0, y0: bbox.y0, x1: bbox.x1, y1: threshold }, node.left);
       desenharCortes({ x0: bbox.x0, y0: threshold, x1: bbox.x1, y1: bbox.y1 }, node.right);
@@ -1248,6 +1741,135 @@ if (feature === 'feature 1') {
   } catch (e) {
     error = e.message;
   }
+
+  // interatividade 
+  // Criação do tooltip SVG
+  const tooltip = svg.append('g')
+    .style('display', 'none');
+
+
+  const tooltipBox = tooltip.append('rect')
+    .attr('width', 140)
+    .attr('height', 40)
+    .attr('fill', '#fefefe')
+    .attr('stroke', '#ccc')
+    .attr('rx', 5);
+
+  const tooltipText = tooltip.append('text')
+    .attr('x', 10)
+    .attr('y', 18)
+    .attr('font-size', 12)
+    .attr('fill', '#333');
+
+  const tooltipText2 = tooltip.append('text')
+    .attr('x', 10)
+    .attr('y', 34)
+    .attr('font-size', 12)
+    .attr('fill', '#333');
+
+  // tooltip dos pontos
+  svg.selectAll('circle')
+    .on('mouseover', (event, d) => {
+      // mostra tooltip
+      tooltip.style('display', null); 
+      d3.select(event.currentTarget)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1.5);
+    })
+    .on('mousemove', (event, d) => {
+      const [mouseX, mouseY] = d3.pointer(event);
+
+      tooltip
+        .attr('transform', `translate(${mouseX + 10},${mouseY - 20})`);
+
+      tooltip.select('.hover-line')
+        .attr('x1', mouseX)
+        .attr('x2', mouseX);
+
+      tooltipText.text(`Median: ${d.y}`);
+      tooltipText2.text(`Total rooms: ${d.x}`);
+
+      tooltipBox
+        .attr('x', 0)
+        .attr('y', 0);
+    })
+    .on('mouseout', (event, d) => {
+      tooltip.style('display', 'none');
+      d3.select(event.currentTarget)
+        .attr('stroke', null);
+    });
+
+  // Tooltip para densidade
+  const densityTooltip = svg.append('g')
+    .style('display', 'none');
+
+  const densityBox = densityTooltip.append('rect')
+    .attr('width', 160)
+    .attr('height', cities.length * 20 + 10)
+    .attr('fill', '#fefefe')
+    .attr('stroke', '#ccc')
+    .attr('rx', 5);
+
+  const densityLines = cities.map((city, i) =>
+    densityTooltip.append('text')
+      .attr('x', 10)
+      .attr('y', 20 + i * 18)
+      .attr('font-size', 12)
+      .attr('fill', colorScale(city))
+  );
+    //  Interação com curva de densidade no eixo X
+    svg.append('rect')
+    .attr('x', margin.left)
+    .attr('y', margin.top - 60)
+    .attr('width', width - margin.left - margin.right)
+    .attr('height', 60)
+    .attr('fill', 'transparent')
+    .on('mousemove', event => {
+      const [mouseX] = d3.pointer(event);
+      const xVal = xScale.invert(mouseX);
+
+      densityTooltip.style('display', null)
+        .attr('transform', `translate(${mouseX + 10},${margin.top - 80})`);
+
+      cities.forEach((city, i) => {
+        const density = xDensity[city];
+        const closest = density.reduce((a, b) =>
+          Math.abs(b[0] - xVal) < Math.abs(a[0] - xVal) ? b : a
+        );
+
+        densityLines[i].text(`${city}: ${closest[1].toFixed(5)}`);
+      });
+    })
+    .on('mouseout', () => {
+      densityTooltip.style('display', 'none');
+    });
+
+  // Interação com curva de densidade no eixo Y
+  svg.append('rect')
+  .attr('x', width - margin.right)
+  .attr('y', margin.top)
+  .attr('width', 60)
+  .attr('height', height - margin.top - margin.bottom)
+  .attr('fill', 'transparent')
+  .on('mousemove', event => {
+    const [, mouseY] = d3.pointer(event);
+    const yVal = yScale.invert(mouseY);
+
+    densityTooltip.style('display', null)
+      .attr('transform', `translate(${width - margin.right -100},${mouseY - 20})`);
+
+    cities.forEach((city, i) => {
+      const density = yDensity[city];
+    const closest = density.reduce((a, b) =>
+      Math.abs(b[0] - yVal) < Math.abs(a[0] - yVal) ? b : a
+    );
+
+    densityLines[i].text(`${city}: ${closest[1].toFixed(6)}`);
+        });
+      })
+      .on('mouseout', () => {
+        densityTooltip.style('display', 'none');
+  });
   }
 
 
