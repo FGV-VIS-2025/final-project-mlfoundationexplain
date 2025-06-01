@@ -1,6 +1,8 @@
 <script>
   import * as d3 from 'd3';
   import { onMount } from 'svelte';
+  import { _, locale, locales } from "svelte-i18n";
+  import { changeLocale } from "../../i18n.js";
 
   let svgContainer;
 
@@ -229,14 +231,31 @@
 <div class="container">
   <div bind:this={svgContainer}></div>
   <div class="descricao">
-    <h3>Pureza de um corte</h3>
-    <p>
-      Este gráfico compara duas medidas de pureza usadas em árvores de decisão:
-      <strong>Entropia</strong> e <strong>Índice de Gini</strong>. Ambas são funções que medem o quão "pura" está uma divisão entre classes,
-      sendo 0 a pureza máxima (apenas uma classe) e o máximo quando há mistura total.
- 
-      Passe o mouse sobre o gráfico para ver os valores específicos de entropia e Gini para cada proporção de classe positiva.
-    </p>
+  
+    <h3>Como são escolhidos os cortes?</h3>
+    
+      Em uma árvore de decisão para classificação binária, os cortes são escolhidos com base na 
+      pureza das regiões criadas após cada divisão. O algoritmo busca, de forma gulosa, a melhor 
+      divisão naquele instante — ou seja, escolhe a característica e o ponto de corte que mais 
+      aumentam a pureza dos subconjuntos gerados.
+      <br>
+      
+        
+        A pureza de uma região é uma medida de quão homogêneas são as classes dentro dela. Se todos os exemplos 
+        em uma região pertencem à mesma classe, essa região é considerada pura. Para quantificar essa pureza, 
+        usamos métricas como a Entropia e o Índice Gini.
+     
+      <br>
+      
+        Essas métricas atingem seus valores mínimos (zero) quando todos os exemplos são da mesma classe (proporção 
+        0 ou 1), e valores máximos quando há equilíbrio entre as classes (proporção 0.5), ou seja, quando a 
+        incerteza é maior. O algoritmo calcula o ganho de pureza antes e depois de cada possível divisão — 
+        chamado de Ganho de Informação (com entropia) ou Ganho de Gini — e escolhe o corte que mais aumenta esse ganho.
+      
+      <br>
+      Esse processo é repetido recursivamente, criando uma segmentação binária do espaço, até que um critério de 
+      parada seja atingido, como o número mínimo de pontos por região.
+      <strong>Passe o mouse sobre o gráfico para ver os valores específicos de entropia e Gini para cada proporção de classe positiva.</strong>
   </div>
 </div>
 
@@ -259,7 +278,7 @@
   .descricao {
     display: flex;
     flex-direction: column;
-    max-width: 300px;
+    max-width: 500px;
     font-size: 14px;
     color: white;
     line-height: 1.4;
