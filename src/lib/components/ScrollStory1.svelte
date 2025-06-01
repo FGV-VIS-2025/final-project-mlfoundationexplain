@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+    import { onMount, afterUpdate } from 'svelte';
   import * as d3 from 'd3';
 
   // variáveis de scroll
@@ -130,7 +130,7 @@
       .attr('y1', height - margin.bottom)
       .attr('x2', width - margin.right)
       .attr('y2', height - margin.bottom)
-      .attr('stroke', 'black');
+      .attr('stroke', 'var(--color-text)');
 
     svg.selectAll('xTicks')
       .data(xTicks)
@@ -139,11 +139,12 @@
       .attr('y1', height - margin.bottom)
       .attr('x2', d => xScale(d))
       .attr('y2', height - margin.bottom + 6)
-      .attr('stroke', 'black');
+      .attr('stroke', 'var(--color-text)');
 
     svg.selectAll('xTickLabels')
       .data(xTicks)
       .join('text')
+      .attr('fill', 'var(--color-text)')
       .attr('x', d => xScale(d))
       .attr('y', height - margin.bottom + 20)
       .attr('font-size', 10)
@@ -156,7 +157,7 @@
       .attr('y1', margin.top)
       .attr('x2', margin.left)
       .attr('y2', height - margin.bottom)
-      .attr('stroke', 'black');
+      .attr('stroke', 'var(--color-text)');
 
     svg.selectAll('yTicks')
       .data(yTicks)
@@ -165,11 +166,12 @@
       .attr('y1', d => yScale(d))
       .attr('x2', margin.left - 6)
       .attr('y2', d => yScale(d))
-      .attr('stroke', 'black');
+      .attr('stroke', 'var(--color-text)');
 
     svg.selectAll('yTickLabels')
       .data(yTicks)
       .join('text')
+      .attr('fill', 'var(--color-text)')
       .attr('x', margin.left - 10)
       .attr('y', d => yScale(d) + 3)
       .attr('font-size', 10)
@@ -181,6 +183,7 @@
       .attr('x', (width + margin.left - margin.right) / 2)
       .attr('y', height - 50)
       .attr('font-size', 12)
+      .attr('fill', 'var(--color-text)')
       .attr('text-anchor', 'middle')
       .attr('font-weight', 'bold')
       .text('Total rooms');
@@ -188,6 +191,7 @@
     svg.append('text')
       .attr('transform', `translate(15, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
       .attr('font-size', 12)
+      .attr('fill', 'var(--color-text)')
       .attr('text-anchor', 'middle')
       .attr('font-weight', 'bold')
       .text('Median house value');
@@ -211,6 +215,7 @@
       g.append('text')
         .attr('x', 20)
         .attr('y', 12)
+        .attr('fill', 'var(--color-text)')
         .attr('font-size', 12)
         .text(city);
     });
@@ -473,7 +478,7 @@
         .attr('y1', height - margin.bottom)
         .attr('x2', width - margin.right)
         .attr('y2', height - margin.bottom)
-        .attr('stroke', 'black');
+        .attr('stroke', 'var(--color-text)');
 
       svg.selectAll('xTicks')
         .data(xTicks)
@@ -482,11 +487,12 @@
         .attr('y1', height - margin.bottom)
         .attr('x2', d => xScale(d))
         .attr('y2', height - margin.bottom + 6)
-        .attr('stroke', 'black');
+        .attr('stroke', 'var(--color-text)');
 
       svg.selectAll('xTickLabels')
         .data(xTicks)
         .join('text')
+        .attr('fill', 'var(--color-text)')
         .attr('x', d => xScale(d))
         .attr('y', height - margin.bottom + 20)
         .attr('font-size', 10)
@@ -499,7 +505,7 @@
         .attr('y1', margin.top)
         .attr('x2', margin.left)
         .attr('y2', height - margin.bottom)
-        .attr('stroke', 'black');
+        .attr('stroke', 'var(--color-text)');
 
       svg.selectAll('yTicks')
         .data(yTicks)
@@ -508,11 +514,12 @@
         .attr('y1', d => yScale(d))
         .attr('x2', margin.left - 6)
         .attr('y2', d => yScale(d))
-        .attr('stroke', 'black');
+        .attr('stroke', 'var(--color-text)');
 
       svg.selectAll('yTickLabels')
         .data(yTicks)
         .join('text')
+        .attr('fill', 'var(--color-text)')
         .attr('x', margin.left - 10)
         .attr('y', d => yScale(d) + 3)
         .attr('font-size', 10)
@@ -524,6 +531,7 @@
         .attr('x', (width + margin.left - margin.right) / 2)
         .attr('y', height - 50)
         .attr('font-size', 12)
+        .attr('fill', 'var(--color-text)')
         .attr('text-anchor', 'middle')
         .attr('font-weight', 'bold')
         .text('Total rooms');
@@ -531,6 +539,7 @@
       svg.append('text')
         .attr('transform', `translate(15, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
         .attr('font-size', 12)
+        .attr('fill', 'var(--color-text)')
         .attr('text-anchor', 'middle')
         .attr('font-weight', 'bold')
         .text('Median house value');
@@ -552,6 +561,7 @@
           .attr('fill', colorScale(city));
 
         g.append('text')
+        .attr('fill', 'var(--color-text)')
           .attr('x', 20)
           .attr('y', 12)
           .attr('font-size', 12)
@@ -759,7 +769,7 @@
         .attr('x2', x)
         .attr('y1', margin.top)
         .attr('y2', height - margin.bottom)
-        .attr('stroke', 'black')
+        .attr('stroke', 'var(--color-text)')
         .attr('stroke-width', 2);
     }
 
@@ -802,7 +812,7 @@
       .attr('x2', width - margin.right)
       .attr('y1', y)
       .attr('y2', y)
-      .attr('stroke', 'black')
+      .attr('stroke', 'var(--color-text)')
       .attr('stroke-width', 2);
     }
     // Tooltip para a linha de corte
@@ -941,7 +951,7 @@
         .attr('y1', height - margin.bottom)
         .attr('x2', width - margin.right)
         .attr('y2', height - margin.bottom)
-        .attr('stroke', 'black');
+        .attr('stroke', 'var(--color-text)');
 
       svg.selectAll('xTicks')
         .data(xTicks)
@@ -950,11 +960,12 @@
         .attr('y1', height - margin.bottom)
         .attr('x2', d => xScale(d))
         .attr('y2', height - margin.bottom + 6)
-        .attr('stroke', 'black');
+        .attr('stroke', 'var(--color-text)');
 
       svg.selectAll('xTickLabels')
         .data(xTicks)
         .join('text')
+        .attr('fill', 'var(--color-text)')
         .attr('x', d => xScale(d))
         .attr('y', height - margin.bottom + 20)
         .attr('font-size', 10)
@@ -967,7 +978,7 @@
         .attr('y1', margin.top)
         .attr('x2', margin.left)
         .attr('y2', height - margin.bottom)
-        .attr('stroke', 'black');
+        .attr('stroke', 'var(--color-text)');
 
       svg.selectAll('yTicks')
         .data(yTicks)
@@ -976,11 +987,12 @@
         .attr('y1', d => yScale(d))
         .attr('x2', margin.left - 6)
         .attr('y2', d => yScale(d))
-        .attr('stroke', 'black');
+        .attr('stroke', 'var(--color-text)');
 
       svg.selectAll('yTickLabels')
         .data(yTicks)
         .join('text')
+        .attr('fill', 'var(--color-text)')
         .attr('x', margin.left - 10)
         .attr('y', d => yScale(d) + 3)
         .attr('font-size', 10)
@@ -989,6 +1001,7 @@
 
       // Legendas dos eixos
       svg.append('text')
+        .attr('fill', 'var(--color-text)')
         .attr('x', (width + margin.left - margin.right) / 2)
         .attr('y', height - 50)
         .attr('font-size', 12)
@@ -997,6 +1010,7 @@
         .text('Total rooms');
 
       svg.append('text')
+        .attr('fill', 'var(--color-text)')
         .attr('transform', `translate(15, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
         .attr('font-size', 12)
         .attr('text-anchor', 'middle')
@@ -1020,6 +1034,7 @@
           .attr('fill', colorScale(city));
 
         g.append('text')
+          .attr('fill', 'var(--color-text)')
           .attr('x', 20)
           .attr('y', 12)
           .attr('font-size', 12)
@@ -1100,7 +1115,7 @@
         .attr('x2', area.xMax)
         .attr('y1', y)
         .attr('y2', y)
-        .attr('stroke', 'black')
+        .attr('stroke', 'var(--color-text)')
         .attr('stroke-width', 2);
 
       // Tooltip para a linha de corte
@@ -1146,7 +1161,7 @@
         .attr('x2', area.xMax)
         .attr('y1', y2)
         .attr('y2', y2)
-        .attr('stroke', 'black')
+        .attr('stroke', 'var(--color-text)')
         .attr('stroke-width', 2);
 
         // Tooltip para a linha de corte
@@ -1368,6 +1383,7 @@
   }
 
   export async function todosCortes() {
+    const maxCortes = 10
     // inicialização
     let xScale, yScale;
     let xTicks = [], yTicks = [];
@@ -1467,7 +1483,7 @@
       .attr('y1', height - margin.bottom)
       .attr('x2', width - margin.right)
       .attr('y2', height - margin.bottom)
-      .attr('stroke', 'black');
+      .attr('stroke', 'var(--color-text)');
 
     svg.selectAll('xTicks')
       .data(xTicks)
@@ -1476,11 +1492,12 @@
       .attr('y1', height - margin.bottom)
       .attr('x2', d => xScale(d))
       .attr('y2', height - margin.bottom + 6)
-      .attr('stroke', 'black');
+      .attr('stroke', 'var(--color-text)');
 
     svg.selectAll('xTickLabels')
       .data(xTicks)
       .join('text')
+      .attr('fill', 'var(--color-text)')
       .attr('x', d => xScale(d))
       .attr('y', height - margin.bottom + 20)
       .attr('font-size', 10)
@@ -1493,7 +1510,7 @@
       .attr('y1', margin.top)
       .attr('x2', margin.left)
       .attr('y2', height - margin.bottom)
-      .attr('stroke', 'black');
+      .attr('stroke', 'var(--color-text)');
 
     svg.selectAll('yTicks')
       .data(yTicks)
@@ -1502,11 +1519,12 @@
       .attr('y1', d => yScale(d))
       .attr('x2', margin.left - 6)
       .attr('y2', d => yScale(d))
-      .attr('stroke', 'black');
+      .attr('stroke', 'var(--color-text)');
 
     svg.selectAll('yTickLabels')
       .data(yTicks)
       .join('text')
+      .attr('fill', 'var(--color-text)')
       .attr('x', margin.left - 10)
       .attr('y', d => yScale(d) + 3)
       .attr('font-size', 10)
@@ -1515,6 +1533,7 @@
 
     // Legendas dos eixos
     svg.append('text')
+      .attr('fill', 'var(--color-text)')
       .attr('x', (width + margin.left - margin.right) / 2)
       .attr('y', height - 50)
       .attr('font-size', 12)
@@ -1523,6 +1542,7 @@
       .text('Total rooms');
 
     svg.append('text')
+      .attr('fill', 'var(--color-text)')
       .attr('transform', `translate(15, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
       .attr('font-size', 12)
       .attr('text-anchor', 'middle')
@@ -1546,6 +1566,7 @@
         .attr('fill', colorScale(city));
 
       g.append('text')
+        .attr('fill', 'var(--color-text)')
         .attr('x', 20)
         .attr('y', 12)
         .attr('font-size', 12)
