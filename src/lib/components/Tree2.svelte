@@ -78,7 +78,7 @@
       .attr("class", "link")
       .attr("fill", "none")
       .attr("stroke", "var(--color-link-stroke)") // cor das linhas
-      .attr("stroke-width", 2.5)
+      .attr("stroke-width", 3)
       .attr("filter", "url(#dropShadow)")
       .attr("d", d3.linkVertical()
         .x(d => d.x)
@@ -110,18 +110,36 @@
           .attr("r", 12);
       });
 
-    // Texto dentro dos nós
-    node.append("text")
-//   .attr("dy", "0.35em")
-  .attr("y", d => {
-    return d.children ? -16 : 16;
-    })
-  .attr("x", d => d.children ? 20 : -20)  // maior distância do círculo
-  .attr("text-anchor", d => d.children ? "start" : "end")
+//     // Texto dentro dos nós
+//     node.append("text")
+// //   .attr("dy", "0.35em")
+//   .attr("y", d => {
+//     return d.children ? -20 : 28;
+//     })
+//   .attr("x", d => d.children ? 10 : 40)  // maior distância do círculo
+//   .attr("text-anchor", d => d.children ? "start" : "end")
+//   .style("font-size", "14px")
+//   .style("fill", "var(--color-text-node)")
+//   .style("text-shadow", "0 0 2px var(--color-text-shadow)")
+//   .text(d => d.data.name);
+
+const text = node.append("text")
+  .attr("dy", "0.35em")
+  .attr("y", d => d.children ? -20 : 28)
+  .attr("x", d => d.children ? 10 : 40)
+  // .attr("text-anchor", d => d.children ? "start" : "end")
   .style("font-size", "14px")
   .style("fill", "var(--color-text-node)")
-  .style("text-shadow", "0 0 2px var(--color-text-shadow)")
-  .text(d => d.data.name);
+  .style("text-shadow", "0 0 2px var(--color-text-shadow)");
+
+// Divide o texto em linhas
+text.selectAll("tspan")
+  .data(d => d.data.name.split("\n"))
+  .join("tspan")
+  .attr("x", 0)
+  .attr("dy", (d, i) => i === 0 ? "0" : "1.5em")
+  .text(d => d);
+
 
   }
 

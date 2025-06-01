@@ -7,65 +7,53 @@
 
   let stepRefs = [];
 
-  const treeData = {
-  name: "feature 2 ≤ 3.80",
-  children: [
+ const treeData = {
+  "name": "feature 1 ≤ 185300",
+  "children": [
     {
-      name: "Classe: 0"
-    },
-    {
-      name: "feature 2 ≤ 4.80",
-      children: [
+      "name": "feature 1 ≤ 112500",
+      "children": [
         {
-          name: "Classe: 1"
-        },
-        {
-          name: "feature 3 ≤ 1.80",
-          children: [
+          "name": "feature 1 ≤ 72600",
+          "children": [
             {
-              name: "median_house_value ≤ 2.70",
-              children: [
-                {
-                  name: "Classe: 2"
-                },
-                {
-                  name: "feature 2 ≤ 5.10",
-                  children: [
-                    {
-                      name: "Classe: 1"
-                    },
-                    {
-                      name: "total_bedrooms ≤ 6.30",
-                      children: [
-                        {
-                          name: "Classe: 1"
-                        },
-                        {
-                          name: "Classe: 2"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
+              "name": "Sacramento"
             },
             {
-              name: "feature 2 ≤ 4.90",
-              children: [
-                {
-                  name: "total_bedrooms ≤ 6.00",
-                  children: [
-                    {
-                      name: "Classe: 1"
-                    },
-                    {
-                      name: "Classe: 2"
-                    }
-                  ]
-                },
-                {
-                  name: "Classe: 2"
-                }
+              "name": "feature 0 ≤ 448",
+              "children": [
+                { "name": "Sacramento" },
+                { "name": "Sacramento" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "feature 0 ≤ 460",
+          "children": [
+            { "name": "Sacramento" },
+            { "name": "Sacramento" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "feature 1 ≤ 237500",
+      "children": [
+        {
+          "name": "San \nFrancisco"
+        },
+        {
+          "name": "feature 0 ≤ 302",
+          "children": [
+            {
+              "name": "San \nFrancisco"
+            },
+            {
+              "name": "feature 0 ≤ 366",
+              "children": [
+                { "name": "San \nFrancisco" },
+                { "name": "San \nFrancisco" }
               ]
             }
           ]
@@ -73,7 +61,9 @@
       ]
     }
   ]
-};
+}
+
+
 
 
   onMount(() => {
@@ -130,7 +120,7 @@
   display: flex;
   position: relative;
   gap: 2rem;
-  margin-bottom: 10rem; 
+  margin-bottom: 30rem; 
   margin-top: 10rem;
   background-color: var(--color-background); 
   padding: 2rem;
@@ -153,6 +143,7 @@
   .steps {
     width: 40%;
     padding: 2rem;
+    margin-bottom: 30rem; 
   }
 
 
