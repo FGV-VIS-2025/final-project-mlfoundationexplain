@@ -1,0 +1,67 @@
+{
+  "name": "feature 2 \u2264 3.80",
+  "children": [
+    {
+      "name": "Classe: 0"
+    },
+    {
+      "name": "feature 2 \u2264 4.80",
+      "children": [
+        {
+          "name": "Classe: 1"
+        },
+        {
+          "name": "feature 3 \u2264 1.80",
+          "children": [
+            {
+              "name": "median_house_value \u2264 2.70",
+              "children": [
+                {
+                  "name": "Classe: 2"
+                },
+                {
+                  "name": "feature 2 \u2264 5.10",
+                  "children": [
+                    {
+                      "name": "Classe: 1"
+                    },
+                    {
+                      "name": "total_bedrooms \u2264 6.30",
+                      "children": [
+                        {
+                          "name": "Classe: 1"
+                        },
+                        {
+                          "name": "Classe: 2"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "feature 2 \u2264 4.90",
+              "children": [
+                {
+                  "name": "total_bedrooms \u2264 6.00",
+                  "children": [
+                    {
+                      "name": "Classe: 1"
+                    },
+                    {
+                      "name": "Classe: 2"
+                    }
+                  ]
+                },
+                {
+                  "name": "Classe: 2"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

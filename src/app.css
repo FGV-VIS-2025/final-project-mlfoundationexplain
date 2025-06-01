@@ -17,6 +17,17 @@
   --color-secondary: #7e6f99 ;/* #916f99 */
   --color-secondary2: #6b4c74 ;/* #916f99 */
   --color-accent: #461353;
+
+
+   --color-node-fill: #8a5dc7;         /* preenchimento do nó (roxo claro) */
+  --color-node-stroke: #6e44a3;       /* borda do nó (roxo médio) */
+  --color-node-hover-fill: #c5b0e8;   /* nó ao passar o mouse (roxo bem claro) */
+  
+  --color-link-stroke: #9277b9;       /* cor da linha (link) roxo médio */
+  --color-shadow-link: #9c6ade;       /* sombra da linha/link roxo destaque */
+
+  --color-text-node: #3e2465;         /* texto dentro do nó (roxo escuro) */
+  --color-text-shadow: #dcd6f7;       /* sombra do texto do nó */
 }
 
 /* Tema escuro (aplicado quando <html class="dark">) */
@@ -31,6 +42,16 @@
   --color-secondary: #6b4c74;
   --color-secondary2: #6b4c74 ;/* #916f99 */
   --color-accent: #cb0dff;
+
+   --color-node-fill: #a3d9b1;         /* preenchimento do nó (verde claro) */
+  --color-node-stroke: #6fbf82;       /* borda do nó (verde médio) */
+  --color-node-hover-fill: #c1edc8;   /* nó ao passar o mouse (verde muito claro) */
+  
+  --color-link-stroke: #8ac998;       /* cor da linha (link) verde médio */
+  --color-shadow-link: #6ad37a;       /* sombra da linha/link verde destaque */
+
+  --color-text-node: #d6eadf;         /* texto dentro do nó (verde claro) */
+  --color-text-shadow: #95d196;       /* sombra do texto do nó */
 }
 
 
