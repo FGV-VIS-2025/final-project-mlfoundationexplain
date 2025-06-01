@@ -3,7 +3,7 @@
   import Tree from './Tree2.svelte'; // importe seu componente de árvore
 
   let currentStep = 0;
-  const totalSteps = 12;
+  const totalSteps = 17;
 
   let stepRefs = [];
 

@@ -16,8 +16,13 @@
     const innerHeight = height - margin.top - margin.bottom;
 
     const root = d3.hierarchy(treeData);
-    const treeLayout = d3.tree().size([innerWidth, innerHeight]);
+    // const treeLayout = d3.tree().size([innerWidth, innerHeight]);
+    const treeLayout = d3.tree()
+  .size([innerWidth, innerHeight])
+  .separation((a, b) => (a.parent === b.parent ? 2 : 3));
+
     treeLayout(root);
+    
 
     const allNodes = root.descendants();
     const allLinks = root.links();
@@ -107,13 +112,17 @@
 
     // Texto dentro dos nós
     node.append("text")
-      .attr("dy", "0.35em")
-      .attr("x", d => d.children ? 18 : -18)
-      .attr("text-anchor", d => d.children ? "start" : "end")
-      .style("font-size", "14px")
-      .style("fill", "var(--color-text-node)")           // cor do texto do nó
-      .style("text-shadow", "0 0 2px var(--color-text-shadow)") // sombra do texto do nó
-      .text(d => d.data.name);
+//   .attr("dy", "0.35em")
+  .attr("y", d => {
+    return d.children ? -16 : 16;
+    })
+  .attr("x", d => d.children ? 20 : -20)  // maior distância do círculo
+  .attr("text-anchor", d => d.children ? "start" : "end")
+  .style("font-size", "14px")
+  .style("fill", "var(--color-text-node)")
+  .style("text-shadow", "0 0 2px var(--color-text-shadow)")
+  .text(d => d.data.name);
+
   }
 
   onMount(renderTree);
