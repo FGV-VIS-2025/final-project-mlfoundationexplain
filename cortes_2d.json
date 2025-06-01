@@ -1,0 +1,59 @@
+{
+  "feature": "feature 1",
+  "threshold": 185300.0,
+  "left": {
+    "feature": "feature 1",
+    "threshold": 112500.0,
+    "left": {
+      "feature": "feature 1",
+      "threshold": 72600.0,
+      "left": {
+        "class": 0
+      },
+      "right": {
+        "feature": "feature 0",
+        "threshold": 448.0,
+        "left": {
+          "class": 0
+        },
+        "right": {
+          "class": 0
+        }
+      }
+    },
+    "right": {
+      "feature": "feature 0",
+      "threshold": 460.0,
+      "left": {
+        "class": 0
+      },
+      "right": {
+        "class": 0
+      }
+    }
+  },
+  "right": {
+    "feature": "feature 1",
+    "threshold": 237500.0,
+    "left": {
+      "class": 1
+    },
+    "right": {
+      "feature": "feature 0",
+      "threshold": 302.0,
+      "left": {
+        "class": 1
+      },
+      "right": {
+        "feature": "feature 0",
+        "threshold": 366.0,
+        "left": {
+          "class": 1
+        },
+        "right": {
+          "class": 1
+        }
+      }
+    }
+  }
+}

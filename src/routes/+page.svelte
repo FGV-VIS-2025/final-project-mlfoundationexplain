@@ -3,10 +3,23 @@
 <script>
   import ScrollStory1 from '$lib/components/ScrollStory1.svelte';
   import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
-  import Introduction from '../lib/components/Introduction.svelte';
-  import Gini from '../lib/components/gini.svelte';
+  import ScrollStory3 from '$lib/components/ScrollStory3.svelte';
+  import Introduction from '$lib/components/Introduction.svelte';
+  import Gini from '$lib/components/gini.svelte';
   import { _ } from 'svelte-i18n';
+
+  import DecisionTree from '$lib/components/Tree.svelte';
+
+  let treeJson = null;
+
+  import { onMount } from 'svelte';
+
+  onMount(async () => {
+    const res = await fetch('/data/arvore_d3.json');
+    treeJson = await res.json();
+  });
 </script>
+
 
 <!-- <div class="scroll-wrapper-default"> -->
   <div 
@@ -14,7 +27,17 @@
     <Introduction />
   </div>
 <!-- </div> -->
+<!-- {#if treeJson}
+  <DecisionTree treeData={treeJson} />
+{:else}
+  <p>Carregando árvore de decisão...</p>
+{/if} -->
 
+ <div style="background-color: var(--color-background);">
+  <div class="max-w-7xl mx-auto px-6">
+    <ScrollStory3 />
+  </div>
+ </div>
 
 <!-- <div class="max-w-7xl mx-auto p-6 text-justify"> -->
  <div class="max-w-7xl mx-auto p-6 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300">
