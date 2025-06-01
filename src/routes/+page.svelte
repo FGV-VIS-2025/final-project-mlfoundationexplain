@@ -34,7 +34,7 @@
 {/if} -->
 
  <div style="background-color: var(--color-background);">
-  <div class="max-w-7xl mx-auto px-6">
+  <div >
     <ScrollStory3 />
   </div>
  </div>

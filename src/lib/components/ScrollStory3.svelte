@@ -109,13 +109,36 @@
       {/each}
     </div>
 
-    <div class="viz">
+    <!-- <div class="viz">
       <Tree {treeData} step={currentStep} />
-    </div>
+    </div> -->
+    <div class="viz">
+    <div class="dual-tree">
+    <Tree {treeData} step={currentStep} />
+    <Tree {treeData} step={currentStep} />
+  </div>
+</div>
+
   </div>
 </div>
 
 <style>
+  .dual-tree {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.dual-tree :global(svg) {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+
+
   .scroll-container {
   display: flex;
   position: relative;
@@ -128,7 +151,7 @@
 }
 
 .viz {
-  width: 60%;
+  width: 75%;
   position: sticky;
   top: 72px;
   height: calc(100vh - 72px);
@@ -141,7 +164,7 @@
 
 
   .steps {
-    width: 40%;
+    width: 25%;
     padding: 2rem;
     margin-bottom: 30rem; 
   }
@@ -152,6 +175,7 @@
     padding: 1rem;
     border-left: 4px solid #ccc;
     transition: border-color 0.3s ease;
+    text-align: justify;
   }
 
   .step.active {
