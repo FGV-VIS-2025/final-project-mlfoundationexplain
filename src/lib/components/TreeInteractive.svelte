@@ -6,14 +6,14 @@
 
   let svg;
   const height = 650;
-  const nodeSpacingX = 70;
+  const nodeSpacingX = 90;
   const nodeSpacingY = 100;
 
   let currentPath = [];
   let feature0 = 0;
   let feature1 = 0;
+  let finalPrediction = null;
 
-  // Função que extrai feature e threshold do nome do nó
   function preprocessTree(root) {
     root.each(d => {
       const match = d.data.name.match(/feature (\d+) ≤ ([\d\.]+)/);
@@ -30,7 +30,7 @@
   function traverseTree(node, input) {
     if (node.data.isLeaf || !node.children) {
       currentPath.push(node);
-      return;
+      return node;
     }
 
     currentPath.push(node);
@@ -41,9 +41,9 @@
 
     const [left, right] = node.children;
     if (featureValue <= node.data.threshold) {
-      traverseTree(left, input);
+      return traverseTree(left, input);
     } else {
-      traverseTree(right, input);
+      return traverseTree(right, input);
     }
   }
 
@@ -70,6 +70,7 @@
   function simulatePrediction() {
     if (!treeData) return;
 
+    finalPrediction = null;
     currentPath = [];
     const input = {
       feature0: Number(feature0),
@@ -79,8 +80,12 @@
     root.each((d, i) => d.id = i);
 
     preprocessTree(root);
-    traverseTree(root, input);
+    const finalNode = traverseTree(root, input);
     highlightPath(currentPath);
+
+    if (finalNode?.data?.name) {
+      finalPrediction = finalNode.data.name;
+    }
   }
 
   onMount(() => {
@@ -241,6 +246,17 @@
   button.predict-button:hover {
     background: linear-gradient(to right, #4338ca, #2563eb);
   }
+
+  .prediction-result {
+    margin-top: 1rem;
+    background: #fef3c7;
+    color: #92400e;
+    padding: 0.8rem 1rem;
+    border-left: 5px solid #facc15;
+    border-radius: 0.4rem;
+    font-size: 1.1rem;
+    max-width: 240px;
+  }
 </style>
 
 <div class="control-panel">
@@ -255,6 +271,12 @@
   <button class="predict-button" on:click={simulatePrediction}>
     Prever ponto
   </button>
+
+  {#if finalPrediction}
+    <div class="prediction-result">
+      A previsão final foi: <strong>{finalPrediction}</strong>
+    </div>
+  {/if}
 </div>
 
 <svg bind:this={svg}></svg>
