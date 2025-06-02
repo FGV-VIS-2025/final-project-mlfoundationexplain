@@ -79,10 +79,14 @@
 
 <div class="max-w-7xl mx-auto pt-40 pb-10 text-justify  transition-colors duration-300 ">
 
-  <h2 class="text-3xl font-extrabold">A criação da árvore e cortes no espaço do dados</h2>
+  <h2 class="text-3xl font-extrabold pb-10">A criação da árvore e cortes no espaço do dados</h2>
+
+  <p>
+  A criação da árvore de decisão consiste em dividir repetidamente o espaço dos dados em regiões menores por meio de <span class="font-semibold">cortes baseados em condições</span> sobre as features. Cada corte separa os dados em grupos mais homogêneos, facilitando a tomada de decisão. Esse processo continua até que as regiões estejam suficientemente puras ou um critério de parada seja atingido, resultando em uma estrutura hierárquica que reflete essas divisões no espaço.
+ </p>
 </div>
 
- <div style="background-color: var(--color-background);">
+ <div style="background-color: var(--color-background); " class=" mt-0 mb-0">
   <div >
     <ScrollStory3 />
   </div>
@@ -93,11 +97,11 @@
 
 <!-- <div class="scroll-wrapper-green"> -->
 
-<div class="max-w-7xl mx-auto p-6 py-10 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: var(--color-background-section);">
+<div class="max-w-7xl mx-auto p-6 pt-0 pb-0 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: var(--color-background-section);">
 
 <!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
 
-  <h2 class="text-xl font-semibold mb-4">Como funciona a previsão em uma árvore de decisão</h2>
+  <h2 class="text-3xl font-semibold mb-4 py-8">Como funciona a previsão em uma árvore de decisão</h2>
 
   <p>
     Durante o processo de <span class="font-semibold">previsão</span>, a árvore de decisão recebe uma nova entrada (ou amostra) e a percorre do 
@@ -120,8 +124,15 @@
 {/if}
 
 </div>
-<!-- </div> -->
 
+
+
+<div class="max-w-7xl mx-auto p-6 pt-40 pb-0 text-center  transition-colors duration-300  leading-relaxed space-y-6" >
+
+<!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
+
+  <h2 class="text-5xl font-semibold mb-4 py-8">A árvore completa</h2>
+</div>
 
 <div class="my-19 mt-40 mb-40">
   {#if treeJson}

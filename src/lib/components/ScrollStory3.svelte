@@ -112,9 +112,6 @@
 
     </div>
 
-    <!-- <div class="viz">
-      <Tree {treeData} step={currentStep} />
-    </div> -->
     <div class="viz">
     <div class="dual-tree">
   <div class="scroll-container-svg">
@@ -161,7 +158,7 @@
   display: flex;
   position: relative;
   gap: 2rem;
-  margin-bottom: 30rem; 
+  margin-bottom: 7rem; 
   /* margin-top: 0.1rem; */
   background-color: var(--color-background); 
   padding: 2rem;
@@ -184,12 +181,12 @@
   .steps {
     width: 25%;
     padding: 2rem;
-    margin-bottom: 100rem; 
+    margin-bottom: 0rem; 
   }
 
 
   .step {
-    margin: 9rem 0;
+    margin: 20rem 0;
     margin-top: 0;
     padding: 1rem;
     border-left: 4px solid #ccc;
