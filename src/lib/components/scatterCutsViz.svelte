@@ -253,7 +253,7 @@ try {
 
   // Carrega a árvore de cortes
 
-   const treeRes = await fetch('/trees/cortes_2d.json');
+   const treeRes = await fetch('trees/cortes_2d.json');
     const cortes = await treeRes.json();
 
     const bboxInicial = {
