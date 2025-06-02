@@ -91,7 +91,7 @@
 
 
 <div class="scroll-wrapper-dark">
-<div style="background-color: var(--color-background-intro); margin-left: 8rem;">
+<div style="background-color: var(--color-background); margin-left: 8rem;">
 
   <h3 class="text-xl font-semibold mb-4">Como funciona a previsão em uma árvore de decisão</h3>
 

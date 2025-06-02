@@ -5,13 +5,27 @@
   export let treeData;
 
   let svg;
-  const height = 700;
-  const nodeSpacingX = 40;
+  const height = 650;
+  const nodeSpacingX = 70;
   const nodeSpacingY = 100;
 
   let currentPath = [];
-  let x1 = 3;
-  let x2 = 7;
+  let feature0 = 0;
+  let feature1 = 0;
+
+  // Função que extrai feature e threshold do nome do nó
+  function preprocessTree(root) {
+    root.each(d => {
+      const match = d.data.name.match(/feature (\d+) ≤ ([\d\.]+)/);
+      if (match) {
+        d.data.feature = `feature ${match[1]}`;
+        d.data.threshold = Number(match[2]);
+        d.data.isLeaf = false;
+      } else {
+        d.data.isLeaf = true;
+      }
+    });
+  }
 
   function traverseTree(node, input) {
     if (node.data.isLeaf || !node.children) {
@@ -20,7 +34,10 @@
     }
 
     currentPath.push(node);
-    const featureValue = input[node.data.feature];
+
+    const featureIndex = Number(node.data.feature.split(" ")[1]);
+    const featureKey = featureIndex === 0 ? "feature0" : "feature1";
+    const featureValue = input[featureKey];
 
     const [left, right] = node.children;
     if (featureValue <= node.data.threshold) {
@@ -54,10 +71,14 @@
     if (!treeData) return;
 
     currentPath = [];
-    const input = { x1: Number(x1), x2: Number(x2) };
+    const input = {
+      feature0: Number(feature0),
+      feature1: Number(feature1)
+    };
     const root = d3.hierarchy(treeData);
     root.each((d, i) => d.id = i);
 
+    preprocessTree(root);
     traverseTree(root, input);
     highlightPath(currentPath);
   }
@@ -68,6 +89,8 @@
     const margin = { top: 40, right: 120, bottom: 40, left: 120 };
     const root = d3.hierarchy(treeData);
     root.each((d, i) => d.id = i);
+
+    preprocessTree(root);
 
     const leaves = root.leaves();
     const width = Math.max(leaves.length * nodeSpacingX + margin.left + margin.right, 500);
@@ -121,7 +144,6 @@
       .attr("offset", "100%")
       .attr("stop-color", "var(--color-node-stroke)");
 
-    // Links
     svgEl.selectAll(".link")
       .data(allLinks)
       .join("path")
@@ -134,7 +156,6 @@
         .x(d => d.x)
         .y(d => d.y));
 
-    // Nodes
     const node = svgEl.selectAll(".node")
       .data(allNodes)
       .join("g")
@@ -201,7 +222,8 @@
     padding: 0.4rem 0.6rem;
     border: 1px solid #ccc;
     border-radius: 0.4rem;
-    width: 80px;
+    width: 140px;
+    font-size: 1.1rem;
   }
 
   button.predict-button {
@@ -223,17 +245,16 @@
 
 <div class="control-panel">
   <div class="input-group">
-    <label for="x">x:</label>
-    <input id="x" type="number" bind:value={x1} />
+    <label for="feature0">feature 0:</label>
+    <input id="feature0" type="number" bind:value={feature0} />
   </div>
   <div class="input-group">
-    <label for="y">y:</label>
-    <input id="y" type="number" bind:value={x2} />
+    <label for="feature1">feature 1:</label>
+    <input id="feature1" type="number" bind:value={feature1} />
   </div>
   <button class="predict-button" on:click={simulatePrediction}>
-    Prever ponto (x, y)
+    Prever ponto
   </button>
 </div>
-
 
 <svg bind:this={svg}></svg>
