@@ -10,6 +10,8 @@
 
   import DecisionTree from '$lib/components/Tree.svelte';
 
+  import DecisionTree2 from '$lib/components/TreeInteractive.svelte';
+
   let treeJson = null;
   let treeJson_2d = null;
 
@@ -19,8 +21,8 @@
     const res = await fetch('/data/arvore_d3.json');
     treeJson = await res.json();
 
-     const res2 = await fetch('static/data/arvore_2d.json');
-    treeJson_2d = await res.json();
+     const res2 = await fetch('/data/arvore_2d.json');
+    treeJson_2d = await res2.json();
   });
 </script>
 
@@ -75,6 +77,11 @@
 </div>
 
 
+<div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300 ">
+
+  <h2 class="text-3xl font-extrabold">A criação da árvore</h2>
+</div>
+
  <div style="background-color: var(--color-background);">
   <div >
     <ScrollStory3 />
@@ -107,9 +114,9 @@
 {/if}
 
 </div>
-
-
 </div>
+
+
 <div class="my-19 mt-40 mb-40">
   {#if treeJson}
     <DecisionTree treeData={treeJson} />
@@ -117,6 +124,15 @@
     <p>Carregando árvore de decisão...</p>
   {/if}
 </div>
+
+
+<!-- <div >
+  {#if treeJson}
+    <DecisionTree2 treeData={treeJson_2d} />
+  {:else}
+    <p>Carregando árvore de decisão...</p>
+  {/if}
+</div> -->
 
 
 
