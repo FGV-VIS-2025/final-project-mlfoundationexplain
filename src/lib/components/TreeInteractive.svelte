@@ -47,28 +47,71 @@
     }
   }
 
+  // function highlightPath(nodes) {
+  //   const delay = 800;
+
+  //   d3.select(svg).selectAll("circle")
+  //     .transition()
+  //     .duration(300)
+  //     .attr("fill", `url(#nodeGradient)`)
+  //     .attr("r", 12);
+
+  //   nodes.forEach((node, i) => {
+  //     setTimeout(() => {
+  //       d3.select(`#node-${node.id} circle`)
+  //         .transition()
+  //         .duration(300)
+  //         // .attr("fill", "orange")
+  //         // .attr("fill", "#f5a65b")
+  //         // .attr("fill", "#1a936f")
+  //         .attr("fill", "var(--color-node-active)")
+  //         .attr("r", 20);
+  //     }, i * delay);
+  //   });
+  // }
   function highlightPath(nodes) {
-    const delay = 800;
+  const delay = 800;
 
-    d3.select(svg).selectAll("circle")
-      .transition()
-      .duration(300)
-      .attr("fill", `url(#nodeGradient)`)
-      .attr("r", 12);
+  // Resetar círculos e links
+  d3.select(svg).selectAll("circle")
+    .transition()
+    .duration(300)
+    .attr("fill", `url(#nodeGradient)`)
+    .attr("r", 12);
 
-    nodes.forEach((node, i) => {
-      setTimeout(() => {
-        d3.select(`#node-${node.id} circle`)
+  d3.select(svg).selectAll(".link")
+    .transition()
+    .duration(300)
+    .attr("stroke", "var(--color-link-stroke)") // cor padrão
+    .attr("stroke-width", 3);
+
+  nodes.forEach((node, i) => {
+    setTimeout(() => {
+      // Destacar o nó
+      d3.select(`#node-${node.id} circle`)
+        .transition()
+        .duration(300)
+        .attr("fill", "var(--color-node-active)")
+        .attr("r", 20);
+
+      // Destacar o link para o próximo nó do caminho (se houver)
+      if (i < nodes.length - 1) {
+        const current = nodes[i];
+        const next = nodes[i + 1];
+
+        // Os links são paths com a classe .link, e conectam current -> next
+        d3.select(svg).selectAll(".link")
+          .filter(d => d.source.id === current.id && d.target.id === next.id)
           .transition()
           .duration(300)
-          // .attr("fill", "orange")
-          // .attr("fill", "#f5a65b")
-          // .attr("fill", "#1a936f")
-          .attr("fill", "var(--color-node-active)")
-          .attr("r", 20);
-      }, i * delay);
-    });
-  }
+          .attr("stroke", "var(--color-link-active)")  // cor customizada para link ativo
+          .attr("stroke-width", 5);
+      }
+
+    }, i * delay);
+  });
+}
+
 
   function simulatePrediction() {
     if (!treeData) return;

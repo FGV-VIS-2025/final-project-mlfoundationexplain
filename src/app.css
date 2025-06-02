@@ -31,6 +31,7 @@
   --color-text-node: #3e2465;         /* texto dentro do nó (roxo escuro) */
   --color-text-shadow: #dcd6f7;       /* sombra do texto do nó */
   --color-node-active: #f5a65b;
+  --color-link-active:#c27c3a;
   --color-background-previsão:#fef3c7; 
   --color-text-previsão:#915c2b; 
   --color-button-previsão:#4d1374; 
@@ -70,6 +71,7 @@
   --color-section : #497c55 ;
 
   --color-node-active: #f8e750;
+  --color-link-active:#b8aa34;
   --color-background-previsão:#497c55; 
   --color-text-previsão:#f8fafc; 
   --color-button-previsão:#497c55; 
