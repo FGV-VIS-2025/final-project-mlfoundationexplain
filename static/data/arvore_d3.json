@@ -1,39 +1,134 @@
 {
-  "name": "feature 2 \u2264 3.80",
+  "name": "feature 3 ≤ 185300.0",
   "children": [
     {
-      "name": "Classe: 0"
-    },
-    {
-      "name": "feature 2 \u2264 4.80",
+      "name": "feature 3 ≤ 168800.0",
       "children": [
         {
-          "name": "Classe: 1"
-        },
-        {
-          "name": "feature 3 \u2264 1.80",
+          "name": "feature 3 ≤ 55700.0",
           "children": [
             {
-              "name": "median_house_value \u2264 2.70",
+              "name": "feature 1 ≤ 836.0",
+              "children": [
+                { "name": "class 0" },
+                { "name": "class 1" }
+              ]
+            },
+            {
+              "name": "feature 0 ≤ 900.0",
               "children": [
                 {
-                  "name": "Classe: 2"
+                  "name": "feature 1 ≤ 202.0",
+                  "children": [
+                    { "name": "class 0" },
+                    {
+                      "name": "feature 0 ≤ 569.0",
+                      "children": [
+                        { "name": "class 1" },
+                        {
+                          "name": "feature 2 ≤ 219.0",
+                          "children": [
+                            { "name": "class 0" },
+                            {
+                              "name": "feature 0 ≤ 670.0",
+                              "children": [
+                                { "name": "class 0" },
+                                { "name": "class 1" }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
                 },
                 {
-                  "name": "feature 2 \u2264 5.10",
+                  "name": "feature 0 ≤ 1316.0",
                   "children": [
                     {
-                      "name": "Classe: 1"
-                    },
-                    {
-                      "name": "total_bedrooms \u2264 6.30",
+                      "name": "feature 0 ≤ 1257.0",
                       "children": [
+                        { "name": "class 0" },
+                        { "name": "class 1" }
+                      ]
+                    },
+                    { "name": "class 0" }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "feature 0 ≤ 3236.0",
+          "children": [
+            {
+              "name": "feature 1 ≤ 364.0",
+              "children": [
+                {
+                  "name": "feature 0 ≤ 1000.0",
+                  "children": [
+                    { "name": "class 1" },
+                    { "name": "class 0" }
+                  ]
+                },
+                { "name": "class 1" }
+              ]
+            },
+            {
+              "name": "feature 1 ≤ 1240.0",
+              "children": [
+                { "name": "class 0" },
+                {
+                  "name": "feature 0 ≤ 6132.0",
+                  "children": [
+                    { "name": "class 1" },
+                    { "name": "class 0" }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "feature 3 ≤ 237500.0",
+      "children": [
+        {
+          "name": "feature 0 ≤ 2508.0",
+          "children": [
+            {
+              "name": "feature 1 ≤ 224.0",
+              "children": [
+                {
+                  "name": "feature 0 ≤ 438.0",
+                  "children": [
+                    { "name": "class 1" },
+                    {
+                      "name": "feature 3 ≤ 208300.0",
+                      "children": [
+                        { "name": "class 0" },
                         {
-                          "name": "Classe: 1"
-                        },
-                        {
-                          "name": "Classe: 2"
+                          "name": "feature 0 ≤ 893.0",
+                          "children": [
+                            { "name": "class 1" },
+                            { "name": "class 0" }
+                          ]
                         }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "name": "feature 0 ≤ 2006.0",
+                  "children": [
+                    { "name": "class 1" },
+                    {
+                      "name": "feature 1 ≤ 431.0",
+                      "children": [
+                        { "name": "class 0" },
+                        { "name": "class 1" }
                       ]
                     }
                   ]
@@ -41,22 +136,89 @@
               ]
             },
             {
-              "name": "feature 2 \u2264 4.90",
+              "name": "feature 1 ≤ 846.0",
               "children": [
                 {
-                  "name": "total_bedrooms \u2264 6.00",
+                  "name": "feature 0 ≤ 3087.0",
                   "children": [
                     {
-                      "name": "Classe: 1"
+                      "name": "feature 0 ≤ 2604.0",
+                      "children": [
+                        { "name": "class 0" },
+                        { "name": "class 1" }
+                      ]
                     },
-                    {
-                      "name": "Classe: 2"
-                    }
+                    { "name": "class 0" }
                   ]
                 },
                 {
-                  "name": "Classe: 2"
+                  "name": "feature 0 ≤ 8482.0",
+                  "children": [
+                    {
+                      "name": "feature 3 ≤ 201000.0",
+                      "children": [
+                        { "name": "class 0" },
+                        { "name": "class 1" }
+                      ]
+                    },
+                    { "name": "class 0" }
+                  ]
                 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "feature 2 ≤ 279.0",
+          "children": [
+            {
+              "name": "feature 2 ≤ 278.0",
+              "children": [
+                {
+                  "name": "feature 3 ≤ 417600.0",
+                  "children": [
+                    {
+                      "name": "feature 0 ≤ 1595.0",
+                      "children": [
+                        {
+                          "name": "feature 3 ≤ 405800.0",
+                          "children": [
+                            {
+                              "name": "feature 0 ≤ 1269.0",
+                              "children": [
+                                { "name": "class 1" },
+                                {
+                                  "name": "feature 0 ≤ 1386.0",
+                                  "children": [
+                                    { "name": "class 0" },
+                                    { "name": "class 1" }
+                                  ]
+                                }
+                              ]
+                            },
+                            { "name": "class 0" }
+                          ]
+                        },
+                        { "name": "class 0" }
+                      ]
+                    },
+                    { "name": "class 1" }
+                  ]
+                },
+                { "name": "class 0" }
+              ]
+            },
+            {
+              "name": "feature 1 ≤ 370.0",
+              "children": [
+                {
+                  "name": "feature 1 ≤ 357.0",
+                  "children": [
+                    { "name": "class 1" },
+                    { "name": "class 0" }
+                  ]
+                },
+                { "name": "class 1" }
               ]
             }
           ]
