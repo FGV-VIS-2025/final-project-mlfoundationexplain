@@ -63,7 +63,7 @@ const backgroundLayer = svg.append('g').lower();
 
 try {
   // Carrega e processa CSV
-  const res = await fetch('/data/housing_limpo.csv');
+  const res = await fetch('data/housing_limpo.csv');
   const text = await res.text();
 
   const lines = text.trim().split('\n');
