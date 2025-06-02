@@ -8,6 +8,71 @@
             "light": "☀️ Light"
         }
     },
+    "hero": {
+        "title": "Exploring the World of Decision Trees",
+        "subtitle": "A visual introduction to machine learning"
+    },
+    "section-understanding": {
+        "title": "Understanding Decision Trees and Pruning",
+        "intro": {
+            "welcome": "Welcome to our {guide} — one of the most {powerful} tools in the field of artificial intelligence and data science.",
+            "guide": "interactive guide on decision trees",
+            "powerful": "intuitive and powerful",
+            "purpose": "This site was created to help you understand, in a {visual} way, how these structures work, how they are built, and why they are so useful for solving {classification} and {regression} problems.",
+            "visual": "visual and accessible",
+            "classification": "classification",
+            "regression": "regression",
+            "pruning": "Additionally, we will explore an essential concept for improving tree performance: {pruningConcept}. It reduces model complexity, avoids {overfitting}, and makes predictions more reliable with new data.",
+            "pruningConcept": "pruning",
+            "overfitting": "overfitting",
+            "conclusion": "Here, you will find {clear}, {visual_examples}, and {demonstrations} to build and optimize decision trees. Whether you are a beginner or already experienced, our goal is to make these concepts simple, interactive, and applicable.",
+            "clear": "clear explanations",
+            "visual_examples": "visual examples",
+            "demonstrations": "step-by-step demonstrations"
+        }
+    },
+    "section-what-is": {
+        "title": "What is it?",
+        "definition": "A {decision_tree} is a predictive model that represents a series of decisions structured in tree form, where each {internal_node} corresponds to a question or condition based on data characteristics, and each {branch} leads to a possible answer or division. The {leaves} of the tree indicate the final result, such as a class or numerical value. This model is widely used in {classification} and {regression} tasks due to its intuitive interpretation: it simulates a sequential decision-making process, where we follow a logical path based on inputs until reaching a conclusion.",
+        "decision_tree": "decision tree",
+        "internal_node": "internal node",
+        "branch": "branch",
+        "leaves": "leaves",
+        "classification": "classification",
+        "regression": "regression"
+    },
+    "section-prediction": {
+        "title": "How prediction works in a decision tree",
+        "description": "During the {prediction} process, the decision tree receives a new input (or sample) and traverses it from {root_to_leaf}, following the conditions defined at each decision point. At each step, it analyzes the value of a {feature} from the input and chooses the {corresponding_branch} based on the condition (for example, whether the value is less than or greater than a certain threshold). This path is {unique} and leads directly to a {leaf}, where the predicted class (in classifiers) or a numerical value (in regression models) is recorded. The process is {fast_interpretable}, functioning as a logical sequence of decisions that culminates in a final conclusion.",
+        "prediction": "prediction",
+        "root_to_leaf": "root node to a leaf",
+        "feature": "feature",
+        "corresponding_branch": "corresponding branch",
+        "unique": "unique",
+        "leaf": "leaf",
+        "fast_interpretable": "fast, direct and interpretable"
+    },
+    "section-gini": {
+        "title": "How are splits chosen?",
+        "description": "In a decision tree for binary classification, splits are chosen based on the {purity} of regions created after each division. The algorithm greedily searches for the best split at that moment — that is, it chooses the feature and cut point that most increase the purity of the generated subsets.",
+        "purity": "purity",
+        "purity_explanation": "The purity of a region is a measure of how homogeneous the classes within it are. If all examples in a region belong to the same class, that region is considered pure. To quantify this purity, we use metrics such as {entropy} and the {gini_index}.",
+        "entropy": "Entropy",
+        "gini_index": "Gini Index",
+        "metrics_behavior": "These metrics reach their minimum values (zero) when all examples are from the same class (proportion 0 or 1), and maximum values when there is balance between classes (proportion 0.5), that is, when uncertainty is greatest. The algorithm calculates the purity gain before and after each possible split — called {information_gain} (with entropy) or {gini_gain} — and chooses the cut that most increases this gain.",
+        "information_gain": "Information Gain",
+        "gini_gain": "Gini Gain",
+        "process_conclusion": "This process is repeated recursively, creating a binary segmentation of space, until a stopping criterion is reached, such as the minimum number of points per region.",
+        "interaction_hint": "Hover over the chart to see specific entropy and Gini values for each positive class proportion.",
+        "chart_labels": {
+            "x_axis": "Positive class proportion (p)",
+            "y_axis": "Purity (Entropy or Gini)",
+            "entropy_legend": "Entropy",
+            "gini_legend": "Gini",
+            "entropy_tooltip": "Entropy: {value}",
+            "gini_tooltip": "Gini: {value}"
+        }
+    },
     "page": {
         "testTitle": "Test Page",
         "step": "Step {number}",

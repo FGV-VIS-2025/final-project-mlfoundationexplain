@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
+  import { _ } from "svelte-i18n";
 
   let el;
   let svg;
@@ -61,8 +62,8 @@
 
 <div class="cover-container" bind:this={el}>
   <div class="text">
-    <h1>Explorando o Mundo das Árvores de Decisão</h1>
-    <p>Uma introdução visual ao aprendizado de máquina</p>
+    <h1>{$_('hero.title')}</h1>
+    <p>{$_('hero.subtitle')}</p>
   </div>
 
   <div class="viz">

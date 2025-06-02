@@ -36,22 +36,44 @@
 
 <div class="max-w-7xl mx-auto p-6 py-40 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300  leading-relaxed space-y-6">
 
-  <h2 class="text-3xl font-extrabold  mb-6">Entendendo Árvores de Decisão e Poda</h2>
+  <h2 class="text-3xl font-extrabold  mb-6">{$_('section-understanding.title')}</h2>
 
   <p>
-    Bem-vindo ao nosso <span class="font-semibold">guia interativo sobre árvores de decisão</span> — uma das ferramentas mais <span class="font-semibold">intuitivas e poderosas</span> no campo da inteligência artificial e da ciência de dados.
+    {@html $_('section-understanding.intro.welcome', {
+      values: {
+        guide: `<span class="font-semibold">${$_('section-understanding.intro.guide')}</span>`,
+        powerful: `<span class="font-semibold">${$_('section-understanding.intro.powerful')}</span>`
+      }
+    })}
   </p>
 
   <p>
-    Este site foi criado para ajudar você a compreender, de forma <span class="italic">visual e acessível</span>, como essas estruturas funcionam, como são construídas, e por que são tão úteis para resolver problemas de <span class="underline">classificação</span> e <span class="underline">regressão</span>.
+    {@html $_('section-understanding.intro.purpose', {
+      values: {
+        visual: `<span class="italic">${$_('section-understanding.intro.visual')}</span>`,
+        classification: `<span class="underline">${$_('section-understanding.intro.classification')}</span>`,
+        regression: `<span class="underline">${$_('section-understanding.intro.regression')}</span>`
+      }
+    })}
   </p>
 
   <p>
-    Além disso, exploraremos um conceito essencial para melhorar o desempenho das árvores: <span class="font-semibold">a poda</span>. Ela reduz a complexidade do modelo, evita o <span class="italic">overfitting</span> (sobreajuste) e torna as previsões mais confiáveis com dados novos.
+    {@html $_('section-understanding.intro.pruning', {
+      values: {
+        pruningConcept: `<span class="font-semibold">${$_('section-understanding.intro.pruningConcept')}</span>`,
+        overfitting: `<span class="italic">${$_('section-understanding.intro.overfitting')}</span>`
+      }
+    })}
   </p>
 
   <p>
-    Aqui, você encontrará <span class="font-medium">explicações claras</span>, <span class="font-medium">exemplos visuais</span> e <span class="font-medium">demonstrações passo a passo</span> para construir e otimizar árvores de decisão. Quer você seja iniciante ou já tenha experiência, nosso objetivo é tornar esses conceitos simples, interativos e aplicáveis.
+    {@html $_('section-understanding.intro.conclusion', {
+      values: {
+        clear: `<span class="font-medium">${$_('section-understanding.intro.clear')}</span>`,
+        visual_examples: `<span class="font-medium">${$_('section-understanding.intro.visual_examples')}</span>`,
+        demonstrations: `<span class="font-medium">${$_('section-understanding.intro.demonstrations')}</span>`
+      }
+    })}
   </p>
 
 
@@ -65,11 +87,20 @@
 <div class="scroll-wrapper-dark">
 <div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300  leading-relaxed space-y-6">
 
-  <h2 class="text-3xl font-extrabold  mb-6">O que é?</h2>
+  <h2 class="text-3xl font-extrabold  mb-6">{$_('section-what-is.title')}</h2>
 
   <p>
-  Uma <span class="font-semibold">árvore de decisão</span> é um modelo preditivo que representa uma série de decisões estruturadas em forma de árvore, onde cada <span class="italic">nó interno</span> corresponde a uma pergunta ou condição baseada nas características dos dados, e cada <span class="italic">ramo</span> leva a uma possível resposta ou divisão. As <span class="font-semibold">folhas</span> da árvore indicam o resultado final, como uma classe ou valor numérico. Esse modelo é amplamente utilizado em tarefas de <span class="underline">classificação</span> e <span class="underline">regressão</span> devido à sua interpretação intuitiva: ele simula um processo de tomada de decisão sequencial, em que seguimos um caminho lógico com base nas entradas até chegar a uma conclusão.
-</p>
+    {@html $_('section-what-is.definition', {
+      values: {
+        decision_tree: `<span class="font-semibold">${$_('section-what-is.decision_tree')}</span>`,
+        internal_node: `<span class="italic">${$_('section-what-is.internal_node')}</span>`,
+        branch: `<span class="italic">${$_('section-what-is.branch')}</span>`,
+        leaves: `<span class="font-semibold">${$_('section-what-is.leaves')}</span>`,
+        classification: `<span class="underline">${$_('section-what-is.classification')}</span>`,
+        regression: `<span class="underline">${$_('section-what-is.regression')}</span>`
+      }
+    })}
+  </p>
 
 </div>
 </div>
@@ -86,16 +117,20 @@
 <div class="scroll-wrapper-dark">
 <div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300  leading-relaxed space-y-6">
 
-  <h3 class="text-xl font-semibold mb-4">Como funciona a previsão em uma árvore de decisão</h3>
+  <h3 class="text-xl font-semibold mb-4">{$_('section-prediction.title')}</h3>
 
   <p>
-    Durante o processo de <span class="font-semibold">previsão</span>, a árvore de decisão recebe uma nova entrada (ou amostra) e a percorre do 
-    <span class="italic">nó raiz até uma folha</span>, seguindo as condições definidas em cada ponto de decisão. 
-    A cada etapa, ela analisa o valor de uma <span class="font-mono bg-muted px-1 py-0.5 rounded">feature</span> da entrada e escolhe o 
-    <span class="italic">ramo correspondente</span> com base na condição (por exemplo, se o valor é menor ou maior que um certo limite). 
-    Esse caminho é <span class="underline">único</span> e leva diretamente até uma 
-    <span class="font-semibold">folha</span>, onde está registrada a classe prevista (em classificadores) ou um valor numérico (em modelos de regressão). 
-    O processo é <span class="font-medium">rápido, direto e interpretável</span>, funcionando como uma sequência lógica de decisões que culmina em uma conclusão final.
+    {@html $_('section-prediction.description', {
+      values: {
+        prediction: `<span class="font-semibold">${$_('section-prediction.prediction')}</span>`,
+        root_to_leaf: `<span class="italic">${$_('section-prediction.root_to_leaf')}</span>`,
+        feature: `<span class="font-mono bg-muted px-1 py-0.5 rounded">${$_('section-prediction.feature')}</span>`,
+        corresponding_branch: `<span class="italic">${$_('section-prediction.corresponding_branch')}</span>`,
+        unique: `<span class="underline">${$_('section-prediction.unique')}</span>`,
+        leaf: `<span class="font-semibold">${$_('section-prediction.leaf')}</span>`,
+        fast_interpretable: `<span class="font-medium">${$_('section-prediction.fast_interpretable')}</span>`
+      }
+    })}
   </p>
 
 
