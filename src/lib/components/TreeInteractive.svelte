@@ -3,15 +3,18 @@
   import * as d3 from 'd3';
 
   export let treeData;
+
   let svg;
   const height = 700;
   const nodeSpacingX = 40;
   const nodeSpacingY = 100;
 
   let currentPath = [];
+  let x1 = 3;
+  let x2 = 7;
 
   function traverseTree(node, input) {
-    if (node.data.isLeaf) {
+    if (node.data.isLeaf || !node.children) {
       currentPath.push(node);
       return;
     }
@@ -19,17 +22,17 @@
     currentPath.push(node);
     const featureValue = input[node.data.feature];
 
+    const [left, right] = node.children;
     if (featureValue <= node.data.threshold) {
-      traverseTree(node.children[0], input);
+      traverseTree(left, input);
     } else {
-      traverseTree(node.children[1], input);
+      traverseTree(right, input);
     }
   }
 
   function highlightPath(nodes) {
     const delay = 800;
 
-    // Limpar estilos anteriores
     d3.select(svg).selectAll("circle")
       .transition()
       .duration(300)
@@ -51,13 +54,11 @@
     if (!treeData) return;
 
     currentPath = [];
-    const input = { x1: 3, x2: 7 }; // Exemplo de entrada
+    const input = { x1: Number(x1), x2: Number(x2) };
     const root = d3.hierarchy(treeData);
-    root.each((d, i) => d.id = i); // IDs únicos
-    const rootWithChildren = d3.hierarchy(treeData);
-    const treeLayout = d3.tree().size([1, 1]); // Dummy layout
-    treeLayout(rootWithChildren);
-    traverseTree(rootWithChildren, input);
+    root.each((d, i) => d.id = i);
+
+    traverseTree(root, input);
     highlightPath(currentPath);
   }
 
@@ -66,10 +67,10 @@
 
     const margin = { top: 40, right: 120, bottom: 40, left: 120 };
     const root = d3.hierarchy(treeData);
-    root.each((d, i) => d.id = i); // IDs únicos
-    const leaves = root.leaves();
-    const width = leaves.length * nodeSpacingX + margin.left + margin.right;
+    root.each((d, i) => d.id = i);
 
+    const leaves = root.leaves();
+    const width = Math.max(leaves.length * nodeSpacingX + margin.left + margin.right, 500);
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
@@ -96,20 +97,18 @@
 
     const defs = svgEl.append("defs");
 
-    const filter = defs.append("filter")
+    defs.append("filter")
       .attr("id", "dropShadow")
-      .attr("height", "130%");
-
-    filter.append("feDropShadow")
+      .attr("height", "130%")
+      .append("feDropShadow")
       .attr("dx", 2)
       .attr("dy", 2)
       .attr("stdDeviation", 2)
       .attr("flood-color", "var(--color-shadow-link)")
       .attr("flood-opacity", 0.4);
 
-    const gradientId = "nodeGradient";
     const grad = defs.append("radialGradient")
-      .attr("id", gradientId)
+      .attr("id", "nodeGradient")
       .attr("cx", "50%")
       .attr("cy", "50%")
       .attr("r", "50%");
@@ -133,10 +132,9 @@
       .attr("filter", "url(#dropShadow)")
       .attr("d", d3.linkVertical()
         .x(d => d.x)
-        .y(d => d.y)
-      );
+        .y(d => d.y));
 
-    // Nós
+    // Nodes
     const node = svgEl.selectAll(".node")
       .data(allNodes)
       .join("g")
@@ -147,7 +145,7 @@
 
     node.append("circle")
       .attr("r", 12)
-      .attr("fill", `url(#${gradientId})`)
+      .attr("fill", `url(#nodeGradient)`)
       .attr("stroke", "var(--color-node-stroke)")
       .attr("stroke-width", 2)
       .on("mouseover", function () {
@@ -157,7 +155,7 @@
       })
       .on("mouseout", function () {
         d3.select(this)
-          .attr("fill", `url(#${gradientId})`)
+          .attr("fill", `url(#nodeGradient)`)
           .attr("r", 12);
       });
 
@@ -179,10 +177,63 @@
 </script>
 
 <style>
-  circle {
-    transition: r 0.2s ease, fill 0.2s ease;
+  .control-panel {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    color: #333;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-group label {
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+    color: var(--color-label, #333);
+  }
+
+  .input-group input {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 0.4rem;
+    width: 80px;
+  }
+
+  button.predict-button {
+    background: linear-gradient(to right, #4f46e5, #3b82f6);
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  button.predict-button:hover {
+    background: linear-gradient(to right, #4338ca, #2563eb);
   }
 </style>
 
-<button on:click={simulatePrediction}>Prever entrada: x1=3, x2=7</button>
+<div class="control-panel">
+  <div class="input-group">
+    <label for="x">x:</label>
+    <input id="x" type="number" bind:value={x1} />
+  </div>
+  <div class="input-group">
+    <label for="y">y:</label>
+    <input id="y" type="number" bind:value={x2} />
+  </div>
+  <button class="predict-button" on:click={simulatePrediction}>
+    Prever ponto (x, y)
+  </button>
+</div>
+
+
 <svg bind:this={svg}></svg>

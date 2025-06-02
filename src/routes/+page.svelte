@@ -91,7 +91,7 @@
 
 
 <div class="scroll-wrapper-dark">
-<div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300  leading-relaxed space-y-6">
+<div style="background-color: var(--color-background-intro); margin-left: 8rem;">
 
   <h3 class="text-xl font-semibold mb-4">Como funciona a previsão em uma árvore de decisão</h3>
 
@@ -107,7 +107,7 @@
 
 
 {#if treeJson_2d}
-  <DecisionTree treeData={treeJson_2d} />
+  <DecisionTree2 treeData={treeJson_2d} />
 {:else}
   <p>Carregando árvore de decisão...</p>
   <p>Aqui vai uma árvore interativa, onde montamos um dado e vemos percorrer a árvore até a previsão</p>
