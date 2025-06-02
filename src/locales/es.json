@@ -67,5 +67,26 @@
         "unique": "único",
         "leaf": "hoja",
         "fast_interpretable": "rápido, directo e interpretable"
+    },
+    "section-gini": {
+        "title": "¿Cómo se eligen los cortes?",
+        "description": "En un árbol de decisión para clasificación binaria, los cortes se eligen basándose en la {purity} de las regiones creadas después de cada división. El algoritmo busca, de forma codiciosa, la mejor división en ese momento — es decir, elige la característica y el punto de corte que más aumenten la pureza de los subconjuntos generados.",
+        "purity": "pureza",
+        "purity_explanation": "La pureza de una región es una medida de qué tan homogéneas son las clases dentro de ella. Si todos los ejemplos en una región pertenecen a la misma clase, esa región se considera pura. Para cuantificar esta pureza, usamos métricas como la {entropy} y el {gini_index}.",
+        "entropy": "Entropía",
+        "gini_index": "Índice Gini",
+        "metrics_behavior": "Estas métricas alcanzan sus valores mínimos (cero) cuando todos los ejemplos son de la misma clase (proporción 0 o 1), y valores máximos cuando hay equilibrio entre las clases (proporción 0.5), es decir, cuando la incertidumbre es mayor. El algoritmo calcula la ganancia de pureza antes y después de cada posible división — llamada {information_gain} (con entropía) o {gini_gain} — y elige el corte que más aumenta esta ganancia.",
+        "information_gain": "Ganancia de Información",
+        "gini_gain": "Ganancia de Gini",
+        "process_conclusion": "Este proceso se repite recursivamente, creando una segmentación binaria del espacio, hasta que se alcanza un criterio de parada, como el número mínimo de puntos por región.",
+        "interaction_hint": "Pasa el mouse sobre el gráfico para ver los valores específicos de entropía y Gini para cada proporción de clase positiva.",
+        "chart_labels": {
+            "x_axis": "Proporción de la clase positiva (p)",
+            "y_axis": "Pureza (Entropía o Gini)",
+            "entropy_legend": "Entropía",
+            "gini_legend": "Gini",
+            "entropy_tooltip": "Entropía: {value}",
+            "gini_tooltip": "Gini: {value}"
+        }
     }
 }

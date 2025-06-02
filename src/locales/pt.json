@@ -52,6 +52,27 @@
         "leaf": "folha",
         "fast_interpretable": "rápido, direto e interpretável"
     },
+    "section-gini": {
+        "title": "Como são escolhidos os cortes?",
+        "description": "Em uma árvore de decisão para classificação binária, os cortes são escolhidos com base na {purity} das regiões criadas após cada divisão. O algoritmo busca, de forma gulosa, a melhor divisão naquele instante — ou seja, escolhe a característica e o ponto de corte que mais aumentam a pureza dos subconjuntos gerados.",
+        "purity": "pureza",
+        "purity_explanation": "A pureza de uma região é uma medida de quão homogêneas são as classes dentro dela. Se todos os exemplos em uma região pertencem à mesma classe, essa região é considerada pura. Para quantificar essa pureza, usamos métricas como a {entropy} e o {gini_index}.",
+        "entropy": "Entropia",
+        "gini_index": "Índice Gini",
+        "metrics_behavior": "Essas métricas atingem seus valores mínimos (zero) quando todos os exemplos são da mesma classe (proporção 0 ou 1), e valores máximos quando há equilíbrio entre as classes (proporção 0.5), ou seja, quando a incerteza é maior. O algoritmo calcula o ganho de pureza antes e depois de cada possível divisão — chamado de {information_gain} (com entropia) ou {gini_gain} — e escolhe o corte que mais aumenta esse ganho.",
+        "information_gain": "Ganho de Informação",
+        "gini_gain": "Ganho de Gini",
+        "process_conclusion": "Esse processo é repetido recursivamente, criando uma segmentação binária do espaço, até que um critério de parada seja atingido, como o número mínimo de pontos por região.",
+        "interaction_hint": "Passe o mouse sobre o gráfico para ver os valores específicos de entropia e Gini para cada proporção de classe positiva.",
+        "chart_labels": {
+            "x_axis": "Proporção da classe positiva (p)",
+            "y_axis": "Pureza (Entropia ou Gini)",
+            "entropy_legend": "Entropia",
+            "gini_legend": "Gini",
+            "entropy_tooltip": "Entropia: {value}",
+            "gini_tooltip": "Gini: {value}"
+        }
+    },
     "page": {
         "testTitle": "Página de Teste",
         "step": "Passo {number}",
