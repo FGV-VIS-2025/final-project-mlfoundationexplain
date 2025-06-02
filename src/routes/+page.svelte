@@ -177,6 +177,12 @@
 <!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
 
   <h2 class="text-5xl font-semibold mb-4 py-8">A árvore completa</h2>
+
+  <p class="text-justify">
+  Uma árvore de decisão que cresce completamente continua realizando divisões no espaço dos dados até que cada folha contenha apenas exemplos de uma única classe, alcançando assim <span class="font-semibold">100% de acurácia</span> no conjunto de treinamento. Embora esse modelo memorize perfeitamente os dados, ele tende a ser muito complexo e específico, o que pode levar ao <span class="italic">sobreajuste</span>, ou seja, a uma menor capacidade de generalizar para dados novos e não vistos.</p>
+
+  <p class="text-justify"><b>Veja abaixo como ficaria a árvore completa gerada com todas as features dos nossos dados de exemplo</b></p>
+
 </div>
 
 <div class="my-19 mt-40 mb-40">
@@ -187,18 +193,7 @@
   {/if}
 </div>
 
-
-<!-- <div >
-  {#if treeJson}
-    <DecisionTree2 treeData={treeJson_2d} />
-  {:else}
-    <p>Carregando árvore de decisão...</p>
-  {/if}
-</div> -->
-
-
-
-<!-- <div class="max-w-7xl mx-auto p-6 text-justify"> -->
+<!-- 
  <div class="max-w-7xl mx-auto p-6 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300">
 
   <h2 class="text-2xl font-bold mb-4">{$_('page.testTitle')}</h2>
@@ -238,9 +233,9 @@
   <p>
     Curabitur vel odio nec metus egestas rutrum. Quisque nec lorem ut elit tincidunt eleifend. Aenean pretium, justo sed volutpat pulvinar, eros justo sollicitudin arcu, ut sagittis nulla elit sit amet ante. Duis sit amet urna sed orci scelerisque tincidunt.
   </p>
-</div>
+</div> -->
 
- <div class="scroll-wrapper-default">
+ <!-- <div class="scroll-wrapper-default">
   <div class="max-w-7xl mx-auto px-6">
     <ScrollStory1 />
   </div>
@@ -262,13 +257,15 @@
   </p>
 
 
-</div>
+</div> -->
 
+
+<!-- 
 <div class="scroll-wrapper-dark">
   <div class="max-w-7xl mx-auto px-6">
     <ScrollStory2 />
   </div>
-</div>
+</div> -->
 
  <div class="scroll-wrapper-default">
   <div class="max-w-7xl mx-auto px-6">
