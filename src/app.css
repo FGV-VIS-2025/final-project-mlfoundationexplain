@@ -28,6 +28,10 @@
 
   --color-text-node: #3e2465;         /* texto dentro do nó (roxo escuro) */
   --color-text-shadow: #dcd6f7;       /* sombra do texto do nó */
+
+  /* Scatterplot */
+  --color-classe0: #0c5e27;
+  --color-classe1: #4B0082;
 }
 
 /* Tema escuro (aplicado quando <html class="dark">) */
@@ -52,6 +56,10 @@
 
   --color-text-node: #d6eadf;         /* texto dentro do nó (verde claro) */
   --color-text-shadow: #95d196;       /* sombra do texto do nó */
+
+
+  --color-classe0: #88e788; /* 82c591  F5F5DC*/ 
+  --color-classe1: #9774c0;
 }
 
 

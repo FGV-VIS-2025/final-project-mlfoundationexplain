@@ -108,9 +108,21 @@ try {
   yTicks = yScale.ticks(5);
 
   cities = [...new Set(data.map(d => d.city))];
+  // colorScale = d3.scaleOrdinal()
+  //   .domain(cities)
+  //   .range(d3.schemeCategory10);
+
+  //PALETA PERSONALIZADA
+  const coresPersonalizadas = {
+  'San Francisco': 'var(--color-classe0)',//'#006400',
+  'Sacramento': 'var(--color-classe1)'//'#4B0082'
+  // adicione outras cidades conforme necessário
+  };
+
   colorScale = d3.scaleOrdinal()
     .domain(cities)
-    .range(d3.schemeCategory10);
+    .range(cities.map(c => coresPersonalizadas[c] || '#999')); // cor fallback se cidade não estiver no dicionário
+
 
   // Densidade dos dados
   const kde = kernelDensityEstimator(kernelEpanechnikov(500), xScale.ticks(40));
@@ -129,7 +141,9 @@ try {
     .attr('cy', d => yScale(d.y))
     .attr('r', 3)
     .attr('fill', d => colorScale(d.city))
-    .attr('opacity', 0.4);
+    .attr('stroke', 'var(--color-text)')
+    .attr('stroke-width', 0.2) // ou 1, 2, etc.
+    .attr('opacity', 1);
 
   // Eixo X
   svg.append('line')
@@ -235,7 +249,7 @@ try {
         .y(d => margin.top - d[1] * 200000)(xDensity[city])
       )
       .attr('fill', 'none')
-      .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+      .attr('stroke', colorScale(city))
       .attr('stroke-width', 2);
   });
 
@@ -247,7 +261,7 @@ try {
         .y(d => yScale(d[0]))(yDensity[city])
       )
       .attr('fill', 'none')
-      .attr('stroke', i === 0 ? 'steelblue' : 'coral')
+      .attr('stroke', colorScale(city))
       .attr('stroke-width', 2);
   });
 
