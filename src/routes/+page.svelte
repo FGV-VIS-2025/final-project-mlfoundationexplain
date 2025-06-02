@@ -77,9 +77,9 @@
 </div>
 
 
-<div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300 ">
+<div class="max-w-7xl mx-auto pt-40 pb-10 text-justify  transition-colors duration-300 ">
 
-  <h2 class="text-3xl font-extrabold">A criação da árvore</h2>
+  <h2 class="text-3xl font-extrabold">A criação da árvore e cortes no espaço do dados</h2>
 </div>
 
  <div style="background-color: var(--color-background);">

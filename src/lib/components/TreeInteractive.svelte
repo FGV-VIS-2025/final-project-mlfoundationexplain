@@ -176,17 +176,17 @@
       .attr("r", 12)
       .attr("fill", `url(#nodeGradient)`)
       .attr("stroke", "var(--color-node-stroke)")
-      .attr("stroke-width", 2)
-      .on("mouseover", function () {
-        d3.select(this)
-          .attr("fill", "var(--color-node-hover-fill)")
-          .attr("r", 16);
-      })
-      .on("mouseout", function () {
-        d3.select(this)
-          .attr("fill", `url(#nodeGradient)`)
-          .attr("r", 12);
-      });
+      .attr("stroke-width", 2);
+      // .on("mouseover", function () {
+      //   d3.select(this)
+      //     // .attr("fill", "var(--color-node-hover-fill)")
+      //     .attr("r", 16);
+      // })
+      // .on("mouseout", function () {
+      //   d3.select(this)
+      //     // .attr("fill", `url(#nodeGradient)`)
+      //     .attr("r", 12);
+      // });
 
     const text = node.append("text")
       .attr("dy", "0.35em")
