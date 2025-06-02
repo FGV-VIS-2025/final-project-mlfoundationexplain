@@ -91,13 +91,13 @@
 
 
 
-<div class="scroll-wrapper-green">
+<!-- <div class="scroll-wrapper-green"> -->
 
-<div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: var(--color-background-section);">
+<div class="max-w-7xl mx-auto p-6 py-10 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: var(--color-background-section);">
 
 <!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
 
-  <h3 class="text-xl font-semibold mb-4">Como funciona a previsão em uma árvore de decisão</h3>
+  <h2 class="text-xl font-semibold mb-4">Como funciona a previsão em uma árvore de decisão</h2>
 
   <p>
     Durante o processo de <span class="font-semibold">previsão</span>, a árvore de decisão recebe uma nova entrada (ou amostra) e a percorre do 
@@ -109,6 +109,8 @@
     O processo é <span class="font-medium">rápido, direto e interpretável</span>, funcionando como uma sequência lógica de decisões que culmina em uma conclusão final.
   </p>
 
+  <p><b>Para ver isso na prática, escolha um valor para cada variável e vejo qual será a previsão nessa árvore já construida anteriormente:</b></p>
+
 
 {#if treeJson_2d}
   <DecisionTree2 treeData={treeJson_2d} />
@@ -118,7 +120,7 @@
 {/if}
 
 </div>
-</div>
+<!-- </div> -->
 
 
 <div class="my-19 mt-40 mb-40">
