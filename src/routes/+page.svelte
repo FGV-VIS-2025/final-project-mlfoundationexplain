@@ -90,8 +90,12 @@
 
 
 
-<div class="scroll-wrapper-dark">
-<div style="background-color: var(--color-background); margin-left: 8rem;">
+
+<div class="scroll-wrapper-green">
+
+<div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: var(--color-background-section);">
+
+<!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
 
   <h3 class="text-xl font-semibold mb-4">Como funciona a previsão em uma árvore de decisão</h3>
 

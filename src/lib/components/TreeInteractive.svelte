@@ -61,7 +61,10 @@
         d3.select(`#node-${node.id} circle`)
           .transition()
           .duration(300)
-          .attr("fill", "orange")
+          // .attr("fill", "orange")
+          // .attr("fill", "#f5a65b")
+          // .attr("fill", "#1a936f")
+          .attr("fill", "var(--color-node-active)")
           .attr("r", 20);
       }, i * delay);
     });
@@ -118,7 +121,7 @@
       .attr("height", height)
       .attr("viewBox", `0 0 ${width} ${height}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
-      .style("background-color", "var(--color-background)")
+      .style("background-color", "var(--color-background-section)")
       .style("font-family", "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif")
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -203,9 +206,32 @@
 </script>
 
 <style>
+
+  .tree-layout-container {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .tree-container {
+    flex: 1 1 auto;
+    min-width: 500px;
+    max-width: 1000px;
+  }
+
+  .side-panel {
+    flex: 0 0 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
   .control-panel {
     display: flex;
     align-items: center;
+    flex-direction: column;
     gap: 1rem;
     margin-bottom: 1rem;
     flex-wrap: wrap;
@@ -220,7 +246,7 @@
   .input-group label {
     font-size: 0.9rem;
     margin-bottom: 0.2rem;
-    color: var(--color-label, #333);
+    color: var(--color-text);
   }
 
   .input-group input {
@@ -232,9 +258,14 @@
   }
 
   button.predict-button {
-    background: linear-gradient(to right, #4f46e5, #3b82f6);
+
+    
+    transition: background-color 0.3s;
+    /* background: linear-gradient(to right, var(--color-primary), #166842); */
+    background: var(--color-button-previsão);
     color: white;
     padding: 0.5rem 1.2rem;
+    margin-top: 1.5rem;
     border: none;
     border-radius: 0.5rem;
     font-size: 1rem;
@@ -249,17 +280,25 @@
 
   .prediction-result {
     margin-top: 1rem;
-    background: #fef3c7;
-    color: #92400e;
+    /* background: #fef3c7; */
+    background: var(--color-background-previsão);
+    /* color: #92400e; */
+    color:  var(--color-text-previsão);
     padding: 0.8rem 1rem;
-    border-left: 5px solid #facc15;
+    border-left: 5px solid var(--color-node-active);
     border-radius: 0.4rem;
     font-size: 1.1rem;
     max-width: 240px;
   }
 </style>
 
-<div class="control-panel">
+<div class="tree-layout-container">
+  <div class="tree-container">
+    <svg bind:this={svg}></svg>
+  </div>
+
+  <div class="side-panel">
+    <div class="control-panel">
   <div class="input-group">
     <label for="feature0">feature 0:</label>
     <input id="feature0" type="number" bind:value={feature0} />
@@ -268,15 +307,22 @@
     <label for="feature1">feature 1:</label>
     <input id="feature1" type="number" bind:value={feature1} />
   </div>
-  <button class="predict-button" on:click={simulatePrediction}>
-    Prever ponto
-  </button>
 
-  {#if finalPrediction}
-    <div class="prediction-result">
-      A previsão final foi: <strong>{finalPrediction}</strong>
-    </div>
-  {/if}
+  <div class="button-group">
+    <button class="predict-button" on:click={simulatePrediction}>
+      Prever ponto
+    </button>
+  </div>
 </div>
 
-<svg bind:this={svg}></svg>
+
+    {#if finalPrediction}
+      <div class="prediction-result">
+        A previsão final foi: <strong>{finalPrediction}</strong>
+      </div>
+    {/if}
+  </div>
+</div>
+
+
+<!-- <svg bind:this={svg}></svg> -->
