@@ -52,7 +52,7 @@
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
       .attr("fill", "white")
-      .text('Proporção da classe positiva (p)');
+      .text($_('section-gini.chart_labels.x_axis'));
 
     svg.append('text')
       .attr('transform', 'rotate(-90)')
@@ -61,7 +61,7 @@
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
       .attr("fill", "white")
-      .text('Pureza (Entropia ou Gini)');
+      .text($_('section-gini.chart_labels.y_axis'));
 
     // Funções de pureza
     const entropy = p => (p === 0 || p === 1) ? 0 : -p * Math.log2(p) - (1 - p) * Math.log2(1 - p);
@@ -102,7 +102,7 @@
     legend.append('text')
       .attr('x', 18)
       .attr('y', 10)
-      .text('Entropia')
+      .text($_('section-gini.chart_labels.entropy_legend'))
       .attr("fill", "white")
       .attr('font-size', 12);
 
@@ -115,7 +115,7 @@
     legend.append('text')
       .attr('x', 18)
       .attr('y', 30)
-      .text('Gini')
+      .text($_('section-gini.chart_labels.gini_legend'))
       .attr("fill", "white")
       .attr('font-size', 12);
 
@@ -175,12 +175,12 @@
         tooltipText
           .attr('x', margin.left + xScale(px) + 18)
           .attr('y', margin.top + 28)
-          .text(`Entropia: ${ent}`);
+          .text($_('section-gini.chart_labels.entropy_tooltip', { values: { value: ent } }));
 
         tooltipText2
           .attr('x', margin.left + xScale(px) + 18)
           .attr('y', margin.top + 44)
-          .text(`Gini: ${gin}`);
+          .text($_('section-gini.chart_labels.gini_tooltip', { values: { value: gin } }));
         
           updateDots(px);
       })
@@ -232,30 +232,37 @@
   <div bind:this={svgContainer}></div>
   <div class="descricao">
   
-    <h3>Como são escolhidos os cortes?</h3>
-    
-      Em uma árvore de decisão para classificação binária, os cortes são escolhidos com base na 
-      pureza das regiões criadas após cada divisão. O algoritmo busca, de forma gulosa, a melhor 
-      divisão naquele instante — ou seja, escolhe a característica e o ponto de corte que mais 
-      aumentam a pureza dos subconjuntos gerados.
+    <h3>{$_('section-gini.title')}</h3>
+    <p>
+
+      {@html $_('section-gini.description', {
+        values: {
+          purity: `<strong>${$_('section-gini.purity')}</strong>`
+        }
+      })}
       <br>
       
         
-        A pureza de uma região é uma medida de quão homogêneas são as classes dentro dela. Se todos os exemplos 
-        em uma região pertencem à mesma classe, essa região é considerada pura. Para quantificar essa pureza, 
-        usamos métricas como a Entropia e o Índice Gini.
+        {@html $_('section-gini.purity_explanation', {
+          values: {
+            entropy: `<strong>${$_('section-gini.entropy')}</strong>`,
+            gini_index: `<strong>${$_('section-gini.gini_index')}</strong>`
+          }
+        })}
      
       <br>
       
-        Essas métricas atingem seus valores mínimos (zero) quando todos os exemplos são da mesma classe (proporção 
-        0 ou 1), e valores máximos quando há equilíbrio entre as classes (proporção 0.5), ou seja, quando a 
-        incerteza é maior. O algoritmo calcula o ganho de pureza antes e depois de cada possível divisão — 
-        chamado de Ganho de Informação (com entropia) ou Ganho de Gini — e escolhe o corte que mais aumenta esse ganho.
+        {@html $_('section-gini.metrics_behavior', {
+          values: {
+            information_gain: `<strong>${$_('section-gini.information_gain')}</strong>`,
+            gini_gain: `<strong>${$_('section-gini.gini_gain')}</strong>`
+          }
+        })}
       
       <br>
-      Esse processo é repetido recursivamente, criando uma segmentação binária do espaço, até que um critério de 
-      parada seja atingido, como o número mínimo de pontos por região.
-      <strong>Passe o mouse sobre o gráfico para ver os valores específicos de entropia e Gini para cada proporção de classe positiva.</strong>
+      {$_('section-gini.process_conclusion')}
+      <strong>{$_('section-gini.interaction_hint')}</strong>
+    </p>
   </div>
 </div>
 

@@ -63,7 +63,7 @@ const backgroundLayer = svg.append('g').lower();
 
 try {
   // Carrega e processa CSV
-  const res = await fetch('/data/housing_limpo.csv');
+  const res = await fetch('data/housing_limpo.csv');
   const text = await res.text();
 
   const lines = text.trim().split('\n');
@@ -267,7 +267,7 @@ try {
 
   // Carrega a árvore de cortes
 
-   const treeRes = await fetch('/trees/cortes_2d.json');
+   const treeRes = await fetch('trees/cortes_2d.json');
     const cortes = await treeRes.json();
 
     const bboxInicial = {
