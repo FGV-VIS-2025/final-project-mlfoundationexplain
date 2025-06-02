@@ -64,8 +64,14 @@
 </div>
 
 
-<div class="scroll-wrapper-dark">
-<div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300  leading-relaxed space-y-6">
+<!-- <div class="scroll-wrapper-dark"> -->
+ <div
+  class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  style="background-color: #2e3e5a; color: white;"
+>
+
+
+<!-- <div class="max-w-7xl mx-auto p-6 pt-0 pb-0 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: #2e3e5a"> -->
 
   <h2 class="text-3xl font-extrabold  mb-6">O que é?</h2>
 
@@ -74,7 +80,7 @@
 </p>
 
 </div>
-</div>
+<!-- </div> -->
 
 
 <div class="max-w-7xl mx-auto pt-40 pb-10 text-justify  transition-colors duration-300 ">
