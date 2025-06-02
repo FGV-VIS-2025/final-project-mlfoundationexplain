@@ -1,6 +1,27 @@
 <script>
+  import { onMount, afterUpdate } from 'svelte';
   import * as d3 from 'd3';
+  // import { todosCortes } from './utils/desenho.js'; // ajuste o caminho se necessário
+
+  
+  export let currentStep = 0;
+
+  let stepRefs = Array(4);
+  let containerEl;
+
+    // dimensões do gráfico
+  const width = 700;
+  const height = 650;
+  const margin = { top: 100, right: 70, bottom: 100, left: 200 };
+
+  
+  // colunas para os cortes em 2d
+  
+  
   export async function todosCortes(maxCortes, svgElem, width, height, margin) {
+    const xKey = 'total_rooms';
+    const yKey = 'median_house_value';
+    const cityKey = 'city';
     // função auxiliar para calcular a densidade
     function kernelDensityEstimator(kernel, xValues) {
     return function (sample) {
@@ -176,7 +197,7 @@ try {
 
   svg.append('text')
     .attr('fill', 'var(--color-text)')
-    .attr('transform', `translate(15, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
+    .attr('transform', `translate(140, ${(height - margin.bottom + margin.top) / 2}) rotate(-90)`)
     .attr('font-size', 12)
     .attr('text-anchor', 'middle')
     .attr('font-weight', 'bold')
@@ -232,18 +253,16 @@ try {
 
   // Carrega a árvore de cortes
 
-  // const maxCortes = 7
    const treeRes = await fetch('/trees/cortes_2d.json');
-const cortes = await treeRes.json();
+    const cortes = await treeRes.json();
 
-const bboxInicial = {
-  x0: xMin,
-  y0: yMin,
-  x1: xMax,
-  y1: yMax
-};
+    const bboxInicial = {
+      x0: xMin,
+      y0: yMin,
+      x1: xMax,
+      y1: yMax
+    };
 
-// NOVA versão da função que desenha os cortes em ordem BFS
 function desenharCortesBFS(bboxInicial, root, maxCortes) {
   const fila = [{ bbox: bboxInicial, node: root }];
   let cortesFeitos = 0;
@@ -546,4 +565,55 @@ svg.append('rect')
       densityTooltip.style('display', 'none');
 });
 }
+
+  // Atualiza o SVG após cada mudança de etapa
+$: if (containerEl) {
+  containerEl.innerHTML = '';
+  todosCortes(currentStep, containerEl, width, height, margin);
+}
+
+
+  // Observa as etapas que entram na viewport
+  onMount(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = stepRefs.findIndex((el) => el === entry.target);
+            if (index !== -1) {
+              currentStep = index;
+            }
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    stepRefs.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  });
 </script>
+
+<style>
+  .scroll-container {
+    display: flex;
+  }
+  .viz {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+</style>
+
+<div class="scroll-container">
+  <div class="viz">
+    <svg bind:this={containerEl} width="700" height="650"></svg>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import Tree from './Tree2.svelte'; // importe seu componente de árvore
+  import ScrollStory from './scatterCutsViz.svelte'; // ajuste o caminho
 
   let currentStep = 0;
   const totalSteps = 17;
@@ -114,30 +115,45 @@
     </div> -->
     <div class="viz">
     <div class="dual-tree">
-    <Tree {treeData} step={currentStep} />
+  <div class="scroll-container-svg">
+    <ScrollStory {currentStep} />
+  </div>
+  <div class="tree-container-svg">
     <Tree {treeData} step={currentStep} />
   </div>
+</div>
 </div>
 
   </div>
 </div>
 
 <style>
-  .dual-tree {
+.dual-tree {
   display: flex;
   gap: 2rem;
   width: 100%;
   justify-content: center;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
-.dual-tree :global(svg) {
-  width: 100%;
-  height: auto;
-  max-width: 100%;
+.scroll-container-svg {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
 }
 
-
+.tree-container-svg {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: visible;
+}
 
   .scroll-container {
   display: flex;
