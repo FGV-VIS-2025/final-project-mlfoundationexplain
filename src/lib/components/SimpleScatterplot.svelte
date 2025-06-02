@@ -5,75 +5,101 @@
   // Propriedades do componente
   export let width = 800;
   export let height = 400;
-  export let minPrice = 187518;
-  export let maxPrice = 27500000;
   export let dotRadius = 4;
-  export let initialCutoff = 3145000;
-  export let dataCount = 200;
+  export let data = []; // Array de valores numéricos
+  export let bins = 20; // Número de bins para cálculo de frequência
+  export let initialCutoffPercentile = 0.5; // Cutoff inicial como percentil (0-1)
 
   let svg;
-  let data = [];
-  let cutoffPrice = initialCutoff;
-  let formattedPrice = '';
+  let cutoffValue = 0;
+  let formattedCutoff = '';
 
   const margin = { top: 40, right: 40, bottom: 80, left: 100 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
-  // Escalas
-  const xScale = d3.scaleLinear()
-    .domain([minPrice, maxPrice])
-    .range([0, chartWidth]);
+  // Variáveis reativas para escalas
+  let xScale, yScale;
+  let plotPoints = [];
+  let minValue = 0, maxValue = 0;
 
-  const yScale = d3.scaleLinear()
-    .range([chartHeight, 0]);
+  // Calcular dados de frequência a partir do array numérico
+  function calculateFrequencies() {
+    if (!data || data.length === 0) return [];
 
-  // Gerar dados
-  function generateData() {
-    data = [];
+    minValue = d3.min(data);
+    maxValue = d3.max(data);
     
-    // Gerar dados com distribuição variada
-    for (let i = 0; i < dataCount; i++) {
-      let price;
-      if (i < dataCount * 0.3) {
-        // 30% em faixa baixa
-        price = minPrice + (maxPrice - minPrice) * 0.3 * Math.random();
-      } else if (i < dataCount * 0.7) {
-        // 40% em faixa média
-        price = minPrice + (maxPrice - minPrice) * (0.3 + 0.4 * Math.random());
-      } else {
-        // 30% em faixa alta
-        price = minPrice + (maxPrice - minPrice) * (0.7 + 0.3 * Math.random());
-      }
+    // Criar bins do histograma
+    const histogram = d3.histogram()
+      .domain([minValue, maxValue])
+      .thresholds(bins);
+    
+    const binData = histogram(data);
+    
+    // Converter bins em pontos do scatter plot
+    const points = [];
+    binData.forEach((bin, binIndex) => {
+      const binCenter = (bin.x0 + bin.x1) / 2;
+      const frequency = bin.length;
       
-      data.push({
-        price: price,
-        id: i
-      });
-    }
+      // Criar múltiplos pontos para cada bin baseado na frequência
+      for (let i = 0; i < frequency; i++) {
+        points.push({
+          value: binCenter,
+          frequency: frequency,
+          binIndex: binIndex,
+          pointIndex: i,
+          id: `${binIndex}-${i}`
+        });
+      }
+    });
+    
+    return points;
   }
 
-  function getPlotPoints() {
-    if (!data || data.length === 0) {
-      return [];
-    }
-    
-    const points = data.map((d, i) => {
-      // Posição X baseada no preço
-      const x = xScale(d.price);
-      
-      // Posição Y aleatória com certa distribuição
-      const randomY = Math.random() * (chartHeight - 20) + 10;
+  // Atualizar escalas e pontos do gráfico
+  function updateVisualization() {
+    if (!data || data.length === 0) return;
+
+    const frequencies = calculateFrequencies();
+    const maxFrequency = d3.max(frequencies, d => d.frequency) || 1;
+
+    // Atualizar escalas
+    xScale = d3.scaleLinear()
+      .domain([minValue, maxValue])
+      .range([0, chartWidth]);
+
+    yScale = d3.scaleLinear()
+      .domain([0, maxFrequency + 1])
+      .range([chartHeight, 0]);
+
+    // Calcular posições dos pontos
+    plotPoints = frequencies.map(d => {
+      const x = xScale(d.value);
+      // Empilhar pontos verticalmente baseado no índice dentro do bin
+      // Começar do y = 1 para evitar sobreposição com o eixo
+      const baseY = d.pointIndex + 1;
+      const y = yScale(baseY) + (Math.random() - 0.5) * 2; // Pequeno jitter para visibilidade
       
       return {
         ...d,
         x: x,
-        y: randomY,
-        belowCutoff: d.price < cutoffPrice
+        y: y,
+        belowCutoff: d.value < cutoffValue
       };
     });
-    
-    return points;
+
+    // Definir cutoff inicial se não estiver definido
+    if (cutoffValue === 0) {
+      const sortedData = [...data].sort((a, b) => a - b);
+      cutoffValue = sortedData[Math.floor(sortedData.length * initialCutoffPercentile)];
+      updateFormattedCutoff();
+    }
+
+    // Força a atualização dos ticks após as escalas estarem prontas
+    xTicks = getXTicks();
+    yTicks = getYTicks();
   }
 
   let isDragging = false;
@@ -99,35 +125,43 @@
   }
 
   function handleDrag(event) {
-    if (!svg) return;
+    if (!svg || !xScale) return;
     
     const rect = svg.getBoundingClientRect();
     const x = event.clientX - rect.left - margin.left;
     const constrainedX = Math.max(0, Math.min(chartWidth, x));
-    const newPrice = xScale.invert(constrainedX);
-    cutoffPrice = Math.max(minPrice, Math.min(maxPrice, newPrice));
-    updateFormattedPrice();
+    const newValue = xScale.invert(constrainedX);
+    cutoffValue = Math.max(minValue, Math.min(maxValue, newValue));
+    updateFormattedCutoff();
   }
 
-  function updateFormattedPrice() {
-    formattedPrice = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+  function updateFormattedCutoff() {
+    formattedCutoff = cutoffValue.toLocaleString('pt-BR', {
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(cutoffPrice);
+      maximumFractionDigits: 2
+    });
+  }
+
+  // Função para formatar valores com K quando > 10000
+  function formatValue(value) {
+    if (value >= 10000) {
+      return `${(value / 1000).toFixed(0)}K`;
+    }
+    return value.toLocaleString('pt-BR', { maximumFractionDigits: 1 });
   }
 
   // Eixos
   function getXTicks() {
+    if (!xScale) return [];
     return xScale.ticks(8).map(tick => ({
       value: tick,
       x: xScale(tick),
-      label: `$${(tick / 1000000).toFixed(1)}M`
+      label: formatValue(tick)
     }));
   }
 
   function getYTicks() {
+    if (!yScale) return [];
     return yScale.ticks(6).map(tick => ({
       value: tick,
       y: yScale(tick),
@@ -136,13 +170,20 @@
   }
 
   // Variáveis reativas
-  let plotPoints = [];
+  let xTicks = [];
+  let yTicks = [];
   
   // Reativos
-  $: cutoffX = xScale(cutoffPrice);
-  $: xTicks = getXTicks();
-  $: yTicks = getYTicks();
-  $: plotPoints = data.length > 0 ? getPlotPoints() : [];
+  $: if (data && data.length > 0) {
+    updateVisualization();
+  }
+  $: cutoffX = xScale ? xScale(cutoffValue) : 0;
+  $: if (xScale) {
+    xTicks = getXTicks();
+  }
+  $: if (yScale) {
+    yTicks = getYTicks();
+  }
   
   // Calcular posição do tooltip para que apareça à esquerda ou direita
   $: tooltipOnRight = cutoffX < chartWidth / 2;
@@ -150,8 +191,9 @@
   $: tooltipAnchor = tooltipOnRight ? "start" : "end";
 
   onMount(() => {
-    generateData();
-    updateFormattedPrice();
+    if (data && data.length > 0) {
+      updateVisualization();
+    }
   });
 </script>
 
@@ -181,14 +223,14 @@
         {/each}
       </g>
       
-      <!-- Etiquetas de ejes -->
+      <!-- Etiquetas de eixos -->
       <text 
         x={chartWidth / 2} 
         y={chartHeight + 50} 
         text-anchor="middle" 
         class="axis-label"
       >
-        Precio
+        Valor
       </text>
       
       <text 
@@ -198,11 +240,11 @@
         class="axis-label"
         transform="rotate(-90)"
       >
-        Frecuencia
+        Frequência
       </text>
       
-      <!-- Puntos del scatter plot -->
-      {#each plotPoints as point, i}
+      <!-- Pontos do scatter plot -->
+      {#each plotPoints as point}
         <circle
           cx={point.x}
           cy={point.y}
@@ -215,58 +257,60 @@
         />
       {/each}
       
-      <!-- Línea de corte -->
-      <line
-        x1={cutoffX}
-        y1="0"
-        x2={cutoffX}
-        y2={chartHeight}
-        stroke="#28a745"
-        stroke-width="2"
-        stroke-dasharray="5,5"
-        class="cutoff-line"
-      />
-      
-      <!-- Handle de la línea de corte -->
-      <circle
-        cx={cutoffX}
-        cy="-15"
-        r="8"
-        fill="#28a745"
-        stroke="white"
-        stroke-width="2"
-        class="cutoff-handle"
-        on:mousedown={handleMouseDown}
-      />
-      
-      <!-- Tooltip del precio -->
-      <g class="price-tooltip" transform="translate({tooltipX}, -35)">
-        <rect
-          x={tooltipOnRight ? "5" : "-95"}
-          y="-15"
-          width="90"
-          height="20"
-          rx="3"
-          fill="rgba(40, 167, 69, 0.9)"
+      <!-- Linha de corte -->
+      {#if xScale}
+        <line
+          x1={cutoffX}
+          y1="0"
+          x2={cutoffX}
+          y2={chartHeight}
+          stroke="#28a745"
+          stroke-width="2"
+          stroke-dasharray="5,5"
+          class="cutoff-line"
+        />
+        
+        <!-- Handle da linha de corte -->
+        <circle
+          cx={cutoffX}
+          cy="-15"
+          r="8"
+          fill="#28a745"
           stroke="white"
-          stroke-width="1"
+          stroke-width="2"
+          class="cutoff-handle"
+          on:mousedown={handleMouseDown}
         />
-        <text
-          x={tooltipOnRight ? "50" : "-50"}
-          y="-1"
-          text-anchor={tooltipAnchor}
-          fill="white"
-          font-size="12"
-          font-weight="bold"
-        >
-          price &lt; {formattedPrice}
-        </text>
-        <!-- Flecha que apunta al cutoff -->
-        <polygon
-          points={tooltipOnRight ? "0,-1 6,-1 3,5" : "0,-1 -6,-1 -3,5"}
-          fill="rgba(40, 167, 69, 0.9)"
-        />
-      </g>
+        
+        <!-- Tooltip do valor de corte -->
+        <g class="price-tooltip" transform="translate({tooltipX}, -35)">
+          <rect
+            x={tooltipOnRight ? "5" : "-120"}
+            width="115"
+            height="20"
+            y="-15"
+            rx="3"
+            fill="rgba(40, 167, 69, 0.9)"
+            stroke="white"
+            stroke-width="1"
+          />
+          <text
+            x={tooltipOnRight ? "62" : "-62"}
+            y="-1"
+            text-anchor="middle"
+            fill="white"
+            font-size="12"
+            font-weight="bold"
+          >
+            valor &lt; {formattedCutoff}
+          </text>
+          <!-- Seta que aponta para o cutoff -->
+          <polygon
+            points={tooltipOnRight ? "0,-1 6,-1 3,5" : "0,-1 -6,-1 -3,5"}
+            fill="rgba(40, 167, 69, 0.9)"
+          />
+        </g>
+      {/if}
     </g>
   </svg>
 </div>
