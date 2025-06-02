@@ -8,6 +8,50 @@
             "light": "☀️ Claro"
         }
     },
+    "hero": {
+        "title": "Explorando o Mundo das Árvores de Decisão",
+        "subtitle": "Uma introdução visual ao aprendizado de máquina"
+    },
+    "section-understanding": {
+        "title": "Entendendo Árvores de Decisão e Poda",
+        "intro": {
+            "welcome": "Bem-vindo ao nosso {guide} — uma das ferramentas mais {powerful} no campo da inteligência artificial e da ciência de dados.",
+            "guide": "guia interativo sobre árvores de decisão",
+            "powerful": "intuitivas e poderosas",
+            "purpose": "Este site foi criado para ajudar você a compreender, de forma {visual}, como essas estruturas funcionam, como são construídas, e por que são tão úteis para resolver problemas de {classification} e {regression}.",
+            "visual": "visual e acessível",
+            "classification": "classificação",
+            "regression": "regressão",
+            "pruning": "Além disso, exploraremos um conceito essencial para melhorar o desempenho das árvores: {pruningConcept}. Ela reduz a complexidade do modelo, evita o {overfitting} (sobreajuste) e torna as previsões mais confiáveis com dados novos.",
+            "pruningConcept": "a poda",
+            "overfitting": "overfitting",
+            "conclusion": "Aqui, você encontrará {clear}, {visual_examples} e {demonstrations} para construir e otimizar árvores de decisão. Quer você seja iniciante ou já tenha experiência, nosso objetivo é tornar esses conceitos simples, interativos e aplicáveis.",
+            "clear": "explicações claras",
+            "visual_examples": "exemplos visuais",
+            "demonstrations": "demonstrações passo a passo"
+        }
+    },
+    "section-what-is": {
+        "title": "O que é?",
+        "definition": "Uma {decision_tree} é um modelo preditivo que representa uma série de decisões estruturadas em forma de árvore, onde cada {internal_node} corresponde a uma pergunta ou condição baseada nas características dos dados, e cada {branch} leva a uma possível resposta ou divisão. As {leaves} da árvore indicam o resultado final, como uma classe ou valor numérico. Esse modelo é amplamente utilizado em tarefas de {classification} e {regression} devido à sua interpretação intuitiva: ele simula um processo de tomada de decisão sequencial, em que seguimos um caminho lógico com base nas entradas até chegar a uma conclusão.",
+        "decision_tree": "árvore de decisão",
+        "internal_node": "nó interno",
+        "branch": "ramo",
+        "leaves": "folhas",
+        "classification": "classificação",
+        "regression": "regressão"
+    },
+    "section-prediction": {
+        "title": "Como funciona a previsão em uma árvore de decisão",
+        "description": "Durante o processo de {prediction}, a árvore de decisão recebe uma nova entrada (ou amostra) e a percorre do {root_to_leaf}, seguindo as condições definidas em cada ponto de decisão. A cada etapa, ela analisa o valor de uma {feature} da entrada e escolhe o {corresponding_branch} com base na condição (por exemplo, se o valor é menor ou maior que um certo limite). Esse caminho é {unique} e leva diretamente até uma {leaf}, onde está registrada a classe prevista (em classificadores) ou um valor numérico (em modelos de regressão). O processo é {fast_interpretable}, funcionando como uma sequência lógica de decisões que culmina em uma conclusão final.",
+        "prediction": "previsão",
+        "root_to_leaf": "nó raiz até uma folha",
+        "feature": "feature",
+        "corresponding_branch": "ramo correspondente",
+        "unique": "único",
+        "leaf": "folha",
+        "fast_interpretable": "rápido, direto e interpretável"
+    },
     "page": {
         "testTitle": "Página de Teste",
         "step": "Passo {number}",

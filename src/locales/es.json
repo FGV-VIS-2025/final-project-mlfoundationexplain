@@ -9,6 +9,10 @@
         "light": "☀️ Claro"
     }
     },
+    "hero": {
+        "title": "Explorando el mundo de los Árboles de Decisión",
+        "subtitle": "Una introducción visual al aprendizaje automático"
+    },
     "page": {
         "testTitle": "Página de Teste",
         "step": "Passo {number}",
@@ -23,5 +27,45 @@
             "title": "Bloco 2 - Etapa {number}",
             "content": "Conteúdo diferente para o bloco 2 - etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
         }
+    },
+    "section-understanding": {
+        "title": "Entendiendo Árboles de Decisión y Poda",
+        "intro": {
+            "welcome": "Bienvenido a nuestra {guide} — una de las herramientas más {powerful} en el campo de la inteligencia artificial y la ciencia de datos.",
+            "guide": "guía interactiva sobre árboles de decisión",
+            "powerful": "intuitivas y poderosas",
+            "purpose": "Este sitio fue creado para ayudarte a comprender, de forma {visual}, cómo funcionan estas estructuras, cómo se construyen, y por qué son tan útiles para resolver problemas de {classification} y {regression}.",
+            "visual": "visual y accesible",
+            "classification": "clasificación",
+            "regression": "regresión",
+            "pruning": "Además, exploraremos un concepto esencial para mejorar el rendimiento de los árboles: {pruningConcept}. Reduce la complejidad del modelo, evita el {overfitting} (sobreajuste) y hace que las predicciones sean más confiables con datos nuevos.",
+            "pruningConcept": "la poda",
+            "overfitting": "overfitting",
+            "conclusion": "Aquí encontrarás {clear}, {visual_examples} y {demonstrations} para construir y optimizar árboles de decisión. Ya seas principiante o tengas experiencia, nuestro objetivo es hacer que estos conceptos sean simples, interactivos y aplicables.",
+            "clear": "explicaciones claras",
+            "visual_examples": "ejemplos visuales",
+            "demonstrations": "demostraciones paso a paso"
+        }
+    },
+    "section-what-is": {
+        "title": "¿Qué es?",
+        "definition": "Un {decision_tree} es un modelo predictivo que representa una serie de decisiones estructuradas en forma de árbol, donde cada {internal_node} corresponde a una pregunta o condición basada en las características de los datos, y cada {branch} lleva a una posible respuesta o división. Las {leaves} del árbol indican el resultado final, como una clase o valor numérico. Este modelo es ampliamente utilizado en tareas de {classification} y {regression} debido a su interpretación intuitiva: simula un proceso de toma de decisiones secuencial, donde seguimos un camino lógico basado en las entradas hasta llegar a una conclusión.",
+        "decision_tree": "árbol de decisión",
+        "internal_node": "nodo interno",
+        "branch": "rama",
+        "leaves": "hojas",
+        "classification": "clasificación",
+        "regression": "regresión"
+    },
+    "section-prediction": {
+        "title": "Cómo funciona la predicción en un árbol de decisión",
+        "description": "Durante el proceso de {prediction}, el árbol de decisión recibe una nueva entrada (o muestra) y la recorre desde el {root_to_leaf}, siguiendo las condiciones definidas en cada punto de decisión. En cada etapa, analiza el valor de una {feature} de la entrada y elige la {corresponding_branch} basándose en la condición (por ejemplo, si el valor es menor o mayor que un cierto límite). Este camino es {unique} y lleva directamente hasta una {leaf}, donde se registra la clase predicha (en clasificadores) o un valor numérico (en modelos de regresión). El proceso es {fast_interpretable}, funcionando como una secuencia lógica de decisiones que culmina en una conclusión final.",
+        "prediction": "predicción",
+        "root_to_leaf": "nodo raíz hasta una hoja",
+        "feature": "característica",
+        "corresponding_branch": "rama correspondiente",
+        "unique": "único",
+        "leaf": "hoja",
+        "fast_interpretable": "rápido, directo e interpretable"
     }
 }
