@@ -11,39 +11,39 @@
 
   // Configurações dos 4 passos da narrativa
   const steps = [
-  {
-    title: "Feature: Total de Quartos",
-    feature: "total_rooms",
-    description:
-      "Esta feature representa o número total de quartos em cada propriedade. É uma característica fundamental no modelo, pois propriedades com mais quartos geralmente têm valores diferentes. Observe como esta feature se distribui nos dados e como estabelecemos um ponto de corte para binarizar esta característica contínua.",
-    cutoff: 3000,
-    axisLabel: "Total de Quartos",
-  },
-  {
-    title: "Feature: Quartos de Dormir",
-    feature: "total_bedrooms",
-    description:
-      "Esta feature captura especificamente os quartos de dormir, diferindo da feature anterior que inclui todos os tipos de quartos. É uma característica importante para determinar a capacidade habitacional da propriedade. A transformação binária desta feature ajuda o modelo a distinguir entre propriedades de diferentes tamanhos.",
-    cutoff: 800,
-    axisLabel: "Total de Quartos de Dormir",
-  },
-  {
-    title: "Feature: Densidade de Domicílios",
-    feature: "households",
-    description:
-      "Esta feature representa a quantidade de domicílios por região, capturando aspectos de densidade populacional e urbanização. É uma característica contextual importante que influencia os valores imobiliários. A binarização desta feature permite ao modelo distinguir entre áreas de alta e baixa densidade habitacional.",
-    cutoff: 500,
-    axisLabel: "Número de Domicílios",
-  },
-  {
-    title: "Target: Valor Mediano das Casas",
-    feature: "median_house_value",
-    description:
-      "Esta é nossa variável target - o valor que o modelo aprende a prever baseado nas features anteriores. Observar sua distribuição é crucial para entender o problema de classificação. O ponto de corte define nossa classificação binária: casas 'caras' vs 'baratas', transformando um problema de regressão em classificação.",
-    cutoff: 250000,
-    axisLabel: "Valor Mediano (USD)",
-  },
-];
+    {
+      title: "Feature: Total de Quartos",
+      feature: "total_rooms",
+      description:
+        "Esta feature representa o número total de quartos em cada propriedade. É uma característica fundamental que captura o tamanho da propriedade. Propriedades com mais quartos tendem a ter características diferentes e esta informação é valiosa para o modelo. Observe como esta feature se distribui nos dados e como estabelecemos um ponto de corte para binarizar esta característica contínua.",
+      cutoff: 3000,
+      axisLabel: "Total de Quartos",
+    },
+    {
+      title: "Feature: Quartos de Dormir",
+      feature: "total_bedrooms",
+      description:
+        "Esta feature captura especificamente os quartos de dormir, diferindo da feature anterior que inclui todos os tipos de quartos. É uma característica importante para determinar a capacidade habitacional da propriedade. Esta feature fornece informação específica sobre a funcionalidade residencial do imóvel.",
+      cutoff: 800,
+      axisLabel: "Total de Quartos de Dormir",
+    },
+    {
+      title: "Feature: Densidade de Domicílios",
+      feature: "households",
+      description:
+        "Esta feature representa a quantidade de domicílios por região, capturando aspectos de densidade populacional e urbanização. É uma característica contextual importante que reflete o ambiente onde a propriedade está localizada. Esta informação demográfica é valiosa para caracterizar o tipo de área.",
+      cutoff: 500,
+      axisLabel: "Número de Domicílios",
+    },
+    {
+      title: "Feature: Valor Mediano das Casas",
+      feature: "median_house_value",
+      description:
+        "Esta feature representa o valor mediano das casas na região. É uma característica econômica importante que reflete o mercado imobiliário local. Esta feature captura informações sobre o poder aquisitivo e padrão socioeconômico da área onde a propriedade está localizada.",
+      cutoff: 250000,
+      axisLabel: "Valor Mediano (USD)",
+    },
+  ];
 
   // Carregamento dos dados
   async function loadData() {
