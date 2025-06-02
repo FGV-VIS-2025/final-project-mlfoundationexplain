@@ -10,6 +10,8 @@
 
   import DecisionTree from '$lib/components/Tree.svelte';
 
+  import DecisionTree2 from '$lib/components/TreeInteractive.svelte';
+
   let treeJson = null;
   let treeJson_2d = null;
 
@@ -19,8 +21,8 @@
     const res = await fetch('/data/arvore_d3.json');
     treeJson = await res.json();
 
-     const res2 = await fetch('static/data/arvore_2d.json');
-    treeJson_2d = await res.json();
+     const res2 = await fetch('/data/arvore_2d.json');
+    treeJson_2d = await res2.json();
   });
 </script>
 
@@ -84,8 +86,14 @@
 </div>
 
 
-<div class="scroll-wrapper-dark">
-<div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300  leading-relaxed space-y-6">
+<!-- <div class="scroll-wrapper-dark"> -->
+ <div
+  class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  style="background-color: #2e3e5a; color: white;"
+>
+
+
+<!-- <div class="max-w-7xl mx-auto p-6 pt-0 pb-0 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: #2e3e5a"> -->
 
   <h2 class="text-3xl font-extrabold  mb-6">{$_('section-what-is.title')}</h2>
 
@@ -103,10 +111,19 @@
   </p>
 
 </div>
+<!-- </div> -->
+
+
+<div class="max-w-7xl mx-auto pt-40 pb-10 text-justify  transition-colors duration-300 ">
+
+  <h2 class="text-3xl font-extrabold pb-10">A criação da árvore e cortes no espaço do dados</h2>
+
+  <p>
+  A criação da árvore de decisão consiste em dividir repetidamente o espaço dos dados em regiões menores por meio de <span class="font-semibold">cortes baseados em condições</span> sobre as features. Cada corte separa os dados em grupos mais homogêneos, facilitando a tomada de decisão. Esse processo continua até que as regiões estejam suficientemente puras ou um critério de parada seja atingido, resultando em uma estrutura hierárquica que reflete essas divisões no espaço.
+ </p>
 </div>
 
-
- <div style="background-color: var(--color-background);">
+ <div style="background-color: var(--color-background); " class=" mt-0 mb-0">
   <div >
     <ScrollStory3 />
   </div>
@@ -114,10 +131,18 @@
 
 
 
-<div class="scroll-wrapper-dark">
-<div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300  leading-relaxed space-y-6">
+
+
+<!-- <div class="scroll-wrapper-green"> -->
+
+<div class="max-w-7xl mx-auto p-6 pt-0 pb-0 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: var(--color-background-section);">
+
+<!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
+
+  <h2 class="text-3xl font-semibold mb-4 py-8">Como funciona a previsão em uma árvore de decisão</h2>
 
   <h3 class="text-xl font-semibold mb-4">{$_('section-prediction.title')}</h3>
+
 
   <p>
     {@html $_('section-prediction.description', {
@@ -133,9 +158,11 @@
     })}
   </p>
 
+  <p><b>Para ver isso na prática, escolha um valor para cada variável e vejo qual será a previsão nessa árvore já construida anteriormente:</b></p>
+
 
 {#if treeJson_2d}
-  <DecisionTree treeData={treeJson_2d} />
+  <DecisionTree2 treeData={treeJson_2d} />
 {:else}
   <p>Carregando árvore de decisão...</p>
   <p>Aqui vai uma árvore interativa, onde montamos um dado e vemos percorrer a árvore até a previsão</p>
@@ -144,7 +171,14 @@
 </div>
 
 
+
+<div class="max-w-7xl mx-auto p-6 pt-40 pb-0 text-center  transition-colors duration-300  leading-relaxed space-y-6" >
+
+<!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
+
+  <h2 class="text-5xl font-semibold mb-4 py-8">A árvore completa</h2>
 </div>
+
 <div class="my-19 mt-40 mb-40">
   {#if treeJson}
     <DecisionTree treeData={treeJson} />
@@ -152,6 +186,15 @@
     <p>Carregando árvore de decisão...</p>
   {/if}
 </div>
+
+
+<!-- <div >
+  {#if treeJson}
+    <DecisionTree2 treeData={treeJson_2d} />
+  {:else}
+    <p>Carregando árvore de decisão...</p>
+  {/if}
+</div> -->
 
 
 

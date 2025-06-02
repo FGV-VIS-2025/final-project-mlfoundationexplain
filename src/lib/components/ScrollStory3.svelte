@@ -2,6 +2,9 @@
   import { onMount } from 'svelte';
   import Tree from './Tree2.svelte'; // importe seu componente de árvore
   import ScrollStory from './scatterCutsViz.svelte'; // ajuste o caminho
+  import Step3 from './Step3.svelte';
+
+
 
   let currentStep = 0;
   const totalSteps = 17;
@@ -99,20 +102,16 @@
           bind:this={stepRefs[stepIndex]}
           class:active={stepIndex === currentStep}
         >
-          <h3>Bloco 3 - Etapa {stepIndex + 1}</h3>
-          <p>
-            Conteúdo diferente para o bloco 3 - etapa {stepIndex + 1}.<br />
-            A árvore cresce conforme você avança.
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse excepturi error facere? Sunt, ad deserunt inventore consequuntur deleniti rem, sequi, aperiam sapiente error aliquid molestiae non architecto dolore explicabo culpa?
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae voluptate veritatis maiores cum provident explicabo quas numquam accusamus ratione sunt. Repudiandae omnis error quod molestias optio nobis recusandae officiis quam!
-          </p>
+          {#if stepIndex < 5}
+            <Step3 {stepIndex} />
+          {:else}
+            <p>Etapa {stepIndex + 1} não tem conteúdo definido ainda.</p>
+          {/if}
         </div>
       {/each}
+
     </div>
 
-    <!-- <div class="viz">
-      <Tree {treeData} step={currentStep} />
-    </div> -->
     <div class="viz">
     <div class="dual-tree">
   <div class="scroll-container-svg">
@@ -159,8 +158,8 @@
   display: flex;
   position: relative;
   gap: 2rem;
-  margin-bottom: 30rem; 
-  margin-top: 10rem;
+  margin-bottom: 7rem; 
+  /* margin-top: 0.1rem; */
   background-color: var(--color-background); 
   padding: 2rem;
   border-radius: 1rem;
@@ -182,12 +181,13 @@
   .steps {
     width: 25%;
     padding: 2rem;
-    margin-bottom: 30rem; 
+    margin-bottom: 0rem; 
   }
 
 
   .step {
-    margin: 3rem 0;
+    margin: 20rem 0;
+    margin-top: 0;
     padding: 1rem;
     border-left: 4px solid #ccc;
     transition: border-color 0.3s ease;

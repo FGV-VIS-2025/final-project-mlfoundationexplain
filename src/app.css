@@ -17,9 +17,11 @@
   --color-secondary: #7e6f99 ;/* #916f99 */
   --color-secondary2: #6b4c74 ;/* #916f99 */
   --color-accent: #461353;
+  --color-section : #2e3e5a ;
+  --color-background-section: #78b387;
 
 
-   --color-node-fill: #8a5dc7;         /* preenchimento do nó (roxo claro) */
+  --color-node-fill: #8a5dc7;         /* preenchimento do nó (roxo claro) */
   --color-node-stroke: #6e44a3;       /* borda do nó (roxo médio) */
   --color-node-hover-fill: #c5b0e8;   /* nó ao passar o mouse (roxo bem claro) */
   
@@ -28,6 +30,17 @@
 
   --color-text-node: #3e2465;         /* texto dentro do nó (roxo escuro) */
   --color-text-shadow: #dcd6f7;       /* sombra do texto do nó */
+  --color-node-active: #f5a65b;
+  --color-link-active:#c27c3a;
+  --color-background-previsão:#fef3c7; 
+  --color-text-previsão:#915c2b; 
+  --color-button-previsão:#4d1374; 
+
+  /* Scatterplot */
+  --color-classe0: #0c5e27;
+  --color-classe1: #4B0082;
+
+
 }
 
 /* Tema escuro (aplicado quando <html class="dark">) */
@@ -43,6 +56,8 @@
   --color-secondary2: #6b4c74 ;/* #916f99 */
   --color-accent: #cb0dff;
 
+  --color-background-section: #27364d;
+
    --color-node-fill: #a3d9b1;         /* preenchimento do nó (verde claro) */
   --color-node-stroke: #6fbf82;       /* borda do nó (verde médio) */
   --color-node-hover-fill: #c1edc8;   /* nó ao passar o mouse (verde muito claro) */
@@ -52,6 +67,19 @@
 
   --color-text-node: #d6eadf;         /* texto dentro do nó (verde claro) */
   --color-text-shadow: #95d196;       /* sombra do texto do nó */
+
+  --color-section : #497c55 ;
+
+  --color-node-active: #f8e750;
+  --color-link-active:#b8aa34;
+  --color-background-previsão:#497c55; 
+  --color-text-previsão:#f8fafc; 
+  --color-button-previsão:#497c55; 
+
+
+
+  --color-classe0: #88e788; /* 82c591  F5F5DC*/ 
+  --color-classe1: #9774c0;
 }
 
 
@@ -97,4 +125,9 @@ body {
 .scroll-wrapper-dark {
   background-color: #2e3e5a;
   color: white;
+}
+
+.scroll-wrapper-green {
+  background-color: var(--color-section);
+  color: var(--color-text);
 }
