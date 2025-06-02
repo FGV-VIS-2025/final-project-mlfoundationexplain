@@ -11,14 +11,19 @@
   import DecisionTree from '$lib/components/Tree.svelte';
 
   let treeJson = null;
+  let treeJson_2d = null;
 
   import { onMount } from 'svelte';
 
   onMount(async () => {
     const res = await fetch('/data/arvore_d3.json');
     treeJson = await res.json();
+
+     const res2 = await fetch('static/data/arvore_2d.json');
+    treeJson_2d = await res.json();
   });
 </script>
+
 
 
 <!-- <div class="scroll-wrapper-default"> -->
@@ -28,12 +33,6 @@
   </div>
 
 
-<!-- </div> -->
-<!-- {#if treeJson}
-  <DecisionTree treeData={treeJson} />
-{:else}
-  <p>Carregando árvore de decisão...</p>
-{/if} -->
 
 <div class="max-w-7xl mx-auto p-6 py-40 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300  leading-relaxed space-y-6">
 
@@ -81,6 +80,45 @@
     <ScrollStory3 />
   </div>
  </div>
+
+
+
+<div class="scroll-wrapper-dark">
+<div class="max-w-7xl mx-auto p-6 py-40 text-justify  transition-colors duration-300  leading-relaxed space-y-6">
+
+  <h3 class="text-xl font-semibold mb-4">Como funciona a previsão em uma árvore de decisão</h3>
+
+  <p>
+    Durante o processo de <span class="font-semibold">previsão</span>, a árvore de decisão recebe uma nova entrada (ou amostra) e a percorre do 
+    <span class="italic">nó raiz até uma folha</span>, seguindo as condições definidas em cada ponto de decisão. 
+    A cada etapa, ela analisa o valor de uma <span class="font-mono bg-muted px-1 py-0.5 rounded">feature</span> da entrada e escolhe o 
+    <span class="italic">ramo correspondente</span> com base na condição (por exemplo, se o valor é menor ou maior que um certo limite). 
+    Esse caminho é <span class="underline">único</span> e leva diretamente até uma 
+    <span class="font-semibold">folha</span>, onde está registrada a classe prevista (em classificadores) ou um valor numérico (em modelos de regressão). 
+    O processo é <span class="font-medium">rápido, direto e interpretável</span>, funcionando como uma sequência lógica de decisões que culmina em uma conclusão final.
+  </p>
+
+
+{#if treeJson_2d}
+  <DecisionTree treeData={treeJson_2d} />
+{:else}
+  <p>Carregando árvore de decisão...</p>
+  <p>Aqui vai uma árvore interativa, onde montamos um dado e vemos percorrer a árvore até a previsão</p>
+{/if}
+
+</div>
+
+
+</div>
+<div class="my-19 mt-40 mb-40">
+  {#if treeJson}
+    <DecisionTree treeData={treeJson} />
+  {:else}
+    <p>Carregando árvore de decisão...</p>
+  {/if}
+</div>
+
+
 
 <!-- <div class="max-w-7xl mx-auto p-6 text-justify"> -->
  <div class="max-w-7xl mx-auto p-6 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300">
