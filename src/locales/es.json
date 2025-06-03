@@ -1,92 +1,135 @@
-
 {
-    "header": {
-        "title": "Árbol de Decisión",
-        "home": "Inicio",
-        "language": "🌐 Idioma",
-        "theme": {
-        "dark": "🌙 Oscuro",
-        "light": "☀️ Claro"
+  "header": {
+    "title": "Árbol de Decisión",
+    "home": "Inicio",
+    "language": "🌐 Idioma",
+    "theme": {
+      "dark": "🌙 Oscuro",
+      "light": "☀️ Claro"
     }
-    },
-    "hero": {
-        "title": "Explorando el mundo de los Árboles de Decisión",
-        "subtitle": "Una introducción visual al aprendizaje automático"
-    },
-    "page": {
-        "testTitle": "Página de Teste",
-        "step": "Passo {number}",
-        "stage": "Etapa {number}"
-    },
-    "scroll": {
-        "block1": {
-            "title": "Etapa {number}",
-            "content": "Texto para a etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        },
-        "block2": {
-            "title": "Bloco 2 - Etapa {number}",
-            "content": "Conteúdo diferente para o bloco 2 - etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
-        }
-    },
-    "section-understanding": {
-        "title": "Entendiendo Árboles de Decisión y Poda",
-        "intro": {
-            "welcome": "Bienvenido a nuestra {guide} — una de las herramientas más {powerful} en el campo de la inteligencia artificial y la ciencia de datos.",
-            "guide": "guía interactiva sobre árboles de decisión",
-            "powerful": "intuitivas y poderosas",
-            "purpose": "Este sitio fue creado para ayudarte a comprender, de forma {visual}, cómo funcionan estas estructuras, cómo se construyen, y por qué son tan útiles para resolver problemas de {classification} y {regression}.",
-            "visual": "visual y accesible",
-            "classification": "clasificación",
-            "regression": "regresión",
-            "pruning": "Además, exploraremos un concepto esencial para mejorar el rendimiento de los árboles: {pruningConcept}. Reduce la complejidad del modelo, evita el {overfitting} (sobreajuste) y hace que las predicciones sean más confiables con datos nuevos.",
-            "pruningConcept": "la poda",
-            "overfitting": "overfitting",
-            "conclusion": "Aquí encontrarás {clear}, {visual_examples} y {demonstrations} para construir y optimizar árboles de decisión. Ya seas principiante o tengas experiencia, nuestro objetivo es hacer que estos conceptos sean simples, interactivos y aplicables.",
-            "clear": "explicaciones claras",
-            "visual_examples": "ejemplos visuales",
-            "demonstrations": "demostraciones paso a paso"
-        }
-    },
-    "section-what-is": {
-        "title": "¿Qué es?",
-        "definition": "Un {decision_tree} es un modelo predictivo que representa una serie de decisiones estructuradas en forma de árbol, donde cada {internal_node} corresponde a una pregunta o condición basada en las características de los datos, y cada {branch} lleva a una posible respuesta o división. Las {leaves} del árbol indican el resultado final, como una clase o valor numérico. Este modelo es ampliamente utilizado en tareas de {classification} y {regression} debido a su interpretación intuitiva: simula un proceso de toma de decisiones secuencial, donde seguimos un camino lógico basado en las entradas hasta llegar a una conclusión.",
-        "decision_tree": "árbol de decisión",
-        "internal_node": "nodo interno",
-        "branch": "rama",
-        "leaves": "hojas",
-        "classification": "clasificación",
-        "regression": "regresión"
-    },
-    "section-prediction": {
-        "title": "Cómo funciona la predicción en un árbol de decisión",
-        "description": "Durante el proceso de {prediction}, el árbol de decisión recibe una nueva entrada (o muestra) y la recorre desde el {root_to_leaf}, siguiendo las condiciones definidas en cada punto de decisión. En cada etapa, analiza el valor de una {feature} de la entrada y elige la {corresponding_branch} basándose en la condición (por ejemplo, si el valor es menor o mayor que un cierto límite). Este camino es {unique} y lleva directamente hasta una {leaf}, donde se registra la clase predicha (en clasificadores) o un valor numérico (en modelos de regresión). El proceso es {fast_interpretable}, funcionando como una secuencia lógica de decisiones que culmina en una conclusión final.",
-        "prediction": "predicción",
-        "root_to_leaf": "nodo raíz hasta una hoja",
-        "feature": "característica",
-        "corresponding_branch": "rama correspondiente",
-        "unique": "único",
-        "leaf": "hoja",
-        "fast_interpretable": "rápido, directo e interpretable"
-    },
-    "section-gini": {
-        "title": "¿Cómo se eligen los cortes?",
-        "description": "En un árbol de decisión para clasificación binaria, los cortes se eligen basándose en la {purity} de las regiones creadas después de cada división. El algoritmo busca, de forma codiciosa, la mejor división en ese momento — es decir, elige la característica y el punto de corte que más aumenten la pureza de los subconjuntos generados.",
-        "purity": "pureza",
-        "purity_explanation": "La pureza de una región es una medida de qué tan homogéneas son las clases dentro de ella. Si todos los ejemplos en una región pertenecen a la misma clase, esa región se considera pura. Para cuantificar esta pureza, usamos métricas como la {entropy} y el {gini_index}.",
-        "entropy": "Entropía",
-        "gini_index": "Índice Gini",
-        "metrics_behavior": "Estas métricas alcanzan sus valores mínimos (cero) cuando todos los ejemplos son de la misma clase (proporción 0 o 1), y valores máximos cuando hay equilibrio entre las clases (proporción 0.5), es decir, cuando la incertidumbre es mayor. El algoritmo calcula la ganancia de pureza antes y después de cada posible división — llamada {information_gain} (con entropía) o {gini_gain} — y elige el corte que más aumenta esta ganancia.",
-        "information_gain": "Ganancia de Información",
-        "gini_gain": "Ganancia de Gini",
-        "process_conclusion": "Este proceso se repite recursivamente, creando una segmentación binaria del espacio, hasta que se alcanza un criterio de parada, como el número mínimo de puntos por región.",
-        "interaction_hint": "Pasa el mouse sobre el gráfico para ver los valores específicos de entropía y Gini para cada proporción de clase positiva.",
-        "chart_labels": {
-            "x_axis": "Proporción de la clase positiva (p)",
-            "y_axis": "Pureza (Entropía o Gini)",
-            "entropy_legend": "Entropía",
-            "gini_legend": "Gini",
-            "entropy_tooltip": "Entropía: {value}",
-            "gini_tooltip": "Gini: {value}"
-        }
+  },
+  "hero": {
+    "title": "Explorando el mundo de los Árboles de Decisión",
+    "subtitle": "Una introducción visual al aprendizaje automático"
+  },
+  "section-understanding": {
+    "title": "Entendiendo Árboles de Decisión y Poda",
+    "intro": {
+      "welcome": "Bienvenido a nuestra {guide} — una de las herramientas más {powerful} en el campo de la inteligencia artificial y la ciencia de datos.",
+      "guide": "guía interactiva sobre árboles de decisión",
+      "powerful": "intuitivas y poderosas",
+      "purpose": "Este sitio fue creado para ayudarte a comprender, de forma {visual}, cómo funcionan estas estructuras, cómo se construyen, y por qué son tan útiles para resolver problemas de {classification} y {regression}.",
+      "visual": "visual y accesible",
+      "classification": "clasificación",
+      "regression": "regresión",
+      "pruning": "Además, exploraremos un concepto esencial para mejorar el rendimiento de los árboles: {pruningConcept}. Reduce la complejidad del modelo, evita el {overfitting} (sobreajuste) y hace que las predicciones sean más confiables con datos nuevos.",
+      "pruningConcept": "la poda",
+      "overfitting": "overfitting",
+      "conclusion": "Aquí encontrarás {clear}, {visual_examples} y {demonstrations} para construir y optimizar árboles de decisión. Ya seas principiante o tengas experiencia, nuestro objetivo es hacer que estos conceptos sean simples, interactivos y aplicables.",
+      "clear": "explicaciones claras",
+      "visual_examples": "ejemplos visuales",
+      "demonstrations": "demostraciones paso a paso"
     }
+  },
+  "section-what-is": {
+    "title": "¿Qué es?",
+    "definition": "Un {decision_tree} es un modelo predictivo que representa una serie de decisiones estructuradas en forma de árbol, donde cada {internal_node} corresponde a una pregunta o condición basada en las características de los datos, y cada {branch} lleva a una posible respuesta o división. Las {leaves} del árbol indican el resultado final, como una clase o valor numérico. Este modelo es ampliamente utilizado en tareas de {classification} y {regression} debido a su interpretación intuitiva: simula un proceso de toma de decisiones secuencial, donde seguimos un camino lógico basado en las entradas hasta llegar a una conclusión.",
+    "decision_tree": "árbol de decisión",
+    "internal_node": "nodo interno",
+    "branch": "rama",
+    "leaves": "hojas",
+    "classification": "clasificación",
+    "regression": "regresión"
+  },
+  "section-prediction": {
+    "title": "Cómo funciona la predicción en un árbol de decisión",
+    "description": "Durante el proceso de {prediction}, el árbol de decisión recibe una nueva entrada (o muestra) y la recorre desde el {root_to_leaf}, siguiendo las condiciones definidas en cada punto de decisión. En cada etapa, analiza el valor de una {feature} de la entrada y elige la {corresponding_branch} basándose en la condición (por ejemplo, si el valor es menor o mayor que un cierto límite). Este camino es {unique} y lleva directamente hasta una {leaf}, donde se registra la clase predicha (en clasificadores) o un valor numérico (en modelos de regresión). El proceso es {fast_interpretable}, funcionando como una secuencia lógica de decisiones que culmina en una conclusión final.",
+    "prediction": "predicción",
+    "root_to_leaf": "nodo raíz hasta una hoja",
+    "feature": "característica",
+    "corresponding_branch": "rama correspondiente",
+    "unique": "único",
+    "leaf": "hoja",
+    "fast_interpretable": "rápido, directo e interpretable"
+  },
+  "section-gini": {
+    "title": "¿Cómo se eligen los cortes?",
+    "description": "En un árbol de decisión para clasificación binaria, los cortes se eligen basándose en la {purity} de las regiones creadas después de cada división. El algoritmo busca, de forma codiciosa, la mejor división en ese momento — es decir, elige la característica y el punto de corte que más aumenten la pureza de los subconjuntos generados.",
+    "purity": "pureza",
+    "purity_explanation": "La pureza de una región es una medida de qué tan homogéneas son las clases dentro de ella. Si todos los ejemplos en una región pertenecen a la misma clase, esa región se considera pura. Para cuantificar esta pureza, usamos métricas como la {entropy} y el {gini_index}.",
+    "entropy": "Entropía",
+    "gini_index": "Índice Gini",
+    "metrics_behavior": "Estas métricas alcanzan sus valores mínimos (cero) cuando todos los ejemplos son de la misma clase (proporción 0 o 1), y valores máximos cuando hay equilibrio entre las clases (proporción 0.5), es decir, cuando la incertidumbre es mayor. El algoritmo calcula la ganancia de pureza antes y después de cada posible división — llamada {information_gain} (con entropía) o {gini_gain} — y elige el corte que más aumenta esta ganancia.",
+    "information_gain": "Ganancia de Información",
+    "gini_gain": "Ganancia de Gini",
+    "process_conclusion": "Este proceso se repite recursivamente, creando una segmentación binaria del espacio, hasta que se alcanza un criterio de parada, como el número mínimo de puntos por región.",
+    "interaction_hint": "Pasa el mouse sobre el gráfico para ver los valores específicos de entropía y Gini para cada proporción de clase positiva.",
+    "chart_labels": {
+      "x_axis": "Proporción de la clase positiva (p)",
+      "y_axis": "Pureza (Entropía o Gini)",
+      "entropy_legend": "Entropía",
+      "gini_legend": "Gini",
+      "entropy_tooltip": "Entropía: {value}",
+      "gini_tooltip": "Gini: {value}"
+    }
+  },
+  "cutoffs": {
+    "feature_label": "Característica {number}",
+    "characteristic": "Característica:",
+    "value_range": "Rango de valores:",
+    "cutoff_point": "Punto de corte:",
+    "loading": "Cargando...",
+    "loading_data": "Cargando datos...",
+    "error_loading": "❌ Error al cargar los datos",
+    "city_comparison": "Sacramento (púrpura) vs San Francisco (verde)",
+    "steps": {
+      "total_rooms": {
+        "title": "Total de Habitaciones",
+        "description": "Esta característica representa el número total de habitaciones en cada propiedad. Es una característica fundamental que captura el tamaño de la propiedad. Las propiedades con más habitaciones tienden a tener características diferentes y esta información es valiosa para el modelo. Observe cómo se distribuye esta característica en los datos y cómo establecemos un punto de corte para binarizar esta característica continua.",
+        "axis_label": "Total de Habitaciones"
+      },
+      "total_bedrooms": {
+        "title": "Dormitorios",
+        "description": "Esta característica captura específicamente los dormitorios, diferenciándose de la característica anterior que incluye todos los tipos de habitaciones. Es una característica importante para determinar la capacidad habitacional de la propiedad. Esta característica proporciona información específica sobre la funcionalidad residencial del inmueble.",
+        "axis_label": "Total de Dormitorios"
+      },
+      "households": {
+        "title": "Densidad de Hogares",
+        "description": "Esta característica representa la cantidad de hogares por región, capturando aspectos de densidad poblacional y urbanización. Es una característica contextual importante que refleja el ambiente donde se encuentra ubicada la propiedad. Esta información demográfica es valiosa para caracterizar el tipo de área.",
+        "axis_label": "Número de Hogares"
+      },
+      "median_house_value": {
+        "title": "Valor Mediano de las Casas",
+        "description": "Esta característica representa el valor mediano de las casas en la región. Es una característica económica importante que refleja el mercado inmobiliario local. Esta característica captura información sobre el poder adquisitivo y patrón socioeconómico del área donde se encuentra ubicada la propiedad.",
+        "axis_label": "Valor Mediano (USD)"
+      }
+    }
+  },
+  "scatterplot": {
+    "frequency": "Frecuencia",
+    "value": "Valor",
+    "cutoff_tooltip": "valor < {value}",
+    "point_tooltip": {
+      "property_of": "Propiedad de {city}",
+      "value": "Valor: {value}",
+      "frequency": "Frecuencia: ~{frequency} propiedades similares",
+      "below_cutoff": "Debajo del punto de corte",
+      "above_cutoff": "Encima del punto de corte"
+    }
+  },
+  "page": {
+    "testTitle": "Página de Prueba",
+    "step": "Paso {number}",
+    "stage": "Etapa {number}"
+  },
+  "scroll": {
+    "block1": {
+      "title": "Etapa {number}",
+      "content": "Texto para la etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
+    },
+    "block2": {
+      "title": "Bloque 2 - Etapa {number}",
+      "content": "Contenido diferente para el bloque 2 - etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
+    }
+  }
 }

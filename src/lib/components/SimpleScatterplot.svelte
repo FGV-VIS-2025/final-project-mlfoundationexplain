@@ -1,6 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import * as d3 from "d3";
+  import { _ } from "svelte-i18n";
+  import { locale } from "svelte-i18n";
 
   // Propriedades do componente
   export let width = 800;
@@ -221,7 +223,15 @@
   }
 
   function updateFormattedCutoff() {
-    formattedCutoff = cutoffValue.toLocaleString("pt-BR", {
+    // Get locale mapping for toLocaleString
+    const localeMap = {
+      pt: "pt-BR",
+      en: "en-US",
+      es: "es-ES",
+    };
+    const currentLocale = localeMap[$locale] || "en-US";
+
+    formattedCutoff = cutoffValue.toLocaleString(currentLocale, {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     });
@@ -242,10 +252,17 @@
 
   // Função para formatar valores com K quando > 10000
   function formatValue(value) {
+    const localeMap = {
+      pt: "pt-BR",
+      en: "en-US",
+      es: "es-ES",
+    };
+    const currentLocale = localeMap[$locale] || "en-US";
+
     if (value >= 10000) {
       return `${(value / 1000).toFixed(0)}K`;
     }
-    return value.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+    return value.toLocaleString(currentLocale, { maximumFractionDigits: 1 });
   }
 
   // Eixos
@@ -365,7 +382,7 @@
         class="axis-label"
         fill="var(--color-text)"
       >
-        {axisLabel || "Valor"}
+        {axisLabel || $_("scatterplot.value")}
       </text>
 
       <text
@@ -376,7 +393,7 @@
         transform="rotate(-90)"
         fill="var(--color-text)"
       >
-        Frequência
+        {$_("scatterplot.frequency")}
       </text>
 
       <!-- Pontos do scatter plot -->
@@ -385,8 +402,12 @@
           cx={point.x}
           cy={point.y}
           r={dotRadius}
-          fill={point.city === "Sacramento" ? "var(--color-classe1)" : "var(--color-classe0)"}
-          stroke={point.city === "Sacramento" ? "var(--color-classe1)" : "var(--color-classe0)"}
+          fill={point.city === "Sacramento"
+            ? "var(--color-classe1)"
+            : "var(--color-classe0)"}
+          stroke={point.city === "Sacramento"
+            ? "var(--color-classe1)"
+            : "var(--color-classe0)"}
           stroke-width="1.5"
           class="dot"
           opacity="0.8"
@@ -443,7 +464,9 @@
             font-size="12"
             font-weight="600"
           >
-            valor &lt; {formattedCutoff}
+            {$_("scatterplot.cutoff_tooltip", {
+              values: { value: formattedCutoff },
+            })}
           </text>
         </g>
       {/if}
@@ -472,16 +495,24 @@
           font-weight="bold"
           class="tooltip-title"
         >
-          Propriedade de {hoveredPoint.city}
+          {$_("scatterplot.point_tooltip.property_of", {
+            values: { city: hoveredPoint.city },
+          })}
         </text>
         <text x="10" y="35" fill="#ccc" font-size="11" class="tooltip-text">
-          Valor: {hoveredPoint.value.toLocaleString()}
+          {$_("scatterplot.point_tooltip.value", {
+            values: { value: hoveredPoint.value.toLocaleString() },
+          })}
         </text>
         <text x="10" y="50" fill="#ccc" font-size="11" class="tooltip-text">
-          Frequência: ~{hoveredPoint.frequency} propriedades similares
+          {$_("scatterplot.point_tooltip.frequency", {
+            values: { frequency: hoveredPoint.frequency },
+          })}
         </text>
         <text x="10" y="65" fill="#ccc" font-size="11" class="tooltip-text">
-          {hoveredPoint.value < cutoffValue ? "Abaixo" : "Acima"} do ponto de corte
+          {hoveredPoint.value < cutoffValue
+            ? $_("scatterplot.point_tooltip.below_cutoff")
+            : $_("scatterplot.point_tooltip.above_cutoff")}
         </text>
       </g>
     {/if}
