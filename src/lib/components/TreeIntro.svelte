@@ -7,6 +7,7 @@
   const nodeSpacingX = 200;
   const nodeSpacingY = 100;
 
+  // Árvore de decisão simples
   const treeData = {
     name: "Chuva?",
     children: [
@@ -53,10 +54,16 @@
     const g = base.append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
+    // IDs únicos
+    const uid = `viz-${Date.now()}`;
+    const gradientId = `${uid}-gradient`;
+    const dropShadowId = `${uid}-shadow`;
+
+    // <defs> com filtro e gradiente
     const defs = g.append("defs");
 
     const filter = defs.append("filter")
-      .attr("id", "dropShadow")
+      .attr("id", dropShadowId)
       .attr("height", "130%");
 
     filter.append("feDropShadow")
@@ -66,7 +73,6 @@
       .attr("flood-color", "var(--viz-shadow)")
       .attr("flood-opacity", 0.4);
 
-    const gradientId = "nodeGradient";
     const grad = defs.append("radialGradient")
       .attr("id", gradientId)
       .attr("cx", "50%")
@@ -81,10 +87,12 @@
       .attr("offset", "100%")
       .attr("stop-color", "var(--viz-node-stroke)");
 
+    // Função de link
     const linkPath = d3.linkVertical()
       .x(d => d.x)
       .y(d => d.y);
 
+    // Desenhar links com animação
     g.selectAll('.link')
       .data(allLinks)
       .join('path')
@@ -92,7 +100,7 @@
       .attr('fill', 'none')
       .attr('stroke', 'var(--viz-link)')
       .attr('stroke-width', 5)
-      .attr('filter', 'url(#dropShadow)')
+      .attr('filter', `url(#${dropShadowId})`)
       .attr('d', d => {
         const o = { x: d.source.x, y: d.source.y };
         return linkPath({ source: o, target: o });
@@ -103,6 +111,7 @@
       .ease(d3.easeCubicOut)
       .attr('d', d => linkPath(d));
 
+    // Desenhar nós
     const node = g.selectAll('.node')
       .data(allNodes)
       .join('g')
@@ -117,6 +126,7 @@
       .style('opacity', 1)
       .attr('transform', d => `translate(${d.x},${d.y}) scale(1)`);
 
+    // Círculo dos nós
     node.append('circle')
       .attr('r', 25)
       .attr('fill', `url(#${gradientId})`)
@@ -133,24 +143,14 @@
           .attr("r", 25);
       });
 
+    // Texto centralizado
     const text = node.append("text")
       .attr("dy", "0.35em")
-      .attr("y", d => d.children ? -30: 39)
-    //   .attr("x", d => d.children ? -10 : 80).attr("x", 0)
-  .attr("text-anchor", "middle")
+      .attr("y", d => d.children ? -30 : 39)
+      .attr("text-anchor", "middle")
       .style("font-size", "16px")
       .style("fill", "var(--viz-text)")
       .style("text-shadow", "0 0 2px var(--viz-text-shadow)");
-
-//     const text = node.append("text")
-//   .attr("dy", "0.35em")
-//   .attr("y", 39) // ou ajuste como preferir
-//   .attr("x", 0)
-//   .attr("text-anchor", "middle")
-//   .style("font-size", "16px")
-//   .style("fill", "var(--viz-text)")
-//   .style("text-shadow", "0 0 2px var(--viz-text-shadow)");
-
 
     text.selectAll("tspan")
       .data(d => d.data.name.split("\n"))
@@ -161,10 +161,12 @@
   });
 </script>
 
+<!-- HTML -->
 <div class="intro-tree-wrapper">
   <svg bind:this={svg} role="img" aria-label="Árvore de decisão estilizada"></svg>
 </div>
 
+<!-- CSS -->
 <style>
   .intro-tree-wrapper {
     width: 100%;
