@@ -131,5 +131,26 @@
       "title": "Bloco 2 - Etapa {number}",
       "content": "Conteúdo diferente para o bloco 2 - etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
     }
+  },
+  "section-tree-creation": {
+    "title": "Criação da Árvore e Cortes no Espaço dos Dados",
+    "description": "A criação da árvore de decisão consiste em dividir repetidamente o espaço dos dados em regiões menores por meio de {cuts} sobre as features. Cada corte separa os dados em grupos mais homogêneos, facilitando a tomada de decisão. Esse processo continua até que as regiões estejam suficientemente puras ou um critério de parada seja atingido, resultando em uma estrutura hierárquica que reflete essas divisões no espaço.",
+    "cuts": "cortes baseados em condições"
+  },
+  "section-interactive-prediction": {
+    "title": "Como funciona a previsão em uma árvore de decisão",
+    "practice_text": "Para ver isso na prática, escolha um valor para cada variável e veja qual será a previsão nessa árvore já construída anteriormente:",
+    "loading_tree": "Carregando árvore de decisão...",
+    "interactive_placeholder": "Aqui vai uma árvore interativa, onde montamos um dado e vemos percorrer a árvore até a previsão"
+  },
+  "section-complete-tree": {
+    "title": "A Árvore Completa",
+    "description": "Uma árvore de decisão que cresce completamente continua realizando divisões no espaço dos dados até que cada folha contenha apenas exemplos de uma única classe, alcançando assim {accuracy} no conjunto de treinamento. Embora esse modelo memorize perfeitamente os dados, ele tende a ser muito complexo e específico, o que pode levar ao {overfitting}, ou seja, a uma menor capacidade de generalizar para dados novos e não vistos.",
+    "accuracy": "100% de acurácia",
+    "overfitting": "sobreajuste",
+    "example_text": "Veja abaixo como ficaria a árvore completa gerada com todas as features dos nossos dados de exemplo"
+  },
+  "footer": {
+    "developed_by": "Desenvolvido por Paula Eduarda de Lima, Mariana Fernandes Rocha e Joel Perca com SvelteKit & D3.js"
   }
 }

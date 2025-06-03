@@ -131,5 +131,26 @@
       "title": "Block 2 - Stage {number}",
       "content": "Different content for block 2 - stage {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
     }
+  },
+  "section-tree-creation": {
+    "title": "Tree Creation and Data Space Cuts",
+    "description": "Creating a decision tree consists of repeatedly dividing the data space into smaller regions through {cuts} on features. Each cut separates the data into more homogeneous groups, facilitating decision-making. This process continues until the regions are sufficiently pure or a stopping criterion is reached, resulting in a hierarchical structure that reflects these divisions in space.",
+    "cuts": "condition-based cuts"
+  },
+  "section-interactive-prediction": {
+    "title": "How prediction works in a decision tree",
+    "practice_text": "To see this in practice, choose a value for each variable and see what the prediction will be in this previously built tree:",
+    "loading_tree": "Loading decision tree...",
+    "interactive_placeholder": "Here will be an interactive tree, where we build data and see it traverse the tree to the prediction"
+  },
+  "section-complete-tree": {
+    "title": "The Complete Tree",
+    "description": "A decision tree that grows completely continues making divisions in the data space until each leaf contains only examples from a single class, thus achieving {accuracy} on the training set. Although this model perfectly memorizes the data, it tends to be very complex and specific, which can lead to {overfitting}, that is, a reduced ability to generalize to new and unseen data.",
+    "accuracy": "100% accuracy",
+    "overfitting": "overfitting",
+    "example_text": "See below how the complete tree generated with all features from our example data would look"
+  },
+  "footer": {
+    "developed_by": "Developed by Paula Eduarda de Lima, Mariana Fernandes Rocha and Joel Perca with SvelteKit & D3.js"
   }
 }
