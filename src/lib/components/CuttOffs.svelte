@@ -2,7 +2,8 @@
   import { onMount } from "svelte";
   import SimpleScatterplot from "./SimpleScatterplot.svelte";
   import * as d3 from "d3";
-  import { base } from '$app/paths';
+  import { base } from "$app/paths";
+  import { _ } from "svelte-i18n";
 
   // Variáveis de controle da narrativa
   let currentStep = 0;
@@ -11,38 +12,22 @@
   let isLoading = true;
 
   // Configurações dos 4 passos da narrativa
-  const steps = [
+  $: steps = [
     {
-      title: "Total de Quartos",
       feature: "total_rooms",
-      description:
-        "Esta feature representa o número total de quartos em cada propriedade. É uma característica fundamental que captura o tamanho da propriedade. Propriedades com mais quartos tendem a ter características diferentes e esta informação é valiosa para o modelo. Observe como esta feature se distribui nos dados e como estabelecemos um ponto de corte para binarizar esta característica contínua.",
       cutoff: 3000,
-      axisLabel: "Total de Quartos",
     },
     {
-      title: "Quartos de Dormir",
       feature: "total_bedrooms",
-      description:
-        "Esta feature captura especificamente os quartos de dormir, diferindo da feature anterior que inclui todos os tipos de quartos. É uma característica importante para determinar a capacidade habitacional da propriedade. Esta feature fornece informação específica sobre a funcionalidade residencial do imóvel.",
       cutoff: 800,
-      axisLabel: "Total de Quartos de Dormir",
     },
     {
-      title: "Densidade de Domicílios",
       feature: "households",
-      description:
-        "Esta feature representa a quantidade de domicílios por região, capturando aspectos de densidade populacional e urbanização. É uma característica contextual importante que reflete o ambiente onde a propriedade está localizada. Esta informação demográfica é valiosa para caracterizar o tipo de área.",
       cutoff: 500,
-      axisLabel: "Número de Domicílios",
     },
     {
-      title: "Valor Mediano das Casas",
       feature: "median_house_value",
-      description:
-        "Esta feature representa o valor mediano das casas na região. É uma característica econômica importante que reflete o mercado imobiliário local. Esta feature captura informações sobre o poder aquisitivo e padrão socioeconômico da área onde a propriedade está localizada.",
       cutoff: 250000,
-      axisLabel: "Valor Mediano (USD)",
     },
   ];
 
@@ -104,7 +89,7 @@
           <span
             class="text-purple-600 text-sm font-semibold uppercase tracking-wide dark:text-purple-400"
           >
-            Feature {stepIndex + 1}
+            {$_("cutoffs.feature_label", { values: { number: stepIndex + 1 } })}
           </span>
           <h3
             class="md:text-3xl text-2xl font-bold mt-2 mb-0 text-gray-800 dark:text-white
@@ -112,7 +97,7 @@
               ? 'text-purple-600 dark:text-purple-400'
               : ''}"
           >
-            {step.title}
+            {$_(`cutoffs.steps.${step.feature}.title`)}
           </h3>
         </div>
 
@@ -120,19 +105,19 @@
           <p
             class="text-gray-600 text-lg leading-relaxed mb-8 dark:text-gray-300"
           >
-            {step.description}
+            {$_(`cutoffs.steps.${step.feature}.description`)}
           </p>
 
           <div class=" p-6 rounded-lg mb-8">
             <div class="mb-3 text-gray-600 dark:text-gray-300">
               <strong class="text-gray-800 dark:text-white"
-                >Característica:</strong
+                >{$_("cutoffs.characteristic")}</strong
               >
-              {step.axisLabel}
+              {$_(`cutoffs.steps.${step.feature}.axis_label`)}
             </div>
             <div class="mb-3 text-gray-600 dark:text-gray-300">
               <strong class="text-gray-800 dark:text-white"
-                >Faixa de valores:</strong
+                >{$_("cutoffs.value_range")}</strong
               >
               {#if data && data.length > 0}
                 {(() => {
@@ -144,12 +129,12 @@
                   return `${min.toLocaleString()} - ${max.toLocaleString()}`;
                 })()}
               {:else}
-                Carregando...
+                {$_("cutoffs.loading")}
               {/if}
             </div>
             <div class="text-gray-600 dark:text-gray-300">
               <strong class="text-gray-800 dark:text-white"
-                >Ponto de corte:</strong
+                >{$_("cutoffs.cutoff_point")}</strong
               >
               {step.cutoff.toLocaleString()}
             </div>
@@ -169,12 +154,12 @@
         <div
           class="w-12 h-12 border-4 border-gray-200 border-t-purple-600 rounded-full animate-spin mx-auto dark:border-gray-700 dark:border-t-purple-400"
         ></div>
-        <p class="mt-4 text-xl">Carregando dados...</p>
+        <p class="mt-4 text-xl">{$_("cutoffs.loading_data")}</p>
       </div>
     {:else if data != null}
       <div class="mb-4">
         <h4 class="text-gray-800 text-xl text-center m-0 dark:text-white">
-          {steps[currentStep].axisLabel}
+          {$_(`cutoffs.steps.${steps[currentStep].feature}.axis_label`)}
         </h4>
       </div>
       {#key steps[currentStep].feature}
@@ -184,19 +169,21 @@
           dotRadius={3}
           {data}
           feature={steps[currentStep].feature}
-          axisLabel={steps[currentStep].axisLabel}
+          axisLabel={$_(
+            `cutoffs.steps.${steps[currentStep].feature}.axis_label`
+          )}
           bins={55}
           initialCutoffValue={steps[currentStep].cutoff}
         />
       {/key}
       <div class="mt-4 text-center">
         <p class="text-gray-600 text-sm italic dark:text-gray-400">
-          Sacramento (púrpura) vs San Francisco (verde)
+          {$_("cutoffs.city_comparison")}
         </p>
       </div>
     {:else}
       <div class="text-center text-red-600 text-xl dark:text-red-400">
-        <p>❌ Erro ao carregar os dados</p>
+        <p>{$_("cutoffs.error_loading")}</p>
       </div>
     {/if}
   </div>
