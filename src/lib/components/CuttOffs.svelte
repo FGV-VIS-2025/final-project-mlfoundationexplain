@@ -58,35 +58,6 @@
     }
   }
 
-  // Navegação entre passos
-  function nextStep() {
-    if (currentStep < steps.length - 1) {
-      currentStep++;
-      scrollToStep(currentStep);
-    }
-  }
-
-  function prevStep() {
-    if (currentStep > 0) {
-      currentStep--;
-      scrollToStep(currentStep);
-    }
-  }
-
-  function goToStep(stepIndex) {
-    currentStep = stepIndex;
-    scrollToStep(stepIndex);
-  }
-
-  function scrollToStep(stepIndex) {
-    if (stepRefs[stepIndex]) {
-      stepRefs[stepIndex].scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }
-  }
-
   // Observer para detectar mudanças de passo durante o scroll
   onMount(() => {
     loadData();
@@ -207,13 +178,13 @@
       </div>
       {#key steps[currentStep].feature}
         <SimpleScatterplot
-          width={600}
+          width={700}
           height={400}
           dotRadius={3}
           {data}
           feature={steps[currentStep].feature}
           axisLabel={steps[currentStep].axisLabel}
-          bins={20}
+          bins={55}
           initialCutoffValue={steps[currentStep].cutoff}
         />
       {/key}

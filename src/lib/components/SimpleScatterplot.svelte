@@ -55,9 +55,35 @@
     const points = [];
     validData.forEach((record, index) => {
       const value = Number(record[feature]);
-      // Encontrar bin correspondente
-      const binIndex =
-        binData.findIndex((bin) => value >= bin.x0 && value < bin.x1) || 0;
+
+      // Encontrar bin correspondente de forma mais robusta
+      let binIndex = binData.findIndex((bin) => {
+        if (!bin || typeof bin.x0 !== "number" || typeof bin.x1 !== "number") {
+          return false;
+        }
+        // Para o último bin, incluir também o valor máximo
+        return (
+          value >= bin.x0 &&
+          (value < bin.x1 ||
+            (value === bin.x1 && bin === binData[binData.length - 1]))
+        );
+      });
+
+      // Se não encontrou um bin válido, usar o primeiro ou último bin
+      if (binIndex === -1) {
+        if (value <= minValue) {
+          binIndex = 0;
+        } else if (value >= maxValue) {
+          binIndex = binData.length - 1;
+        } else {
+          // Encontrar o bin mais próximo
+          binIndex =
+            binData.findIndex((bin) => bin && bin.x0 !== undefined) || 0;
+        }
+      }
+
+      // Garantir que o binIndex está dentro dos limites válidos
+      binIndex = Math.max(0, Math.min(binData.length - 1, binIndex));
       const bin = binData[binIndex];
 
       points.push({
@@ -65,7 +91,7 @@
         value: value,
         city: record.city,
         binIndex: binIndex,
-        frequency: bin ? bin.length : 1,
+        frequency: bin && bin.length ? bin.length : 1,
         id: record.id || index,
       });
     });
@@ -78,7 +104,13 @@
     if (!data || data.length === 0) return;
 
     const frequencies = processDataPoints();
-    const maxFrequency = d3.max(frequencies, (d) => d.frequency) || 1;
+
+    // Calcular frequência máxima real por bin
+    const binCounts = {};
+    frequencies.forEach((d) => {
+      binCounts[d.binIndex] = (binCounts[d.binIndex] || 0) + 1;
+    });
+    const maxFrequency = Math.max(...Object.values(binCounts));
 
     // Atualizar escalas
     xScale = d3
@@ -91,24 +123,49 @@
       .domain([0, maxFrequency + 1])
       .range([chartHeight, 0]);
 
+    // Criar histograma uma vez para todos os pontos
+    const histogram = d3
+      .histogram()
+      .domain([minValue, maxValue])
+      .thresholds(bins);
+
+    const binData = histogram(frequencies.map((f) => f.value));
+
     // Calcular posições dos pontos
     plotPoints = frequencies.map((d, index) => {
-      const x = xScale(d.value);
-      // Empilhar pontos verticalmente baseado no índice dentro do bin
-      const sameValueCount = frequencies.filter(
+      // Verificar se o bin existe e é válido
+      const bin = binData[d.binIndex];
+      let binCenter, x;
+
+      if (
+        bin &&
+        typeof bin === "object" &&
+        typeof bin.x0 === "number" &&
+        typeof bin.x1 === "number" &&
+        !isNaN(bin.x0) &&
+        !isNaN(bin.x1)
+      ) {
+        binCenter = (bin.x0 + bin.x1) / 2;
+        x = xScale(binCenter);
+      } else {
+        // Fallback: usar o valor original se o bin não for válido
+        console.warn(`Bin inválido para índice ${d.binIndex}:`, bin);
+        binCenter = d.value;
+        x = xScale(d.value);
+      }
+
+      // Agrupar pontos por bin e posicionar verticalmente
+      const pointsInSameBin = frequencies.filter(
         (p) => p.binIndex === d.binIndex
-      ).length;
-      const indexInBin = frequencies.filter(
-        (p, i) => p.binIndex === d.binIndex && i <= index
-      ).length;
-      const baseY = indexInBin;
-      const y = yScale(baseY) + (Math.random() - 0.5) * 2; // Pequeno jitter
+      );
+      const indexInBin = pointsInSameBin.findIndex((p) => p.id === d.id);
+      const y = yScale(indexInBin + 1); // +1 para começar do 1 em vez de 0
 
       return {
         ...d,
         x: x,
         y: y,
-        belowCutoff: d.value < cutoffValue,
+        belowCutoff: binCenter < cutoffValue,
       };
     });
 
@@ -175,7 +232,7 @@
     const rect = svg.getBoundingClientRect();
     mousePosition = {
       x: event.clientX - rect.left,
-      y: event.clientY - rect.top
+      y: event.clientY - rect.top,
     };
   }
 
@@ -218,7 +275,7 @@
   $: if (data && data.length > 0 && feature) {
     updateVisualization();
   }
-  
+
   // Forçar reinício do cutoff quando a feature mudar
   $: if (feature) {
     // Resetar cutoff para que seja recalculado na próxima atualização
@@ -227,7 +284,7 @@
       updateVisualization();
     }
   }
-  
+
   $: cutoffX = xScale ? xScale(cutoffValue) : 0;
   $: if (xScale) {
     xTicks = getXTicks();
@@ -404,7 +461,7 @@
           Frequência: ~{hoveredPoint.frequency} propriedades similares
         </text>
         <text x="10" y="65" fill="#ccc" font-size="11">
-          {hoveredPoint.value < cutoffValue ? 'Abaixo' : 'Acima'} do ponto de corte
+          {hoveredPoint.value < cutoffValue ? "Abaixo" : "Acima"} do ponto de corte
         </text>
       </g>
     {/if}
