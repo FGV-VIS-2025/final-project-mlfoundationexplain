@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import SimpleScatterplot from "./SimpleScatterplot.svelte";
   import * as d3 from "d3";
+  import { base } from '$app/paths';
 
   // Variáveis de controle da narrativa
   let currentStep = 0;
@@ -48,7 +49,7 @@
   // Carregamento dos dados
   async function loadData() {
     try {
-      const resData = await d3.csv("/data/housing_limpo.csv");
+      const resData = await d3.csv(`${base}/data/housing_limpo.csv`);
 
       data = resData;
       isLoading = false;
