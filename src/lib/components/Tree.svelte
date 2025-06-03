@@ -5,7 +5,7 @@
   export let treeData;
   let svg;
   const height = 700;
-  const nodeSpacingX = 40;
+  const nodeSpacingX = 33;
   const nodeSpacingY = 100;
 
   onMount(() => {

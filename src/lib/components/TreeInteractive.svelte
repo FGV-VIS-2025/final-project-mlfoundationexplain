@@ -6,7 +6,7 @@
 
   let svg;
   const height = 650;
-  const nodeSpacingX = 90;
+  const nodeSpacingX = 70;
   const nodeSpacingY = 100;
 
   let currentPath = [];
