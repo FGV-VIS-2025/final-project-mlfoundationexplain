@@ -49,34 +49,8 @@
   async function loadData() {
     try {
       const resData = await d3.csv("/data/housing_limpo.csv");
-      const total_rooms = resData.map((item) => item.total_rooms);
-      const total_bedrooms = resData.map((item) => item.total_bedrooms);
-      const households = resData.map((item) => item.households);
-      const median_house_value = resData.map((item) => item.median_house_value);
 
-      data = {
-        total_bedrooms: {
-          values: total_bedrooms.map(Number),
-          min: Math.min(...total_bedrooms.map(Number)),
-          max: Math.max(...total_bedrooms.map(Number)),
-        },
-        total_rooms: {
-          values: total_rooms.map(Number),
-          min: Math.min(...total_rooms.map(Number)),
-          max: Math.max(...total_rooms.map(Number)),
-        },
-        households: {
-          values: households.map(Number),
-          min: Math.min(...households.map(Number)),
-          max: Math.max(...households.map(Number)),
-        },
-        median_house_value: {
-          values: median_house_value.map(Number),
-          min: Math.min(...median_house_value.map(Number)),
-          max: Math.max(...median_house_value.map(Number)),
-        },
-      };
-
+      data = resData;
       isLoading = false;
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -188,9 +162,18 @@
               <strong class="text-gray-800 dark:text-white"
                 >Faixa de valores:</strong
               >
-              {data && data[steps[currentStep].feature]
-                ? `${data[steps[currentStep].feature].min.toLocaleString()} - ${data[steps[currentStep].feature].max.toLocaleString()}`
-                : "Carregando..."}
+              {#if data && data.length > 0}
+                {(() => {
+                  const values = data
+                    .map((d) => Number(d[steps[currentStep].feature]))
+                    .filter((v) => !isNaN(v));
+                  const min = Math.min(...values);
+                  const max = Math.max(...values);
+                  return `${min.toLocaleString()} - ${max.toLocaleString()}`;
+                })()}
+              {:else}
+                Carregando...
+              {/if}
             </div>
             <div class="text-gray-600 dark:text-gray-300">
               <strong class="text-gray-800 dark:text-white"
@@ -244,20 +227,22 @@
     {:else if data != null}
       <div class="mb-4">
         <h4 class="text-gray-800 text-xl text-center m-0 dark:text-white">
-          {steps[currentStep].axisLabel} vs Valor Mediano das Casas
+          {steps[currentStep].axisLabel}
         </h4>
       </div>
       <SimpleScatterplot
         width={600}
         height={400}
         dotRadius={3}
-        data={data[steps[currentStep].feature].values}
+        {data}
+        feature={steps[currentStep].feature}
+        axisLabel={steps[currentStep].axisLabel}
         bins={20}
         initialCutoffPercentile={0.5}
       />
       <div class="mt-4 text-center">
         <p class="text-gray-600 text-sm italic dark:text-gray-400">
-          Arrastar a linha para ajustar o ponto de corte
+          Sacramento (azul) vs San Francisco (laranja)
         </p>
       </div>
     {:else}

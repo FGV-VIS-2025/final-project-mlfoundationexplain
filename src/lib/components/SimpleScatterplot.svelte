@@ -6,9 +6,11 @@
   export let width = 800;
   export let height = 400;
   export let dotRadius = 4;
-  export let data = []; // Array de valores numéricos
-  export let bins = 20; // Número de bins para cálculo de frequência
-  export let initialCutoffPercentile = 0.5; // Cutoff inicial como percentil (0-1)
+  export let data = []; // Array de objetos completos do CSV
+  export let feature = ""; // Feature a visualizar
+  export let axisLabel = "";
+  export let bins = 20;
+  export let initialCutoffPercentile = 0.5;
 
   let svg;
   let cutoffValue = 0;
@@ -18,43 +20,51 @@
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
-  // Variáveis reativas para escalas
+  // Variáveis reativas
   let xScale, yScale;
   let plotPoints = [];
   let minValue = 0,
     maxValue = 0;
 
-  // Calcular dados de frequência a partir do array numérico
-  function calculateFrequencies() {
-    if (!data || data.length === 0) return [];
+  // Processar dados por feature
+  function processDataPoints() {
+    if (!data || data.length === 0 || !feature) return [];
 
-    minValue = d3.min(data);
-    maxValue = d3.max(data);
+    // Filtrar dados válidos
+    const validData = data.filter(
+      (d) => d[feature] && !isNaN(Number(d[feature]))
+    );
 
-    // Criar bins do histograma
+    // Extrair valores da feature
+    const featureValues = validData.map((d) => Number(d[feature]));
+    minValue = d3.min(featureValues);
+    maxValue = d3.max(featureValues);
+
+    // Criar bins para frequência
     const histogram = d3
       .histogram()
       .domain([minValue, maxValue])
       .thresholds(bins);
 
-    const binData = histogram(data);
+    const binData = histogram(featureValues);
 
-    // Converter bins em pontos do scatter plot
+    // Mapear cada registro original para um ponto
     const points = [];
-    binData.forEach((bin, binIndex) => {
-      const binCenter = (bin.x0 + bin.x1) / 2;
-      const frequency = bin.length;
+    validData.forEach((record, index) => {
+      const value = Number(record[feature]);
+      // Encontrar bin correspondente
+      const binIndex =
+        binData.findIndex((bin) => value >= bin.x0 && value < bin.x1) || 0;
+      const bin = binData[binIndex];
 
-      // Criar múltiplos pontos para cada bin baseado na frequência
-      for (let i = 0; i < frequency; i++) {
-        points.push({
-          value: binCenter,
-          frequency: frequency,
-          binIndex: binIndex,
-          pointIndex: i,
-          id: `${binIndex}-${i}`,
-        });
-      }
+      points.push({
+        originalData: record,
+        value: value,
+        city: record.city,
+        binIndex: binIndex,
+        frequency: bin ? bin.length : 1,
+        id: record.id || index,
+      });
     });
 
     return points;
@@ -64,7 +74,7 @@
   function updateVisualization() {
     if (!data || data.length === 0) return;
 
-    const frequencies = calculateFrequencies();
+    const frequencies = processDataPoints();
     const maxFrequency = d3.max(frequencies, (d) => d.frequency) || 1;
 
     // Atualizar escalas
@@ -79,12 +89,17 @@
       .range([chartHeight, 0]);
 
     // Calcular posições dos pontos
-    plotPoints = frequencies.map((d) => {
+    plotPoints = frequencies.map((d, index) => {
       const x = xScale(d.value);
       // Empilhar pontos verticalmente baseado no índice dentro do bin
-      // Começar do y = 1 para evitar sobreposição com o eixo
-      const baseY = d.pointIndex + 1;
-      const y = yScale(baseY) + (Math.random() - 0.5) * 2; // Pequeno jitter para visibilidade
+      const sameValueCount = frequencies.filter(
+        (p) => p.binIndex === d.binIndex
+      ).length;
+      const indexInBin = frequencies.filter(
+        (p, i) => p.binIndex === d.binIndex && i <= index
+      ).length;
+      const baseY = indexInBin;
+      const y = yScale(baseY) + (Math.random() - 0.5) * 2; // Pequeno jitter
 
       return {
         ...d,
@@ -94,15 +109,16 @@
       };
     });
 
-    // Definir cutoff inicial se não estiver definido
+    // Definir cutoff inicial
     if (cutoffValue === 0) {
-      const sortedData = [...data].sort((a, b) => a - b);
+      const sortedValues = frequencies
+        .map((d) => d.value)
+        .sort((a, b) => a - b);
       cutoffValue =
-        sortedData[Math.floor(sortedData.length * initialCutoffPercentile)];
+        sortedValues[Math.floor(sortedValues.length * initialCutoffPercentile)];
       updateFormattedCutoff();
     }
 
-    // Força a atualização dos ticks após as escalas estarem prontas
     xTicks = getXTicks();
     yTicks = getYTicks();
   }
@@ -252,7 +268,7 @@
         text-anchor="middle"
         class="axis-label"
       >
-        Valor
+        {axisLabel || "Valor"}
       </text>
 
       <text
@@ -271,7 +287,7 @@
           cx={point.x}
           cy={point.y}
           r={dotRadius}
-          fill={point.belowCutoff ? "#007bff" : "#28a745"}
+          fill={point.city === "Sacramento" ? "#007bff" : "#ff6b35"}
           stroke="white"
           stroke-width="1"
           class="dot"
