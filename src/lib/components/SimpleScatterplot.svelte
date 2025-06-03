@@ -322,8 +322,11 @@
         {#each xTicks as tick}
           <g transform="translate({tick.x},0)">
             <line y1="0" y2="6" stroke="currentColor" opacity="0.6" />
-            <text y="20" text-anchor="middle" class="tick-label" fill="var(--color-text)"
-              >{tick.label}</text
+            <text
+              y="20"
+              text-anchor="middle"
+              class="tick-label"
+              fill="var(--color-text)">{tick.label}</text
             >
           </g>
         {/each}
@@ -343,8 +346,12 @@
         {#each yTicks as tick}
           <g transform="translate(0,{tick.y})">
             <line x1="-6" x2="0" stroke="currentColor" opacity="0.6" />
-            <text x="-10" dy="0.35em" text-anchor="end" class="tick-label" fill="var(--color-text)"
-              >{tick.label}</text
+            <text
+              x="-10"
+              dy="0.35em"
+              text-anchor="end"
+              class="tick-label"
+              fill="var(--color-text)">{tick.label}</text
             >
           </g>
         {/each}
@@ -457,7 +464,14 @@
           filter="drop-shadow(0 4px 8px rgba(0,0,0,0.3))"
           class="tooltip-bg"
         />
-        <text x="10" y="18" fill="white" font-size="12" font-weight="bold" class="tooltip-title">
+        <text
+          x="10"
+          y="18"
+          fill="white"
+          font-size="12"
+          font-weight="bold"
+          class="tooltip-title"
+        >
           Propriedade de {hoveredPoint.city}
         </text>
         <text x="10" y="35" fill="#ccc" font-size="11" class="tooltip-text">
