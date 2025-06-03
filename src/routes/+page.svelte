@@ -177,32 +177,6 @@
 
 
 
-<div class="max-w-7xl mx-auto p-6 pt-40 pb-0 text-center  transition-colors duration-300  leading-relaxed space-y-6" >
-
-<!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
-
-  <h2 class="text-5xl font-semibold mb-4 py-8">{$_('section-complete-tree.title')}</h2>
-
-  <p class="text-justify">
-    {@html $_('section-complete-tree.description', {
-      values: {
-        accuracy: `<span class="font-semibold">${$_('section-complete-tree.accuracy')}</span>`,
-        overfitting: `<span class="italic">${$_('section-complete-tree.overfitting')}</span>`
-      }
-    })}
-  </p>
-
-  <p class="text-justify"><b>{$_('section-complete-tree.example_text')}</b></p>
-
-</div>
-
-<div class="my-19 mt-40 mb-40">
-  {#if treeJson}
-    <DecisionTree treeData={treeJson} />
-  {:else}
-    <p>{$_('section-interactive-prediction.loading_tree')}</p>
-  {/if}
-</div>
 
 <!-- 
  <div class="max-w-7xl mx-auto p-6 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300">
@@ -278,9 +252,9 @@
   </div>
 </div> -->
 
-<div class="scroll-wrapper-default">
+<div class="scroll-wrapper-default  mt-40">
 <div 
-  class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  class="max-w-7xl mx-auto  p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
   style=" color: var(--color-text);"
 >
   <h2 class="text-3xl font-extrabold mb-6">{$_('section-gini.title')}</h2>
@@ -301,12 +275,43 @@
  <!-- </div> -->
 
 
-  <div class="">
+  <div class="max-w-7xl mx-auto  p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  style=" color: var(--color-text);">
+
   <div class="max-w-7xl mx-auto px-6">
+    <p>Uma forma de ver esses corter é projentando em uma variável, para observar como ocorre a distribuição univariada e cortar no ponto onde é melhor dividida as clases. Abaixo alguns exemplo:</p>
     <CuttOffs />
   </div>
 </div>
 
+
+
+<div class="max-w-7xl mx-auto mt-0 p-6 pt-20 pb-0 text-center  transition-colors duration-300  leading-relaxed space-y-6" >
+
+<!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
+
+  <h2 class="text-5xl font-semibold mb-4 py-8">{$_('section-complete-tree.title')}</h2>
+
+  <p class="text-justify">
+    {@html $_('section-complete-tree.description', {
+      values: {
+        accuracy: `<span class="font-semibold">${$_('section-complete-tree.accuracy')}</span>`,
+        overfitting: `<span class="italic">${$_('section-complete-tree.overfitting')}</span>`
+      }
+    })}
+  </p>
+
+  <p class="text-justify"><b>{$_('section-complete-tree.example_text')}</b></p>
+
+</div>
+
+<div class="my-19 mt-40 mb-40">
+  {#if treeJson}
+    <DecisionTree treeData={treeJson} />
+  {:else}
+    <p>{$_('section-interactive-prediction.loading_tree')}</p>
+  {/if}
+</div>
 
  <footer class="bg-[var(--color-background-section)] text-[var(--color-text)] mt-20 pt-4 pb-4 border-t border-gray-600 text-xs">
   <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
