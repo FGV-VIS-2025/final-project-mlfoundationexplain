@@ -8,16 +8,16 @@
   const nodeSpacingY = 100;
 
   const treeData = {
-    name: "Temperatura",
+    name: "Chuva?",
     children: [
       {
-        name: "Sim",
+        name: "Frio?",
         children: [
-          { name: "Classe A" },
-          { name: "Classe B" }
+          { name: "Jogar" },
+          { name: "Não jogar" }
         ]
       },
-      { name: "Não" }
+      { name: "Não jogar" }
     ]
   };
 
@@ -118,28 +118,39 @@
       .attr('transform', d => `translate(${d.x},${d.y}) scale(1)`);
 
     node.append('circle')
-      .attr('r', 19)
+      .attr('r', 25)
       .attr('fill', `url(#${gradientId})`)
       .attr('stroke', 'var(--viz-node-stroke)')
       .attr('stroke-width', 2)
       .on("mouseover", function () {
         d3.select(this)
           .attr("fill", "var(--viz-node-hover)")
-          .attr("r", 22);
+          .attr("r", 27);
       })
       .on("mouseout", function () {
         d3.select(this)
           .attr("fill", `url(#${gradientId})`)
-          .attr("r", 19);
+          .attr("r", 25);
       });
 
     const text = node.append("text")
       .attr("dy", "0.35em")
-      .attr("y", d => d.children ? -20 : 28)
-      .attr("x", d => d.children ? 10 : 40)
-      .style("font-size", "14px")
+      .attr("y", d => d.children ? -30: 39)
+    //   .attr("x", d => d.children ? -10 : 80).attr("x", 0)
+  .attr("text-anchor", "middle")
+      .style("font-size", "16px")
       .style("fill", "var(--viz-text)")
       .style("text-shadow", "0 0 2px var(--viz-text-shadow)");
+
+//     const text = node.append("text")
+//   .attr("dy", "0.35em")
+//   .attr("y", 39) // ou ajuste como preferir
+//   .attr("x", 0)
+//   .attr("text-anchor", "middle")
+//   .style("font-size", "16px")
+//   .style("fill", "var(--viz-text)")
+//   .style("text-shadow", "0 0 2px var(--viz-text-shadow)");
+
 
     text.selectAll("tspan")
       .data(d => d.data.name.split("\n"))

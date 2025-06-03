@@ -43,12 +43,12 @@
 
   /* tree intro */
     /* --viz-bg: #f6f9fc; */
-    --viz-node-fill: #a75aca;
-    --viz-node-stroke: #5a378b;
+    --viz-node-fill: #914db1;
+    --viz-node-stroke: #4d1374;
     --viz-node-hover: #5f318a;
-    --viz-link: #6c41a7;
+    --viz-link: #5c3277;
     --viz-shadow: #1e253b;
-    --viz-text: #1f0d3d;
+    --viz-text: #000000;
     --viz-text-shadow: #ffffff;
 
 
