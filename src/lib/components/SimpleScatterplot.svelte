@@ -8,7 +8,7 @@
   export let dotRadius = 4;
   export let data = []; // Array de objetos completos do CSV
   export let feature = ""; // Feature a visualizar
-  export let axisLabel = "";
+  export let axisLabel = ""; // Label do eixo
   export let bins = 20;
   export let initialCutoffPercentile = 0.5;
   export let initialCutoffValue = null; // Valor específico de corte inicial
@@ -315,13 +315,14 @@
           y1="0"
           x2={chartWidth}
           y2="0"
-          stroke="#666"
+          stroke="currentColor"
           stroke-width="1"
+          opacity="0.6"
         />
         {#each xTicks as tick}
           <g transform="translate({tick.x},0)">
-            <line y1="0" y2="6" stroke="#666" />
-            <text y="20" text-anchor="middle" class="tick-label"
+            <line y1="0" y2="6" stroke="currentColor" opacity="0.6" />
+            <text y="20" text-anchor="middle" class="tick-label" fill="var(--color-text)"
               >{tick.label}</text
             >
           </g>
@@ -335,13 +336,14 @@
           y1="0"
           x2="0"
           y2={chartHeight}
-          stroke="#666"
+          stroke="currentColor"
           stroke-width="1"
+          opacity="0.6"
         />
         {#each yTicks as tick}
           <g transform="translate(0,{tick.y})">
-            <line x1="-6" x2="0" stroke="#666" />
-            <text x="-10" dy="0.35em" text-anchor="end" class="tick-label"
+            <line x1="-6" x2="0" stroke="currentColor" opacity="0.6" />
+            <text x="-10" dy="0.35em" text-anchor="end" class="tick-label" fill="var(--color-text)"
               >{tick.label}</text
             >
           </g>
@@ -354,6 +356,7 @@
         y={chartHeight + 50}
         text-anchor="middle"
         class="axis-label"
+        fill="var(--color-text)"
       >
         {axisLabel || "Valor"}
       </text>
@@ -364,6 +367,7 @@
         text-anchor="middle"
         class="axis-label"
         transform="rotate(-90)"
+        fill="var(--color-text)"
       >
         Frequência
       </text>
@@ -375,8 +379,8 @@
           cy={point.y}
           r={dotRadius}
           fill={point.city === "Sacramento" ? "#007bff" : "#ff6b35"}
-          stroke="white"
-          stroke-width="1"
+          stroke={point.city === "Sacramento" ? "#0056b3" : "#d63031"}
+          stroke-width="1.5"
           class="dot"
           opacity="0.8"
           on:mouseenter={(e) => handlePointHover(point, e)}
@@ -404,7 +408,7 @@
           cy="-15"
           r="8"
           fill="#28a745"
-          stroke="white"
+          stroke="currentColor"
           stroke-width="2"
           class="cutoff-handle"
           on:mousedown={handleMouseDown}
@@ -419,8 +423,9 @@
             y="0"
             rx="4"
             fill="rgba(40, 167, 69, 0.95)"
-            stroke="rgba(255, 255, 255, 0.8)"
+            stroke="currentColor"
             stroke-width="1"
+            stroke-opacity="0.3"
             filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"
           />
           <text
@@ -446,21 +451,22 @@
           width="280"
           height="85"
           rx="6"
-          fill="rgba(0, 0, 0, 0.9)"
+          fill="rgba(0, 0, 0, 0.95)"
           stroke="rgba(255, 255, 255, 0.2)"
           stroke-width="1"
           filter="drop-shadow(0 4px 8px rgba(0,0,0,0.3))"
+          class="tooltip-bg"
         />
-        <text x="10" y="18" fill="white" font-size="12" font-weight="bold">
+        <text x="10" y="18" fill="white" font-size="12" font-weight="bold" class="tooltip-title">
           Propriedade de {hoveredPoint.city}
         </text>
-        <text x="10" y="35" fill="#ccc" font-size="11">
+        <text x="10" y="35" fill="#ccc" font-size="11" class="tooltip-text">
           Valor: {hoveredPoint.value.toLocaleString()}
         </text>
-        <text x="10" y="50" fill="#ccc" font-size="11">
+        <text x="10" y="50" fill="#ccc" font-size="11" class="tooltip-text">
           Frequência: ~{hoveredPoint.frequency} propriedades similares
         </text>
-        <text x="10" y="65" fill="#ccc" font-size="11">
+        <text x="10" y="65" fill="#ccc" font-size="11" class="tooltip-text">
           {hoveredPoint.value < cutoffValue ? "Abaixo" : "Acima"} do ponto de corte
         </text>
       </g>
@@ -481,21 +487,13 @@
 
   .tick-label {
     font-size: 12px;
-    fill: #666;
+    fill: var(--color-text);
   }
 
   .axis-label {
     font-size: 14px;
-    fill: #333;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .tick-label {
-      fill: #cbd5e0;
-    }
-    .axis-label {
-      fill: #e2e8f0;
-    }
+    fill: var(--color-text);
+    font-weight: 500;
   }
 
   .dot {
@@ -522,5 +520,26 @@
 
   .cutoff-tooltip {
     pointer-events: none;
+  }
+
+  /* Tooltip styles for better theme support */
+  .tooltip-bg {
+    fill: rgba(0, 0, 0, 0.95); /* Default dark tooltip for all themes */
+  }
+
+  .tooltip-title {
+    fill: white;
+  }
+
+  .tooltip-text {
+    fill: #ccc;
+  }
+
+  /* Light mode adjustments could be made here if needed */
+  @media (prefers-color-scheme: light) {
+    /* Keep tooltips dark even in light mode for better contrast */
+    .tooltip-bg {
+      fill: rgba(0, 0, 0, 0.95);
+    }
   }
 </style>
