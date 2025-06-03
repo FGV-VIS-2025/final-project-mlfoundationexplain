@@ -287,6 +287,17 @@
   </div>
  </div> -->
 
+
+ <!-- </div> -->
+
+
+  <div class="">
+  <div class="max-w-7xl mx-auto px-6">
+    <CuttOffs />
+  </div>
+</div>
+
+
  <footer class="bg-[var(--color-background-section)] text-[var(--color-text)] mt-20 pt-4 pb-4 border-t border-gray-600 text-xs">
   <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
     <p class="text-sm">
@@ -298,14 +309,3 @@
     </p>
   </div>
 </footer>
-
-
- </div>
-
-
-  <div class="">
-  <div class="max-w-7xl mx-auto px-6">
-    <CuttOffs />
-  </div>
-</div>
-
