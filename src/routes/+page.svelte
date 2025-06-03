@@ -268,10 +268,38 @@
   </div>
 </div> -->
 
+<div class="scroll-wrapper-default">
+<div 
+  class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  style=" color: var(--color-text);"
+>
+  <h2 class="text-3xl font-extrabold mb-6">{$_('section-gini.title')}</h2>
+  <p class="mb-4">{$_('section-gini.description')}</p>
+
+  <Gini />
+</div>
+</div>
+
+<!-- 
  <div class="scroll-wrapper-default">
   <div class="max-w-7xl mx-auto px-6">
     <Gini />
   </div>
+ </div> -->
+
+ <footer class="bg-[var(--color-background-section)] text-[var(--color-text)] mt-20 pt-4 pb-4 border-t border-gray-600 text-xs">
+  <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
+    <p class="text-sm">
+      <!-- © {new Date().getFullYear()} Aprendizado de Máquina Interativo. Todos os direitos reservados. -->
+       <!-- Autores: Paula Eduarda de Lima, Mariana Fernandes Rocha e Joel Perca -->
+    </p>
+    <p class="text-xs text-[var(--color-text)]">
+      Desenvolvido por Paula Eduarda de Lima, Mariana Fernandes Rocha e Joel Perca com SvelteKit & D3.js
+    </p>
+  </div>
+</footer>
+
+
  </div>
 
 
@@ -280,3 +308,4 @@
     <CuttOffs />
   </div>
 </div>
+

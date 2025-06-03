@@ -84,8 +84,8 @@
         .attr('cx', x)
         .attr('cy', y)
         .attr('r', 6)
-        .attr('fill', isPositive ? 'green' : 'red')
-        .attr('opacity', 0.8);
+        .attr('fill', isPositive ? 'var(--color-classe0)' : 'var(--color-classe1)')
+        .attr('opacity', 1);
     });
   }
 
@@ -93,7 +93,7 @@
     const numDots = 50;
     const threshold = Math.round(p * numDots);
     dots.forEach((dot, i) => {
-      dot.attr('fill', i < threshold ? 'green' : 'red').attr('opacity', 0.7);
+      dot.attr('fill', i < threshold ? 'var(--color-classe0)' : 'var(--color-classe1)').attr('opacity', 0.7);
     });
   }
 
@@ -115,9 +115,23 @@
     xScale = d3.scaleLinear().domain([0, 1]).range([0, innerWidth]);
     yScale = d3.scaleLinear().domain([0, 1]).range([innerHeight, 0]);
 
+
+
+    //PALETA PERSONALIZADA
+    const coresPersonalizadas = {
+    'Entropia': 'var(--color-entropy)', // ou '#006400'
+    'Gini': 'var(--color-gini)'      // ou '#4B0082'
+  };
+
+
     colorScale = d3.scaleOrdinal()
       .domain(classes)
-      .range(d3.schemeCategory10);
+      .range(classes.map(c => coresPersonalizadas[c] || '#999')); // cor fallback se cidade não estiver no dicionário
+
+
+    // colorScale = d3.scaleOrdinal()
+    //   .domain(classes)
+    //   .range(d3.schemeCategory10);
 
     const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
@@ -291,8 +305,8 @@
     display: flex;
     flex-direction: column;
     max-width: 500px;
-    font-size: 14px;
-    color: white;
+    font-size: 16px;
+    color: var(--color-text);
     line-height: 1.4;
   }
 
@@ -300,7 +314,7 @@
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
-    color: white;
+    color: var(--color-text);
   }
 
     button {
@@ -310,7 +324,7 @@
   font-size: 0.85rem;
   border: none;
   border-radius: 4px;
-  background: #9333ea;
+    background: var(--color-button-previsão);
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
