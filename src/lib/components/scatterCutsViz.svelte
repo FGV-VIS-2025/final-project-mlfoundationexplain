@@ -335,7 +335,7 @@ function desenharCortesBFS(bboxInicial, root, maxCortes) {
     }
 
     // Cortes internos
-    if (feature === "feature 0") {
+    if (feature === xKey) {
       if (!(bbox.x0 < threshold && threshold < bbox.x1)) continue;
       const x = xScale(threshold);
       svg.append("line")
@@ -374,7 +374,7 @@ function desenharCortesBFS(bboxInicial, root, maxCortes) {
         bbox: { x0: threshold, x1: bbox.x1, y0: bbox.y0, y1: bbox.y1 },
         node: node.right
       });
-    } else if (feature === "feature 1") {
+    } else if (feature === yKey) {
       if (!(bbox.y0 < threshold && threshold < bbox.y1)) continue;
       const y = yScale(threshold);
       svg.append("line")
