@@ -6,55 +6,94 @@
   export let width = 800;
   export let height = 400;
   export let dotRadius = 4;
-  export let data = []; // Array de valores numéricos
-  export let bins = 20; // Número de bins para cálculo de frequência
-  export let initialCutoffPercentile = 0.5; // Cutoff inicial como percentil (0-1)
+  export let data = []; // Array de objetos completos do CSV
+  export let feature = ""; // Feature a visualizar
+  export let axisLabel = ""; // Label do eixo
+  export let bins = 20;
+  export let initialCutoffPercentile = 0.5;
+  export let initialCutoffValue = null; // Valor específico de corte inicial
 
   let svg;
   let cutoffValue = 0;
   let formattedCutoff = "";
+  let hoveredPoint = null;
+  let mousePosition = { x: 0, y: 0 };
 
   const margin = { top: 40, right: 40, bottom: 80, left: 100 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
 
-  // Variáveis reativas para escalas
+  // Variáveis reativas
   let xScale, yScale;
   let plotPoints = [];
   let minValue = 0,
     maxValue = 0;
 
-  // Calcular dados de frequência a partir do array numérico
-  function calculateFrequencies() {
-    if (!data || data.length === 0) return [];
+  // Processar dados por feature
+  function processDataPoints() {
+    if (!data || data.length === 0 || !feature) return [];
 
-    minValue = d3.min(data);
-    maxValue = d3.max(data);
+    // Filtrar dados válidos
+    const validData = data.filter(
+      (d) => d[feature] && !isNaN(Number(d[feature]))
+    );
 
-    // Criar bins do histograma
+    // Extrair valores da feature
+    const featureValues = validData.map((d) => Number(d[feature]));
+    minValue = d3.min(featureValues);
+    maxValue = d3.max(featureValues);
+
+    // Criar bins para frequência
     const histogram = d3
       .histogram()
       .domain([minValue, maxValue])
       .thresholds(bins);
 
-    const binData = histogram(data);
+    const binData = histogram(featureValues);
 
-    // Converter bins em pontos do scatter plot
+    // Mapear cada registro original para um ponto
     const points = [];
-    binData.forEach((bin, binIndex) => {
-      const binCenter = (bin.x0 + bin.x1) / 2;
-      const frequency = bin.length;
+    validData.forEach((record, index) => {
+      const value = Number(record[feature]);
 
-      // Criar múltiplos pontos para cada bin baseado na frequência
-      for (let i = 0; i < frequency; i++) {
-        points.push({
-          value: binCenter,
-          frequency: frequency,
-          binIndex: binIndex,
-          pointIndex: i,
-          id: `${binIndex}-${i}`,
-        });
+      // Encontrar bin correspondente de forma mais robusta
+      let binIndex = binData.findIndex((bin) => {
+        if (!bin || typeof bin.x0 !== "number" || typeof bin.x1 !== "number") {
+          return false;
+        }
+        // Para o último bin, incluir também o valor máximo
+        return (
+          value >= bin.x0 &&
+          (value < bin.x1 ||
+            (value === bin.x1 && bin === binData[binData.length - 1]))
+        );
+      });
+
+      // Se não encontrou um bin válido, usar o primeiro ou último bin
+      if (binIndex === -1) {
+        if (value <= minValue) {
+          binIndex = 0;
+        } else if (value >= maxValue) {
+          binIndex = binData.length - 1;
+        } else {
+          // Encontrar o bin mais próximo
+          binIndex =
+            binData.findIndex((bin) => bin && bin.x0 !== undefined) || 0;
+        }
       }
+
+      // Garantir que o binIndex está dentro dos limites válidos
+      binIndex = Math.max(0, Math.min(binData.length - 1, binIndex));
+      const bin = binData[binIndex];
+
+      points.push({
+        originalData: record,
+        value: value,
+        city: record.city,
+        binIndex: binIndex,
+        frequency: bin && bin.length ? bin.length : 1,
+        id: record.id || index,
+      });
     });
 
     return points;
@@ -64,8 +103,14 @@
   function updateVisualization() {
     if (!data || data.length === 0) return;
 
-    const frequencies = calculateFrequencies();
-    const maxFrequency = d3.max(frequencies, (d) => d.frequency) || 1;
+    const frequencies = processDataPoints();
+
+    // Calcular frequência máxima real por bin
+    const binCounts = {};
+    frequencies.forEach((d) => {
+      binCounts[d.binIndex] = (binCounts[d.binIndex] || 0) + 1;
+    });
+    const maxFrequency = Math.max(...Object.values(binCounts));
 
     // Atualizar escalas
     xScale = d3
@@ -78,31 +123,66 @@
       .domain([0, maxFrequency + 1])
       .range([chartHeight, 0]);
 
+    // Criar histograma uma vez para todos os pontos
+    const histogram = d3
+      .histogram()
+      .domain([minValue, maxValue])
+      .thresholds(bins);
+
+    const binData = histogram(frequencies.map((f) => f.value));
+
     // Calcular posições dos pontos
-    plotPoints = frequencies.map((d) => {
-      const x = xScale(d.value);
-      // Empilhar pontos verticalmente baseado no índice dentro do bin
-      // Começar do y = 1 para evitar sobreposição com o eixo
-      const baseY = d.pointIndex + 1;
-      const y = yScale(baseY) + (Math.random() - 0.5) * 2; // Pequeno jitter para visibilidade
+    plotPoints = frequencies.map((d, index) => {
+      // Verificar se o bin existe e é válido
+      const bin = binData[d.binIndex];
+      let binCenter, x;
+
+      if (
+        bin &&
+        typeof bin === "object" &&
+        typeof bin.x0 === "number" &&
+        typeof bin.x1 === "number" &&
+        !isNaN(bin.x0) &&
+        !isNaN(bin.x1)
+      ) {
+        binCenter = (bin.x0 + bin.x1) / 2;
+        x = xScale(binCenter);
+      } else {
+        // Fallback: usar o valor original se o bin não for válido
+        console.warn(`Bin inválido para índice ${d.binIndex}:`, bin);
+        binCenter = d.value;
+        x = xScale(d.value);
+      }
+
+      // Agrupar pontos por bin e posicionar verticalmente
+      const pointsInSameBin = frequencies.filter(
+        (p) => p.binIndex === d.binIndex
+      );
+      const indexInBin = pointsInSameBin.findIndex((p) => p.id === d.id);
+      const y = yScale(indexInBin + 1); // +1 para começar do 1 em vez de 0
 
       return {
         ...d,
         x: x,
         y: y,
-        belowCutoff: d.value < cutoffValue,
+        belowCutoff: binCenter < cutoffValue,
       };
     });
 
-    // Definir cutoff inicial se não estiver definido
-    if (cutoffValue === 0) {
-      const sortedData = [...data].sort((a, b) => a - b);
+    // Sempre definir cutoff quando recalcular (para garantir que mude com a feature)
+    if (initialCutoffValue !== null) {
+      // Usar valor específico se fornecido
+      cutoffValue = Math.max(minValue, Math.min(maxValue, initialCutoffValue));
+    } else {
+      // Usar percentil se não houver valor específico
+      const sortedValues = frequencies
+        .map((d) => d.value)
+        .sort((a, b) => a - b);
       cutoffValue =
-        sortedData[Math.floor(sortedData.length * initialCutoffPercentile)];
-      updateFormattedCutoff();
+        sortedValues[Math.floor(sortedValues.length * initialCutoffPercentile)];
     }
+    updateFormattedCutoff();
 
-    // Força a atualização dos ticks após as escalas estarem prontas
     xTicks = getXTicks();
     yTicks = getYTicks();
   }
@@ -147,6 +227,19 @@
     });
   }
 
+  function handlePointHover(point, event) {
+    hoveredPoint = point;
+    const rect = svg.getBoundingClientRect();
+    mousePosition = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+    };
+  }
+
+  function handlePointLeave() {
+    hoveredPoint = null;
+  }
+
   // Função para formatar valores com K quando > 10000
   function formatValue(value) {
     if (value >= 10000) {
@@ -178,10 +271,20 @@
   let xTicks = [];
   let yTicks = [];
 
-  // Reativos
-  $: if (data && data.length > 0) {
+  // Reativos - quando dados ou feature mudarem, recalcular tudo
+  $: if (data && data.length > 0 && feature) {
     updateVisualization();
   }
+
+  // Forçar reinício do cutoff quando a feature mudar
+  $: if (feature) {
+    // Resetar cutoff para que seja recalculado na próxima atualização
+    cutoffValue = 0;
+    if (data && data.length > 0) {
+      updateVisualization();
+    }
+  }
+
   $: cutoffX = xScale ? xScale(cutoffValue) : 0;
   $: if (xScale) {
     xTicks = getXTicks();
@@ -212,14 +315,18 @@
           y1="0"
           x2={chartWidth}
           y2="0"
-          stroke="#666"
+          stroke="currentColor"
           stroke-width="1"
+          opacity="0.6"
         />
         {#each xTicks as tick}
           <g transform="translate({tick.x},0)">
-            <line y1="0" y2="6" stroke="#666" />
-            <text y="20" text-anchor="middle" class="tick-label"
-              >{tick.label}</text
+            <line y1="0" y2="6" stroke="currentColor" opacity="0.6" />
+            <text
+              y="20"
+              text-anchor="middle"
+              class="tick-label"
+              fill="var(--color-text)">{tick.label}</text
             >
           </g>
         {/each}
@@ -232,14 +339,19 @@
           y1="0"
           x2="0"
           y2={chartHeight}
-          stroke="#666"
+          stroke="currentColor"
           stroke-width="1"
+          opacity="0.6"
         />
         {#each yTicks as tick}
           <g transform="translate(0,{tick.y})">
-            <line x1="-6" x2="0" stroke="#666" />
-            <text x="-10" dy="0.35em" text-anchor="end" class="tick-label"
-              >{tick.label}</text
+            <line x1="-6" x2="0" stroke="currentColor" opacity="0.6" />
+            <text
+              x="-10"
+              dy="0.35em"
+              text-anchor="end"
+              class="tick-label"
+              fill="var(--color-text)">{tick.label}</text
             >
           </g>
         {/each}
@@ -251,8 +363,9 @@
         y={chartHeight + 50}
         text-anchor="middle"
         class="axis-label"
+        fill="var(--color-text)"
       >
-        Valor
+        {axisLabel || "Valor"}
       </text>
 
       <text
@@ -261,6 +374,7 @@
         text-anchor="middle"
         class="axis-label"
         transform="rotate(-90)"
+        fill="var(--color-text)"
       >
         Frequência
       </text>
@@ -271,11 +385,14 @@
           cx={point.x}
           cy={point.y}
           r={dotRadius}
-          fill={point.belowCutoff ? "#007bff" : "#28a745"}
-          stroke="white"
-          stroke-width="1"
+          fill={point.city === "Sacramento" ? "var(--color-classe1)" : "var(--color-classe0)"}
+          stroke={point.city === "Sacramento" ? "var(--color-classe1)" : "var(--color-classe0)"}
+          stroke-width="1.5"
           class="dot"
           opacity="0.8"
+          on:mouseenter={(e) => handlePointHover(point, e)}
+          on:mouseleave={handlePointLeave}
+          on:mousemove={(e) => handlePointHover(point, e)}
         />
       {/each}
 
@@ -298,7 +415,7 @@
           cy="-15"
           r="8"
           fill="#28a745"
-          stroke="white"
+          stroke="currentColor"
           stroke-width="2"
           class="cutoff-handle"
           on:mousedown={handleMouseDown}
@@ -313,8 +430,9 @@
             y="0"
             rx="4"
             fill="rgba(40, 167, 69, 0.95)"
-            stroke="rgba(255, 255, 255, 0.8)"
+            stroke="currentColor"
             stroke-width="1"
+            stroke-opacity="0.3"
             filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"
           />
           <text
@@ -330,6 +448,43 @@
         </g>
       {/if}
     </g>
+
+    <!-- Tooltip para pontos -->
+    {#if hoveredPoint}
+      <g transform="translate({mousePosition.x + 10}, {mousePosition.y - 10})">
+        <rect
+          x="0"
+          y="0"
+          width="280"
+          height="85"
+          rx="6"
+          fill="rgba(0, 0, 0, 0.95)"
+          stroke="rgba(255, 255, 255, 0.2)"
+          stroke-width="1"
+          filter="drop-shadow(0 4px 8px rgba(0,0,0,0.3))"
+          class="tooltip-bg"
+        />
+        <text
+          x="10"
+          y="18"
+          fill="white"
+          font-size="12"
+          font-weight="bold"
+          class="tooltip-title"
+        >
+          Propriedade de {hoveredPoint.city}
+        </text>
+        <text x="10" y="35" fill="#ccc" font-size="11" class="tooltip-text">
+          Valor: {hoveredPoint.value.toLocaleString()}
+        </text>
+        <text x="10" y="50" fill="#ccc" font-size="11" class="tooltip-text">
+          Frequência: ~{hoveredPoint.frequency} propriedades similares
+        </text>
+        <text x="10" y="65" fill="#ccc" font-size="11" class="tooltip-text">
+          {hoveredPoint.value < cutoffValue ? "Abaixo" : "Acima"} do ponto de corte
+        </text>
+      </g>
+    {/if}
   </svg>
 </div>
 
@@ -346,41 +501,13 @@
 
   .tick-label {
     font-size: 12px;
-    fill: var(--text-color, #666);
+    fill: var(--color-text);
   }
 
   .axis-label {
     font-size: 14px;
-    fill: var(--text-color-primary, #333);
-  }
-
-  /* Colores para tema claro */
-  :global(.light) .tick-label {
-    fill: #666;
-  }
-
-  :global(.light) .axis-label {
-    fill: #333;
-  }
-
-  /* Colores para tema oscuro */
-  :global(.dark) .tick-label {
-    fill: #cbd5e0;
-  }
-
-  :global(.dark) .axis-label {
-    fill: #e2e8f0;
-  }
-
-  /* Fallback para sistemas sin tema específico */
-  @media (prefers-color-scheme: dark) {
-    .tick-label {
-      fill: #cbd5e0;
-    }
-
-    .axis-label {
-      fill: #e2e8f0;
-    }
+    fill: var(--color-text);
+    font-weight: 500;
   }
 
   .dot {
@@ -407,5 +534,26 @@
 
   .cutoff-tooltip {
     pointer-events: none;
+  }
+
+  /* Tooltip styles for better theme support */
+  .tooltip-bg {
+    fill: rgba(0, 0, 0, 0.95); /* Default dark tooltip for all themes */
+  }
+
+  .tooltip-title {
+    fill: white;
+  }
+
+  .tooltip-text {
+    fill: #ccc;
+  }
+
+  /* Light mode adjustments could be made here if needed */
+  @media (prefers-color-scheme: light) {
+    /* Keep tooltips dark even in light mode for better contrast */
+    .tooltip-bg {
+      fill: rgba(0, 0, 0, 0.95);
+    }
   }
 </style>
