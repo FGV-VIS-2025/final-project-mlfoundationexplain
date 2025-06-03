@@ -5,6 +5,7 @@
   import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
   import ScrollStory3 from '$lib/components/ScrollStory3.svelte';
   import Introduction from '$lib/components/Introduction.svelte';
+  import CuttOffs from '$lib/components/CuttOffs.svelte';
   import Gini from '$lib/components/gini.svelte';
   import { _ } from 'svelte-i18n';
 
@@ -297,3 +298,14 @@
     </p>
   </div>
 </footer>
+
+
+ </div>
+
+
+  <div class="">
+  <div class="max-w-7xl mx-auto px-6">
+    <CuttOffs />
+  </div>
+</div>
+
