@@ -5,54 +5,135 @@
   import { changeLocale } from "../../i18n.js";
 
   let svgContainer;
+  let samples = [];
+  let maxSamples = 30;
+  let positiveLine;
 
   const width = 600;
-  const height = 500;
-  const margin = { top: 30, right: 30, bottom: 70, left: 60 };
+  const height = 600;
+  const margin = { top: 30, right: 150, bottom: 70, left: 100 };
 
+  const classes = ["Entropia", "Gini"];
   let colorScale;
-  let classes = [];
 
+  let svg, xScale, yScale;
+  let hoverTooltip, hoverLine, hoverBox, hoverText, hoverText2;
+  let sampleText1, sampleText2;
+  let dotGroup;
+  let dots = [];
+
+  const entropy = p => (p === 0 || p === 1) ? 0 : -p * Math.log2(p) - (1 - p) * Math.log2(1 - p);
+  const gini = p => 2 * p * (1 - p);
+
+  const addSample = (label) => {
+    if (samples.length >= maxSamples) return;
+    samples = [...samples, { label, id: crypto.randomUUID() }];
+    updateSample();
+  };
+
+  const removeClass = (label) => {
+  const index = samples.findIndex(s => s.label === label);
+  if (index !== -1) {
+    samples = [...samples.slice(0, index), ...samples.slice(index + 1)];
+    updateSample();
+  }
+};
+
+  function updateSample() {
+    const total = samples.length;
+    if (total === 0) {
+      sampleText1.text(`Entropia: -`);
+      sampleText2.text(`Gini: -`);
+      dotGroup.selectAll('circle').remove();
+      updateDots(1); // tudo vermelho
+      return;
+    }
+
+    const positives = samples.filter(d => d.label === 1).length;
+    const p = positives / total;
+
+        if (total > 0) {
+      positiveLine
+        .attr('x1', xScale(p))
+        .attr('x2', xScale(p))
+        .attr('stroke-dasharray', '4 2')
+        .attr('opacity', 1);
+    } else {
+      positiveLine.attr('opacity', 0);
+    }
+
+    sampleText1.text(`Entropia: ${entropy(p).toFixed(3)}`);
+    sampleText2.text(`Gini: ${gini(p).toFixed(3)}`);
+    updateDots(p);
+
+    // Bolinhas à direita
+    const spacing = 12;
+    const startXGreen = width - 60;
+    const startXRed = width - 75;
+    const startY = height - margin.bottom - 10;
+
+    dotGroup.selectAll('circle').remove();
+    let posIndex = 0, negIndex = 0;
+    samples.forEach(val => {
+      const isPositive = val.label === 1;
+      const colIndex = isPositive ? posIndex++ : negIndex++;
+      const x = isPositive ? startXGreen : startXRed;
+      const y = startY - colIndex * spacing;
+
+      dotGroup.append('circle')
+        .attr('cx', x)
+        .attr('cy', y)
+        .attr('r', 6)
+        .attr('fill', isPositive ? 'green' : 'red')
+        .attr('opacity', 0.8);
+    });
+  }
+
+  function updateDots(p) {
+    const numDots = 50;
+    const threshold = Math.round(p * numDots);
+    dots.forEach((dot, i) => {
+      dot.attr('fill', i < threshold ? 'green' : 'red').attr('opacity', 0.7);
+    });
+  }
 
   onMount(() => {
-    const svg = d3.select(svgContainer)
-      .html('')
-      .append('svg')
+
+    const script = document.createElement('script');
+    script.id = 'MathJax-script';
+    script.async = true;
+    script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+    document.head.appendChild(script);
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+
+    svg = d3.select(svgContainer).html('').append('svg')
       .attr('width', width)
       .attr('height', height)
       .style('background', 'transparent');
 
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
+    xScale = d3.scaleLinear().domain([0, 1]).range([0, innerWidth]);
+    yScale = d3.scaleLinear().domain([0, 1]).range([innerHeight, 0]);
 
-    const xScale = d3.scaleLinear().domain([0, 1]).range([0, innerWidth]);
-    const yScale = d3.scaleLinear().domain([0, 1]).range([innerHeight, 0]);
-
-    // escala de cores
-    classes = ["Entropia", "Gini"];
     colorScale = d3.scaleOrdinal()
       .domain(classes)
       .range(d3.schemeCategory10);
 
-    // inicializa o svg
     const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
-    // Eixos
     g.append('g')
       .attr('transform', `translate(0,${innerHeight})`)
       .call(d3.axisBottom(xScale).ticks(10).tickFormat(d3.format(".0%")));
 
-    g.append('g')
-      .call(d3.axisLeft(yScale).ticks(5));
+    g.append('g').call(d3.axisLeft(yScale).ticks(5));
 
-    // Rótulos dos eixos
     svg.append('text')
       .attr('x', width / 2)
-      .attr('y', height - 40 )
+      .attr('y', height - 40)
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
-      .attr("fill", "white")
-      .text($_('section-gini.chart_labels.x_axis'));
+      .attr('fill', 'var(--color-text)')
+      .text('Proporção da classe positiva (p)');
 
     svg.append('text')
       .attr('transform', 'rotate(-90)')
@@ -60,98 +141,55 @@
       .attr('y', 18)
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
-      .attr("fill", "white")
-      .text($_('section-gini.chart_labels.y_axis'));
+      .attr('fill', 'var(--color-text)')
+      .text('Pureza (Entropia ou Gini)');
 
-    // Funções de pureza
-    const entropy = p => (p === 0 || p === 1) ? 0 : -p * Math.log2(p) - (1 - p) * Math.log2(1 - p);
-    const gini = p => 2 * p * (1 - p);
     const values = d3.range(0, 1.001, 0.01);
-
-    const lineEntropy = d3.line()
-      .x(d => xScale(d))
-      .y(d => yScale(entropy(d)));
-
-    const lineGini = d3.line()
-      .x(d => xScale(d))
-      .y(d => yScale(gini(d)));
-
     g.append('path')
       .datum(values)
       .attr('fill', 'none')
       .attr('stroke', colorScale("Entropia"))
       .attr('stroke-width', 2)
-      .attr('d', lineEntropy);
+      .attr('d', d3.line().x(d => xScale(d)).y(d => yScale(entropy(d))));
 
     g.append('path')
       .datum(values)
       .attr('fill', 'none')
       .attr('stroke', colorScale("Gini"))
       .attr('stroke-width', 2)
-      .attr('d', lineGini);
+      .attr('d', d3.line().x(d => xScale(d)).y(d => yScale(gini(d))));
 
-    // Legenda
-    const legend = svg.append('g')
-      .attr('transform', `translate(${width - 130},${margin.top})`);
+    positiveLine = g.append('line')
+      .attr('y1', 0)
+      .attr('y2', height - margin.top - margin.bottom)
+      .attr('stroke', 'var(--color-text)')
+      .attr('stroke-width', 4)
+      .attr('opacity', 0);  // Inicialmente invisível
 
-    legend.append('rect')
-      .attr('width', 12)
-      .attr('height', 12)
-      .attr('fill', colorScale("Entropia"));
+    const legend = svg.append('g').attr('transform', `translate(${width - 130},${margin.top})`);
+    legend.append('rect').attr('width', 12).attr('height', 12).attr('fill', colorScale("Entropia"));
+    legend.append('text').attr('x', 18).attr('y', 10).text('Entropia').attr('fill', 'var(--color-text)').attr('font-size', 12);
+    legend.append('rect').attr('y', 20).attr('width', 12).attr('height', 12).attr('fill', colorScale("Gini"));
+    legend.append('text').attr('x', 18).attr('y', 30).text('Gini').attr('fill', 'var(--color-text)').attr('font-size', 12);
 
-    legend.append('text')
-      .attr('x', 18)
-      .attr('y', 10)
-      .text($_('section-gini.chart_labels.entropy_legend'))
-      .attr("fill", "white")
-      .attr('font-size', 12);
-
-    legend.append('rect')
-      .attr('y', 20)
-      .attr('width', 12)
-      .attr('height', 12)
-      .attr('fill', colorScale("Gini"));
-
-    legend.append('text')
-      .attr('x', 18)
-      .attr('y', 30)
-      .text($_('section-gini.chart_labels.gini_legend'))
-      .attr("fill", "white")
-      .attr('font-size', 12);
-
-    // Tooltip e linha vertical
-    const tooltip = svg.append('g')
-      .style('display', 'none');
-
-    tooltip.append('line')
-      .attr('class', 'hover-line')
+    // Hover Tooltip
+    hoverTooltip = svg.append('g').style('display', 'none');
+    hoverLine = hoverTooltip.append('line')
       .attr('y1', margin.top)
       .attr('y2', height - margin.bottom)
       .attr('stroke', '#aaa')
       .attr('stroke-dasharray', '4 2');
 
-    const tooltipBox = tooltip.append('rect')
-      .attr('x', 0)
-      .attr('y', 0)
+    hoverBox = hoverTooltip.append('rect')
       .attr('width', 140)
       .attr('height', 40)
       .attr('fill', '#fefefe')
       .attr('stroke', '#ccc')
       .attr('rx', 5);
 
-    const tooltipText = tooltip.append('text')
-      .attr('x', 10)
-      .attr('y', 18)
-      .attr('font-size', 12)
-      .attr('fill', '#333');
+    hoverText = hoverTooltip.append('text').attr('font-size', 12).attr('fill', '#333');
+    hoverText2 = hoverTooltip.append('text').attr('font-size', 12).attr('fill', '#333');
 
-    const tooltipText2 = tooltip.append('text')
-      .attr('x', 10)
-      .attr('y', 34)
-      .attr('font-size', 12)
-      .attr('fill', '#333');
-
-    // Área sensível para mousemove
     svg.append('rect')
       .attr('x', margin.left)
       .attr('y', margin.top)
@@ -164,69 +202,36 @@
         const ent = entropy(px).toFixed(3);
         const gin = gini(px).toFixed(3);
 
-        tooltip.style('display', null);
-        tooltip.select('.hover-line')
-          .attr('x1', margin.left + xScale(px))
-          .attr('x2', margin.left + xScale(px));
-
-        tooltipBox.attr('x', margin.left + xScale(px) + 10)
-                  .attr('y', margin.top + 10);
-
-        tooltipText
-          .attr('x', margin.left + xScale(px) + 18)
-          .attr('y', margin.top + 28)
-          .text($_('section-gini.chart_labels.entropy_tooltip', { values: { value: ent } }));
-
-        tooltipText2
-          .attr('x', margin.left + xScale(px) + 18)
-          .attr('y', margin.top + 44)
-          .text($_('section-gini.chart_labels.gini_tooltip', { values: { value: gin } }));
-        
-          updateDots(px);
+        hoverTooltip.style('display', null);
+        hoverLine.attr('x1', margin.left + xScale(px)).attr('x2', margin.left + xScale(px));
+        hoverBox.attr('x', margin.left + xScale(px) + 10).attr('y', margin.top + 10);
+        hoverText.attr('x', margin.left + xScale(px) + 18).attr('y', margin.top + 28).text(`Entropia: ${ent}`);
+        hoverText2.attr('x', margin.left + xScale(px) + 18).attr('y', margin.top + 44).text(`Gini: ${gin}`);
+        updateDots(px);
       })
       .on('mouseleave', () => {
-        tooltip.style('display', 'none');
+        hoverTooltip.style('display', 'none');
         updateDots(1);
       });
 
-    // desenhando as bolinhas abaixo
-    const numDots = 50;
-    const dotRadius = 3;
-    const dotSpacing = 7;
-    const dotAreaWidth = numDots * dotSpacing;
-    // centraliza
-    const dotStartX = margin.left + (innerWidth / 2) - (dotAreaWidth / 2);
+    // Métricas fixas
+    const fixedGroup = svg.append('g')
+      .attr('transform', `translate(${width - margin.right + 10}, ${height / 2 - 180})`);
+    fixedGroup.append('text').attr('y', 0).attr('font-weight', 'bold').text('Amostra atual').attr('fill', 'var(--color-text)');
+    sampleText1 = fixedGroup.append('text').attr('y', 20).text(`Entropia: -`).attr('fill', 'var(--color-text)');
+    sampleText2 = fixedGroup.append('text').attr('y', 40).text(`Gini: -`).attr('fill', 'var(--color-text)');
 
-    // duas fileiras de bolinhas
-    const firstRowY = height - margin.bottom + 50; 
-    const secondRowY = height - margin.bottom + 40;        
-    const dotsGroup = svg.append('g');
-
-    // Cria duas fileiras
-    const dots = ['row1', 'row2'].flatMap((row, rowIndex) => {
-      const y = rowIndex === 0 ? firstRowY : secondRowY;
-      return d3.range(numDots).map((i) =>
-        dotsGroup.append('circle')
-          .attr('cx', dotStartX + i * dotSpacing)
-          .attr('cy', y)
-          .attr('r', dotRadius)
-          .attr('fill', 'green')
-          .attr('opacity', 0.7)
-
-      );
-    });
-
-    // colori as bolinhas de acordo com o mouse
-    function updateDots(p) {
-      const threshold = Math.round(p * numDots);
-      dots.forEach((dot, i) => {
-        dot.attr('fill', i % numDots < threshold ? 'green' : "red")
-        .attr('opacity', 0.7);
-
-      });
-  }
-});
+    dotGroup = svg.append('g');
+    updateSample();
+  });
 </script>
+
+<div class="flex flex-row gap-2 mb-4">
+  <button on:click={() => addSample(1)}>Adicionar Positivo</button>
+  <button on:click={() => addSample(0)}>Adicionar Negativo</button>
+  <button on:click={() => removeClass(1)}>Remover Positivos</button>
+  <button on:click={() => removeClass(0)}>Remover Negativos</button>
+</div>
 
 <div class="container">
   <div bind:this={svgContainer}></div>
@@ -296,6 +301,22 @@
     font-weight: bold;
     margin-bottom: 10px;
     color: white;
+  }
+
+    button {
+  margin: 0.3em;
+  padding: 0.3em 0.7em;
+  font-weight: bold;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 4px;
+  background: #9333ea;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #7e22ce;
   }
 
 </style>
