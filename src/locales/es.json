@@ -152,5 +152,30 @@
   },
   "footer": {
     "developed_by": "Desarrollado por Paula Eduarda de Lima, Mariana Fernandes Rocha y Joel Perca con SvelteKit & D3.js"
+  },
+  "step3": {
+    "steps": [
+      {
+        "title": "Profundidad 0 – Raíz del Árbol",
+        "content": "En la parte superior del árbol, tenemos la primera decisión basada en la condición <code>feature 1 ≤ 185300</code>. Esta división separa los datos en dos grandes grupos..."
+      },
+      {
+        "title": "Profundidad 1 – Primera División de Ramas",
+        "content": "El árbol ahora se divide en dos caminos principales. En el lado izquierdo..."
+      },
+      {
+        "title": "Profundidad 2 – Ramificaciones Detalladas",
+        "content": "A continuación, surgen nuevas divisiones, como <code>feature 1 ≤ 72600</code>..."
+      },
+      {
+        "title": "Profundidad 3 – Condiciones Muy Específicas",
+        "content": "En este nivel, tenemos divisiones más específicas, como <code>feature 0 ≤ 448</code>..."
+      },
+      {
+        "title": "Profundidad 4 – Hojas del Árbol",
+        "content": "Las hojas del árbol representan las predicciones finales: \"Sacramento\" o \"San Francisco\"..."
+      }
+    ],
+    "step_not_available": "Etapa {number} no disponible."
   }
 }

@@ -152,5 +152,30 @@
   },
   "footer": {
     "developed_by": "Developed by Paula Eduarda de Lima, Mariana Fernandes Rocha and Joel Perca with SvelteKit & D3.js"
+  },
+  "step3": {
+    "steps": [
+      {
+        "title": "Depth 0 – Tree Root",
+        "content": "At the top of the tree, we have the first decision based on the condition <code>feature 1 ≤ 185300</code>. This split separates the data into two large groups..."
+      },
+      {
+        "title": "Depth 1 – First Branch Division",
+        "content": "The tree now splits into two main paths. On the left side..."
+      },
+      {
+        "title": "Depth 2 – Detailed Ramifications",
+        "content": "Next, new divisions emerge, such as <code>feature 1 ≤ 72600</code>..."
+      },
+      {
+        "title": "Depth 3 – Very Specific Conditions",
+        "content": "At this level, we have more specific divisions, such as <code>feature 0 ≤ 448</code>..."
+      },
+      {
+        "title": "Depth 4 – Tree Leaves",
+        "content": "The tree leaves represent the final predictions: \"Sacramento\" or \"San Francisco\"..."
+      }
+    ],
+    "step_not_available": "Step {number} not available."
   }
 }
