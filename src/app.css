@@ -41,6 +41,17 @@
   --color-classe1: #4B0082;
 
 
+  /* tree intro */
+    /* --viz-bg: #f6f9fc; */
+    --viz-node-fill: #a75aca;
+    --viz-node-stroke: #5a378b;
+    --viz-node-hover: #5f318a;
+    --viz-link: #6c41a7;
+    --viz-shadow: #1e253b;
+    --viz-text: #1f0d3d;
+    --viz-text-shadow: #ffffff;
+
+
 }
 
 /* Tema escuro (aplicado quando <html class="dark">) */
@@ -80,6 +91,17 @@
 
   --color-classe0: #88e788; /* 82c591  F5F5DC*/ 
   --color-classe1: #9774c0;
+
+
+  /* tree intro */
+    /* --viz-bg: #f6f9fc; */
+    --viz-node-fill: #976ba3;
+    --viz-node-stroke: #3e2465;
+    --viz-node-hover: #9774c0;
+    --viz-link: #502465;
+    --viz-shadow: #2c3e50;
+    --viz-text: #d5b8dd;
+    --viz-text-shadow: #3c2c50;
 }
 
 

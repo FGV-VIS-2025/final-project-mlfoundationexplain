@@ -4,34 +4,22 @@
 
   let svg;
   const height = 400;
-  const nodeSpacingX = 60;
+  const nodeSpacingX = 200;
   const nodeSpacingY = 100;
 
   const treeData = {
-  name: "Temperatura",
-  children: [
-    {
-      name: "Alta",
-      children: [
-        {
-          name: "Umidade",
-          children: [
-            { name: "Alta\nNão Jogar" },
-            { name: "Baixa\nJogar" }
-          ]
-        }
-      ]
-    },
-    {
-      name: "Baixa",
-      children: [
-        { name: "Jogar" }
-      ]
-    }
-  ]
-};
-
-
+    name: "Temperatura",
+    children: [
+      {
+        name: "Sim",
+        children: [
+          { name: "Classe A" },
+          { name: "Classe B" }
+        ]
+      },
+      { name: "Não" }
+    ]
+  };
 
   onMount(() => {
     const margin = { top: 40, right: 80, bottom: 40, left: 80 };
@@ -75,7 +63,7 @@
       .attr("dx", 2)
       .attr("dy", 2)
       .attr("stdDeviation", 2)
-      .attr("flood-color", "var(--color-shadow-link)")
+      .attr("flood-color", "var(--viz-shadow)")
       .attr("flood-opacity", 0.4);
 
     const gradientId = "nodeGradient";
@@ -87,24 +75,22 @@
 
     grad.append("stop")
       .attr("offset", "0%")
-      .attr("stop-color", "var(--color-node-fill)");
+      .attr("stop-color", "var(--viz-node-fill)");
 
     grad.append("stop")
       .attr("offset", "100%")
-      .attr("stop-color", "var(--color-node-stroke)");
+      .attr("stop-color", "var(--viz-node-stroke)");
 
-    // Função para os links com animação inicial em linha zero (de pai para pai)
     const linkPath = d3.linkVertical()
       .x(d => d.x)
       .y(d => d.y);
 
-    // Links animados
     g.selectAll('.link')
       .data(allLinks)
       .join('path')
       .attr('class', 'link')
       .attr('fill', 'none')
-      .attr('stroke', 'var(--color-link-stroke)')
+      .attr('stroke', 'var(--viz-link)')
       .attr('stroke-width', 5)
       .attr('filter', 'url(#dropShadow)')
       .attr('d', d => {
@@ -117,7 +103,6 @@
       .ease(d3.easeCubicOut)
       .attr('d', d => linkPath(d));
 
-    // Nós animados
     const node = g.selectAll('.node')
       .data(allNodes)
       .join('g')
@@ -133,19 +118,19 @@
       .attr('transform', d => `translate(${d.x},${d.y}) scale(1)`);
 
     node.append('circle')
-      .attr('r', 18)
+      .attr('r', 19)
       .attr('fill', `url(#${gradientId})`)
-      .attr('stroke', 'var(--color-node-stroke)')
+      .attr('stroke', 'var(--viz-node-stroke)')
       .attr('stroke-width', 2)
       .on("mouseover", function () {
         d3.select(this)
-          .attr("fill", "var(--color-node-hover-fill)")
+          .attr("fill", "var(--viz-node-hover)")
           .attr("r", 22);
       })
       .on("mouseout", function () {
         d3.select(this)
           .attr("fill", `url(#${gradientId})`)
-          .attr("r", 18);
+          .attr("r", 19);
       });
 
     const text = node.append("text")
@@ -153,8 +138,8 @@
       .attr("y", d => d.children ? -20 : 28)
       .attr("x", d => d.children ? 10 : 40)
       .style("font-size", "14px")
-      .style("fill", "var(--color-text-node)")
-      .style("text-shadow", "0 0 2px var(--color-text-shadow)");
+      .style("fill", "var(--viz-text)")
+      .style("text-shadow", "0 0 2px var(--viz-text-shadow)");
 
     text.selectAll("tspan")
       .data(d => d.data.name.split("\n"))
@@ -182,7 +167,6 @@
 
   svg {
     border-radius: 8px;
-    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
   }
 
   circle {
