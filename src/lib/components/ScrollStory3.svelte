@@ -7,57 +7,85 @@
 
 
   let currentStep = 0;
-  const totalSteps = 17;
+  const totalSteps = 21;
 
   let stepRefs = [];
 
  const treeData = {
-  "name": "feature 1 ≤ 185300",
+  "name": "median_house_value \u2264 185300.00",
   "children": [
     {
-      "name": "feature 1 ≤ 112500",
+      "name": "median_house_value \u2264 112500.00",
       "children": [
         {
-          "name": "feature 1 ≤ 72600",
+          "name": "median_house_value \u2264 72600.00",
           "children": [
             {
               "name": "Sacramento"
             },
             {
-              "name": "feature 0 ≤ 448",
+              "name": "total_bedrooms \u2264 2061.00",
               "children": [
-                { "name": "Sacramento" },
-                { "name": "Sacramento" }
+                {
+                  "name": "Sacramento"
+                },
+                {
+                  "name": "Sacramento"
+                }
               ]
             }
           ]
         },
         {
-          "name": "feature 0 ≤ 460",
+          "name": "total_bedrooms \u2264 2324.00",
           "children": [
-            { "name": "Sacramento" },
-            { "name": "Sacramento" }
+            {
+              "name": "Sacramento"
+            },
+            {
+              "name": "Sacramento"
+            }
           ]
         }
       ]
     },
     {
-      "name": "feature 1 ≤ 237500",
+      "name": "median_house_value \u2264 237500.00",
       "children": [
         {
-          "name": "San \nFrancisco"
+          "name": "San Francisco"
         },
         {
-          "name": "feature 0 ≤ 302",
+          "name": "total_bedrooms \u2264 1335.00",
           "children": [
             {
-              "name": "San \nFrancisco"
+              "name": "San Francisco"
             },
             {
-              "name": "feature 0 ≤ 366",
+              "name": "median_house_value \u2264 328100.00",
               "children": [
-                { "name": "San \nFrancisco" },
-                { "name": "San \nFrancisco" }
+                {
+                  "name": "median_house_value \u2264 297600.00",
+                  "children": [
+                    {
+                      "name": "total_bedrooms \u2264 1871.00",
+                      "children": [
+                        {
+                          "name": "San Francisco"
+                        },
+                        {
+                          "name": "San Francisco"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "San Francisco"
+                    }
+                  ]
+                },
+                {
+                  "name": "San Francisco"
+                }
               ]
             }
           ]
