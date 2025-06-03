@@ -11,10 +11,13 @@
   export let axisLabel = "";
   export let bins = 20;
   export let initialCutoffPercentile = 0.5;
+  export let initialCutoffValue = null; // Valor específico de corte inicial
 
   let svg;
   let cutoffValue = 0;
   let formattedCutoff = "";
+  let hoveredPoint = null;
+  let mousePosition = { x: 0, y: 0 };
 
   const margin = { top: 40, right: 40, bottom: 80, left: 100 };
   const chartWidth = width - margin.left - margin.right;
@@ -109,15 +112,19 @@
       };
     });
 
-    // Definir cutoff inicial
-    if (cutoffValue === 0) {
+    // Sempre definir cutoff quando recalcular (para garantir que mude com a feature)
+    if (initialCutoffValue !== null) {
+      // Usar valor específico se fornecido
+      cutoffValue = Math.max(minValue, Math.min(maxValue, initialCutoffValue));
+    } else {
+      // Usar percentil se não houver valor específico
       const sortedValues = frequencies
         .map((d) => d.value)
         .sort((a, b) => a - b);
       cutoffValue =
         sortedValues[Math.floor(sortedValues.length * initialCutoffPercentile)];
-      updateFormattedCutoff();
     }
+    updateFormattedCutoff();
 
     xTicks = getXTicks();
     yTicks = getYTicks();
@@ -163,6 +170,19 @@
     });
   }
 
+  function handlePointHover(point, event) {
+    hoveredPoint = point;
+    const rect = svg.getBoundingClientRect();
+    mousePosition = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top
+    };
+  }
+
+  function handlePointLeave() {
+    hoveredPoint = null;
+  }
+
   // Função para formatar valores com K quando > 10000
   function formatValue(value) {
     if (value >= 10000) {
@@ -194,10 +214,20 @@
   let xTicks = [];
   let yTicks = [];
 
-  // Reativos
-  $: if (data && data.length > 0) {
+  // Reativos - quando dados ou feature mudarem, recalcular tudo
+  $: if (data && data.length > 0 && feature) {
     updateVisualization();
   }
+  
+  // Forçar reinício do cutoff quando a feature mudar
+  $: if (feature) {
+    // Resetar cutoff para que seja recalculado na próxima atualização
+    cutoffValue = 0;
+    if (data && data.length > 0) {
+      updateVisualization();
+    }
+  }
+  
   $: cutoffX = xScale ? xScale(cutoffValue) : 0;
   $: if (xScale) {
     xTicks = getXTicks();
@@ -292,6 +322,9 @@
           stroke-width="1"
           class="dot"
           opacity="0.8"
+          on:mouseenter={(e) => handlePointHover(point, e)}
+          on:mouseleave={handlePointLeave}
+          on:mousemove={(e) => handlePointHover(point, e)}
         />
       {/each}
 
@@ -346,6 +379,35 @@
         </g>
       {/if}
     </g>
+
+    <!-- Tooltip para pontos -->
+    {#if hoveredPoint}
+      <g transform="translate({mousePosition.x + 10}, {mousePosition.y - 10})">
+        <rect
+          x="0"
+          y="0"
+          width="280"
+          height="85"
+          rx="6"
+          fill="rgba(0, 0, 0, 0.9)"
+          stroke="rgba(255, 255, 255, 0.2)"
+          stroke-width="1"
+          filter="drop-shadow(0 4px 8px rgba(0,0,0,0.3))"
+        />
+        <text x="10" y="18" fill="white" font-size="12" font-weight="bold">
+          Propriedade de {hoveredPoint.city}
+        </text>
+        <text x="10" y="35" fill="#ccc" font-size="11">
+          Valor: {hoveredPoint.value.toLocaleString()}
+        </text>
+        <text x="10" y="50" fill="#ccc" font-size="11">
+          Frequência: ~{hoveredPoint.frequency} propriedades similares
+        </text>
+        <text x="10" y="65" fill="#ccc" font-size="11">
+          {hoveredPoint.value < cutoffValue ? 'Abaixo' : 'Acima'} do ponto de corte
+        </text>
+      </g>
+    {/if}
   </svg>
 </div>
 
@@ -362,38 +424,18 @@
 
   .tick-label {
     font-size: 12px;
-    fill: var(--text-color, #666);
+    fill: #666;
   }
 
   .axis-label {
     font-size: 14px;
-    fill: var(--text-color-primary, #333);
-  }
-
-  /* Colores para tema claro */
-  :global(.light) .tick-label {
-    fill: #666;
-  }
-
-  :global(.light) .axis-label {
     fill: #333;
   }
 
-  /* Colores para tema oscuro */
-  :global(.dark) .tick-label {
-    fill: #cbd5e0;
-  }
-
-  :global(.dark) .axis-label {
-    fill: #e2e8f0;
-  }
-
-  /* Fallback para sistemas sin tema específico */
   @media (prefers-color-scheme: dark) {
     .tick-label {
       fill: #cbd5e0;
     }
-
     .axis-label {
       fill: #e2e8f0;
     }

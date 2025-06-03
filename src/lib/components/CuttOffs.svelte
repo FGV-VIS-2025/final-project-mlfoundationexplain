@@ -12,7 +12,7 @@
   // Configurações dos 4 passos da narrativa
   const steps = [
     {
-      title: "Feature: Total de Quartos",
+      title: "Total de Quartos",
       feature: "total_rooms",
       description:
         "Esta feature representa o número total de quartos em cada propriedade. É uma característica fundamental que captura o tamanho da propriedade. Propriedades com mais quartos tendem a ter características diferentes e esta informação é valiosa para o modelo. Observe como esta feature se distribui nos dados e como estabelecemos um ponto de corte para binarizar esta característica contínua.",
@@ -20,7 +20,7 @@
       axisLabel: "Total de Quartos",
     },
     {
-      title: "Feature: Quartos de Dormir",
+      title: "Quartos de Dormir",
       feature: "total_bedrooms",
       description:
         "Esta feature captura especificamente os quartos de dormir, diferindo da feature anterior que inclui todos os tipos de quartos. É uma característica importante para determinar a capacidade habitacional da propriedade. Esta feature fornece informação específica sobre a funcionalidade residencial do imóvel.",
@@ -28,7 +28,7 @@
       axisLabel: "Total de Quartos de Dormir",
     },
     {
-      title: "Feature: Densidade de Domicílios",
+      title: "Densidade de Domicílios",
       feature: "households",
       description:
         "Esta feature representa a quantidade de domicílios por região, capturando aspectos de densidade populacional e urbanização. É uma característica contextual importante que reflete o ambiente onde a propriedade está localizada. Esta informação demográfica é valiosa para caracterizar o tipo de área.",
@@ -36,7 +36,7 @@
       axisLabel: "Número de Domicílios",
     },
     {
-      title: "Feature: Valor Mediano das Casas",
+      title: "Valor Mediano das Casas",
       feature: "median_house_value",
       description:
         "Esta feature representa o valor mediano das casas na região. É uma característica econômica importante que reflete o mercado imobiliário local. Esta feature captura informações sobre o poder aquisitivo e padrão socioeconômico da área onde a propriedade está localizada.",
@@ -120,11 +120,11 @@
   <div class="md:w-2/5 w-full md:px-8 px-4 md:pl-16 pl-8">
     {#each steps as step, stepIndex}
       <div
-        class="md:my-16 my-8 md:p-10 p-8 border-l-4 bg-white rounded-r-xl shadow-xl transition-all duration-300
+        class="md:my-16 my-8 md:p-10 p-8 border-l-4 rounded-r-xl transition-all duration-300
                md:min-h-[80vh] min-h-0 flex flex-col justify-center
-               border-gray-200 dark:bg-gray-800 dark:border-gray-700
+                backdrop-blur-sm border-gray-200 dark:border-gray-700
                {stepIndex === currentStep
-          ? 'border-l-purple-600 bg-gradient-to-br from-purple-50 to-white transform translate-x-2 shadow-2xl shadow-purple-500/20 dark:border-l-purple-400 dark:from-purple-900/20 dark:to-gray-800'
+          ? 'border-l-purple-600 transform translate-x-1 dark:border-l-purple-400 dark:from-purple-900/20 dark:to-gray-800/80'
           : ''}"
         bind:this={stepRefs[stepIndex]}
       >
@@ -132,7 +132,7 @@
           <span
             class="text-purple-600 text-sm font-semibold uppercase tracking-wide dark:text-purple-400"
           >
-            Passo {stepIndex + 1}
+            Feature {stepIndex + 1}
           </span>
           <h3
             class="md:text-3xl text-2xl font-bold mt-2 mb-0 text-gray-800 dark:text-white
@@ -151,7 +151,7 @@
             {step.description}
           </p>
 
-          <div class="bg-gray-50 p-6 rounded-lg mb-8 dark:bg-gray-700">
+          <div class=" p-6 rounded-lg mb-8">
             <div class="mb-3 text-gray-600 dark:text-gray-300">
               <strong class="text-gray-800 dark:text-white"
                 >Característica:</strong
@@ -183,30 +183,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Controles de navegação -->
-        <div class="flex gap-4 mt-auto">
-          {#if stepIndex > 0}
-            <button
-              class="px-6 py-3 bg-purple-600 text-white border-none rounded-lg font-semibold cursor-pointer transition-all duration-300 flex items-center gap-2
-                           hover:bg-purple-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/30
-                           dark:bg-purple-500 dark:hover:bg-purple-400"
-              on:click={prevStep}
-            >
-              <span>←</span> Anterior
-            </button>
-          {/if}
-          {#if stepIndex < steps.length - 1}
-            <button
-              class="px-6 py-3 bg-purple-600 text-white border-none rounded-lg font-semibold cursor-pointer transition-all duration-300 flex items-center gap-2 ml-auto
-                           hover:bg-purple-700 hover:-translate-y-1 hover:shadow-lg hover:shadow-purple-500/30
-                           dark:bg-purple-500 dark:hover:bg-purple-400"
-              on:click={nextStep}
-            >
-              Próximo <span>→</span>
-            </button>
-          {/if}
-        </div>
       </div>
     {/each}
   </div>
@@ -214,8 +190,7 @@
   <!-- Visualização fixa -->
   <div
     class="md:w-3/5 w-full md:sticky md:top-20 relative top-auto md:h-[calc(100vh-80px)] h-[500px]
-              bg-gray-50 flex flex-col justify-center items-center rounded-xl shadow-xl p-4
-              dark:bg-gray-800"
+              flex flex-col justify-center items-center rounded-xl p-4"
   >
     {#if isLoading}
       <div class="text-center text-gray-600 dark:text-gray-300">
@@ -230,16 +205,18 @@
           {steps[currentStep].axisLabel}
         </h4>
       </div>
-      <SimpleScatterplot
-        width={600}
-        height={400}
-        dotRadius={3}
-        {data}
-        feature={steps[currentStep].feature}
-        axisLabel={steps[currentStep].axisLabel}
-        bins={20}
-        initialCutoffPercentile={0.5}
-      />
+      {#key steps[currentStep].feature}
+        <SimpleScatterplot
+          width={600}
+          height={400}
+          dotRadius={3}
+          {data}
+          feature={steps[currentStep].feature}
+          axisLabel={steps[currentStep].axisLabel}
+          bins={20}
+          initialCutoffValue={steps[currentStep].cutoff}
+        />
+      {/key}
       <div class="mt-4 text-center">
         <p class="text-gray-600 text-sm italic dark:text-gray-400">
           Sacramento (azul) vs San Francisco (laranja)
