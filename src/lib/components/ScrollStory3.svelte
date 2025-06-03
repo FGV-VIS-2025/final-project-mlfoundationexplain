@@ -133,7 +133,7 @@
           {#if stepIndex < 5}
             <Step3 {stepIndex} />
           {:else}
-            <p>Etapa {stepIndex + 1} não tem conteúdo definido ainda.</p>
+            <p>Profundidade {stepIndex + 1}: Cortamos o espaço novamente...</p>
           {/if}
         </div>
       {/each}
