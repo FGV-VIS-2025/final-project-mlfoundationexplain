@@ -40,6 +40,9 @@
   --color-classe0: #0c5e27;
   --color-classe1: #4B0082;
 
+  --color-gini: #0a377a;
+  --color-entropy: #996d44;
+
 
   /* tree intro */
     /* --viz-bg: #f6f9fc; */
@@ -91,6 +94,9 @@
 
   --color-classe0: #88e788; /* 82c591  F5F5DC*/ 
   --color-classe1: #9774c0;
+
+  --color-gini: #6091ec;
+  --color-entropy: #c49f68;
 
 
   /* tree intro */
