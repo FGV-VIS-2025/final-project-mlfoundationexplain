@@ -275,7 +275,7 @@
  </div>
 
 
-  <div class="scroll-wrapper-default">
+  <div class="">
   <div class="max-w-7xl mx-auto px-6">
     <CuttOffs />
   </div>

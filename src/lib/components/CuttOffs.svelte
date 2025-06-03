@@ -190,7 +190,7 @@
       {/key}
       <div class="mt-4 text-center">
         <p class="text-gray-600 text-sm italic dark:text-gray-400">
-          Sacramento (azul) vs San Francisco (laranja)
+          Sacramento (púrpura) vs San Francisco (verde)
         </p>
       </div>
     {:else}

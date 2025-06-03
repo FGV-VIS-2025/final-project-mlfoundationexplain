@@ -385,8 +385,8 @@
           cx={point.x}
           cy={point.y}
           r={dotRadius}
-          fill={point.city === "Sacramento" ? "#007bff" : "#ff6b35"}
-          stroke={point.city === "Sacramento" ? "#0056b3" : "#d63031"}
+          fill={point.city === "Sacramento" ? "var(--color-classe1)" : "var(--color-classe0)"}
+          stroke={point.city === "Sacramento" ? "var(--color-classe1)" : "var(--color-classe0)"}
           stroke-width="1.5"
           class="dot"
           opacity="0.8"
