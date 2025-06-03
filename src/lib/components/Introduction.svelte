@@ -3,6 +3,11 @@
   import * as d3 from 'd3';
   import { _ } from "svelte-i18n";
 
+  import TreeIntro from './TreeIntro.svelte';
+
+
+
+
   let el;
   let svg;
 
@@ -67,13 +72,16 @@
   </div>
 
   <div class="viz">
-    <svg
+    <!-- <svg
       bind:this={svg}
       width={width}
       height={height}
       role="img"
       aria-label="Árvore de decisão ilustrativa"
-    ></svg>
+    ></svg> -->
+
+  <TreeIntro />
+
   </div>
 </div>
 
