@@ -131,5 +131,51 @@
       "title": "Bloque 2 - Etapa {number}",
       "content": "Contenido diferente para el bloque 2 - etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
     }
+  },
+  "section-tree-creation": {
+    "title": "Creación del Árbol y Cortes en el Espacio de Datos",
+    "description": "La creación del árbol de decisión consiste en dividir repetidamente el espacio de los datos en regiones más pequeñas por medio de {cuts} sobre las características. Cada corte separa los datos en grupos más homogéneos, facilitando la toma de decisiones. Este proceso continúa hasta que las regiones estén suficientemente puras o se alcance un criterio de parada, resultando en una estructura jerárquica que refleja estas divisiones en el espacio.",
+    "cuts": "cortes basados en condiciones"
+  },
+  "section-interactive-prediction": {
+    "title": "Cómo funciona la predicción en un árbol de decisión",
+    "practice_text": "Para ver esto en la práctica, elige un valor para cada variable y observa cuál será la predicción en este árbol ya construido anteriormente:",
+    "loading_tree": "Cargando árbol de decisión...",
+    "interactive_placeholder": "Aquí irá un árbol interactivo, donde construimos un dato y vemos recorrer el árbol hasta la predicción"
+  },
+  "section-complete-tree": {
+    "title": "El Árbol Completo",
+    "description": "Un árbol de decisión que crece completamente continúa realizando divisiones en el espacio de los datos hasta que cada hoja contenga solo ejemplos de una única clase, alcanzando así {accuracy} en el conjunto de entrenamiento. Aunque este modelo memoriza perfectamente los datos, tiende a ser muy complejo y específico, lo que puede llevar al {overfitting}, es decir, a una menor capacidad de generalizar para datos nuevos y no vistos.",
+    "accuracy": "100% de precisión",
+    "overfitting": "sobreajuste",
+    "example_text": "Ve abajo cómo quedaría el árbol completo generado con todas las características de nuestros datos de ejemplo"
+  },
+  "footer": {
+    "developed_by": "Desarrollado por Paula Eduarda de Lima, Mariana Fernandes Rocha y Joel Perca con SvelteKit & D3.js"
+  },
+  "step3": {
+    "steps": [
+      {
+        "title": "Profundidad 0 – Raíz del Árbol",
+        "content": "En la parte superior del árbol, tenemos la primera decisión basada en la condición <code>feature 1 ≤ 185300</code>. Esta división separa los datos en dos grandes grupos..."
+      },
+      {
+        "title": "Profundidad 1 – Primera División de Ramas",
+        "content": "El árbol ahora se divide en dos caminos principales. En el lado izquierdo..."
+      },
+      {
+        "title": "Profundidad 2 – Ramificaciones Detalladas",
+        "content": "A continuación, surgen nuevas divisiones, como <code>feature 1 ≤ 72600</code>..."
+      },
+      {
+        "title": "Profundidad 3 – Condiciones Muy Específicas",
+        "content": "En este nivel, tenemos divisiones más específicas, como <code>feature 0 ≤ 448</code>..."
+      },
+      {
+        "title": "Profundidad 4 – Hojas del Árbol",
+        "content": "Las hojas del árbol representan las predicciones finales: \"Sacramento\" o \"San Francisco\"..."
+      }
+    ],
+    "step_not_available": "Etapa {number} no disponible."
   }
 }

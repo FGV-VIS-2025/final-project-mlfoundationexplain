@@ -117,11 +117,15 @@
 
 <div class="max-w-7xl mx-auto pt-40 pb-10 text-justify  transition-colors duration-300 ">
 
-  <h2 class="text-3xl font-extrabold pb-10">A criação da árvore e cortes no espaço do dados</h2>
+  <h2 class="text-3xl font-extrabold pb-10">{$_('section-tree-creation.title')}</h2>
 
   <p>
-  A criação da árvore de decisão consiste em dividir repetidamente o espaço dos dados em regiões menores por meio de <span class="font-semibold">cortes baseados em condições</span> sobre as features. Cada corte separa os dados em grupos mais homogêneos, facilitando a tomada de decisão. Esse processo continua até que as regiões estejam suficientemente puras ou um critério de parada seja atingido, resultando em uma estrutura hierárquica que reflete essas divisões no espaço.
- </p>
+    {@html $_('section-tree-creation.description', {
+      values: {
+        cuts: `<span class="font-semibold">${$_('section-tree-creation.cuts')}</span>`
+      }
+    })}
+  </p>
 </div>
 
  <div style="background-color: var(--color-background); " class=" mt-0 mb-0">
@@ -140,7 +144,7 @@
 
 <!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
 
-  <h2 class="text-3xl font-semibold mb-4 py-8">Como funciona a previsão em uma árvore de decisão</h2>
+  <h2 class="text-3xl font-semibold mb-4 py-8">{$_('section-interactive-prediction.title')}</h2>
 
   <h3 class="text-xl font-semibold mb-4">{$_('section-prediction.title')}</h3>
 
@@ -159,14 +163,14 @@
     })}
   </p>
 
-  <p><b>Para ver isso na prática, escolha um valor para cada variável e vejo qual será a previsão nessa árvore já construida anteriormente:</b></p>
+  <p><b>{$_('section-interactive-prediction.practice_text')}</b></p>
 
 
 {#if treeJson_2d}
   <DecisionTree2 treeData={treeJson_2d} />
 {:else}
-  <p>Carregando árvore de decisão...</p>
-  <p>Aqui vai uma árvore interativa, onde montamos um dado e vemos percorrer a árvore até a previsão</p>
+  <p>{$_('section-interactive-prediction.loading_tree')}</p>
+  <p>{$_('section-interactive-prediction.interactive_placeholder')}</p>
 {/if}
 
 </div>
@@ -177,12 +181,18 @@
 
 <!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
 
-  <h2 class="text-5xl font-semibold mb-4 py-8">A árvore completa</h2>
+  <h2 class="text-5xl font-semibold mb-4 py-8">{$_('section-complete-tree.title')}</h2>
 
   <p class="text-justify">
-  Uma árvore de decisão que cresce completamente continua realizando divisões no espaço dos dados até que cada folha contenha apenas exemplos de uma única classe, alcançando assim <span class="font-semibold">100% de acurácia</span> no conjunto de treinamento. Embora esse modelo memorize perfeitamente os dados, ele tende a ser muito complexo e específico, o que pode levar ao <span class="italic">sobreajuste</span>, ou seja, a uma menor capacidade de generalizar para dados novos e não vistos.</p>
+    {@html $_('section-complete-tree.description', {
+      values: {
+        accuracy: `<span class="font-semibold">${$_('section-complete-tree.accuracy')}</span>`,
+        overfitting: `<span class="italic">${$_('section-complete-tree.overfitting')}</span>`
+      }
+    })}
+  </p>
 
-  <p class="text-justify"><b>Veja abaixo como ficaria a árvore completa gerada com todas as features dos nossos dados de exemplo</b></p>
+  <p class="text-justify"><b>{$_('section-complete-tree.example_text')}</b></p>
 
 </div>
 
@@ -190,7 +200,7 @@
   {#if treeJson}
     <DecisionTree treeData={treeJson} />
   {:else}
-    <p>Carregando árvore de decisão...</p>
+    <p>{$_('section-interactive-prediction.loading_tree')}</p>
   {/if}
 </div>
 
@@ -305,7 +315,7 @@
        <!-- Autores: Paula Eduarda de Lima, Mariana Fernandes Rocha e Joel Perca -->
     </p>
     <p class="text-xs text-[var(--color-text)]">
-      Desenvolvido por Paula Eduarda de Lima, Mariana Fernandes Rocha e Joel Perca com SvelteKit & D3.js
+      {$_('footer.developed_by')}
     </p>
   </div>
 </footer>

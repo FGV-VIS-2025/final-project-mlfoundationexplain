@@ -131,5 +131,51 @@
       "title": "Bloco 2 - Etapa {number}",
       "content": "Conteúdo diferente para o bloco 2 - etapa {number}. Lorem ipsum dolor sit amet consectetur adipisicing elit."
     }
+  },
+  "section-tree-creation": {
+    "title": "Criação da Árvore e Cortes no Espaço dos Dados",
+    "description": "A criação da árvore de decisão consiste em dividir repetidamente o espaço dos dados em regiões menores por meio de {cuts} sobre as features. Cada corte separa os dados em grupos mais homogêneos, facilitando a tomada de decisão. Esse processo continua até que as regiões estejam suficientemente puras ou um critério de parada seja atingido, resultando em uma estrutura hierárquica que reflete essas divisões no espaço.",
+    "cuts": "cortes baseados em condições"
+  },
+  "section-interactive-prediction": {
+    "title": "Como funciona a previsão em uma árvore de decisão",
+    "practice_text": "Para ver isso na prática, escolha um valor para cada variável e veja qual será a previsão nessa árvore já construída anteriormente:",
+    "loading_tree": "Carregando árvore de decisão...",
+    "interactive_placeholder": "Aqui vai uma árvore interativa, onde montamos um dado e vemos percorrer a árvore até a previsão"
+  },
+  "section-complete-tree": {
+    "title": "A Árvore Completa",
+    "description": "Uma árvore de decisão que cresce completamente continua realizando divisões no espaço dos dados até que cada folha contenha apenas exemplos de uma única classe, alcançando assim {accuracy} no conjunto de treinamento. Embora esse modelo memorize perfeitamente os dados, ele tende a ser muito complexo e específico, o que pode levar ao {overfitting}, ou seja, a uma menor capacidade de generalizar para dados novos e não vistos.",
+    "accuracy": "100% de acurácia",
+    "overfitting": "sobreajuste",
+    "example_text": "Veja abaixo como ficaria a árvore completa gerada com todas as features dos nossos dados de exemplo"
+  },
+  "footer": {
+    "developed_by": "Desenvolvido por Paula Eduarda de Lima, Mariana Fernandes Rocha e Joel Perca com SvelteKit & D3.js"
+  },
+  "step3": {
+    "steps": [
+      {
+        "title": "Profundidade 0 – Raiz da Árvore",
+        "content": "No topo da árvore, temos a primeira decisão baseada na condição <code>feature 1 ≤ 185300</code>. Esta divisão separa os dados em dois grandes grupos..."
+      },
+      {
+        "title": "Profundidade 1 – Primeira Divisão dos Ramos",
+        "content": "A árvore agora se divide em dois caminhos principais. No lado esquerdo..."
+      },
+      {
+        "title": "Profundidade 2 – Ramificações Detalhadas",
+        "content": "Na sequência, surgem novas divisões, como <code>feature 1 ≤ 72600</code>..."
+      },
+      {
+        "title": "Profundidade 3 – Condições Muito Específicas",
+        "content": "Neste nível, temos divisões mais específicas, como <code>feature 0 ≤ 448</code>..."
+      },
+      {
+        "title": "Profundidade 4 – Folhas da Árvore",
+        "content": "As folhas da árvore representam as previsões finais: \"Sacramento\" ou \"San Francisco\"..."
+      }
+    ],
+    "step_not_available": "Etapa {number} não disponível."
   }
 }
