@@ -9,6 +9,8 @@
   const nodeSpacingX = 90;
   const nodeSpacingY = 100;
 
+  
+
   let currentPath = [];
   let feature0 = 0;
   let feature1 = 0;
@@ -250,7 +252,7 @@
 
 <style>
 
-  .tree-layout-container {
+  /* .tree-layout-container {
     display: flex;
     gap: 2rem;
     align-items: flex-start;
@@ -270,7 +272,40 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+  } */
+
+  .tree-layout-container {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1rem;
+  flex-wrap: nowrap; /* IMPERATIVO para evitar quebra para baixo */
+  overflow-x: auto;  /* permite scroll horizontal se necessário */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 700px) {
+  .tree-layout-container {
+    flex-wrap: wrap;
   }
+}
+
+.tree-container {
+  flex: 1 1 auto;
+  min-width: 500px;
+  max-width: 1000px;
+}
+
+.side-panel {
+  flex: 0 0 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
   .control-panel {
     display: flex;
     align-items: center;
