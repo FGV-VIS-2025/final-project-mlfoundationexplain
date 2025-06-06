@@ -93,9 +93,6 @@
   style="background-color: #2e3e5a; color: white;"
 >
 
-
-<!-- <div class="max-w-7xl mx-auto p-6 pt-0 pb-0 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: #2e3e5a"> -->
-
   <h2 class="text-3xl font-extrabold  mb-6">{$_('section-what-is.title')}</h2>
 
   <p>
@@ -138,11 +135,7 @@
 
 
 
-<!-- <div class="scroll-wrapper-green"> -->
-
 <div class="max-w-7xl mx-auto p-6 pt-0 pb-0 text-justify  transition-colors duration-300  leading-relaxed space-y-6" style="background-color: var(--color-background-section);">
-
-<!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
 
   <h2 class="text-3xl font-semibold mb-4 py-8">{$_('section-interactive-prediction.title')}</h2>
 
@@ -177,81 +170,6 @@
 
 
 
-
-<!-- 
- <div class="max-w-7xl mx-auto p-6 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300">
-
-  <h2 class="text-2xl font-bold mb-4">{$_('page.testTitle')}</h2>
-
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse euismod, nunc a fermentum dapibus, lacus nisi pretium justo, nec dignissim ipsum libero eget tortor. Etiam vehicula facilisis augue, ac accumsan libero dictum nec.
-  </p>
-
-  <p>
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed sit amet ligula dignissim, sodales elit a, feugiat justo. Integer condimentum, mauris in volutpat volutpat, tortor quam tincidunt velit, nec finibus metus sapien sit amet sapien.
-  </p>
-
-  <p>
-    Curabitur vel odio nec metus egestas rutrum. Quisque nec lorem ut elit tincidunt eleifend. Aenean pretium, justo sed volutpat pulvinar, eros justo sollicitudin arcu, ut sagittis nulla elit sit amet ante. Duis sit amet urna sed orci scelerisque tincidunt.
-  </p>
-
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse euismod, nunc a fermentum dapibus, lacus nisi pretium justo, nec dignissim ipsum libero eget tortor. Etiam vehicula facilisis augue, ac accumsan libero dictum nec.
-  </p>
-
-  <p>
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed sit amet ligula dignissim, sodales elit a, feugiat justo. Integer condimentum, mauris in volutpat volutpat, tortor quam tincidunt velit, nec finibus metus sapien sit amet sapien.
-  </p>
-
-  <p>
-    Curabitur vel odio nec metus egestas rutrum. Quisque nec lorem ut elit tincidunt eleifend. Aenean pretium, justo sed volutpat pulvinar, eros justo sollicitudin arcu, ut sagittis nulla elit sit amet ante. Duis sit amet urna sed orci scelerisque tincidunt.
-  </p>
-  
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse euismod, nunc a fermentum dapibus, lacus nisi pretium justo, nec dignissim ipsum libero eget tortor. Etiam vehicula facilisis augue, ac accumsan libero dictum nec.
-  </p>
-
-  <p>
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed sit amet ligula dignissim, sodales elit a, feugiat justo. Integer condimentum, mauris in volutpat volutpat, tortor quam tincidunt velit, nec finibus metus sapien sit amet sapien.
-  </p>
-
-  <p>
-    Curabitur vel odio nec metus egestas rutrum. Quisque nec lorem ut elit tincidunt eleifend. Aenean pretium, justo sed volutpat pulvinar, eros justo sollicitudin arcu, ut sagittis nulla elit sit amet ante. Duis sit amet urna sed orci scelerisque tincidunt.
-  </p>
-</div> -->
-
- <!-- <div class="scroll-wrapper-default">
-  <div class="max-w-7xl mx-auto px-6">
-    <ScrollStory1 />
-  </div>
- </div>
-
- <div class="max-w-7xl mx-auto p-6 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300">
-
-
-  <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse euismod, nunc a fermentum dapibus, lacus nisi pretium justo, nec dignissim ipsum libero eget tortor. Etiam vehicula facilisis augue, ac accumsan libero dictum nec.
-  </p>
-
-  <p>
-    Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed sit amet ligula dignissim, sodales elit a, feugiat justo. Integer condimentum, mauris in volutpat volutpat, tortor quam tincidunt velit, nec finibus metus sapien sit amet sapien.
-  </p>
-
-  <p>
-    Curabitur vel odio nec metus egestas rutrum. Quisque nec lorem ut elit tincidunt eleifend. Aenean pretium, justo sed volutpat pulvinar, eros justo sollicitudin arcu, ut sagittis nulla elit sit amet ante. Duis sit amet urna sed orci scelerisque tincidunt.
-  </p>
-
-
-</div> -->
-
-
-<!-- 
-<div class="scroll-wrapper-dark">
-  <div class="max-w-7xl mx-auto px-6">
-    <ScrollStory2 />
-  </div>
-</div> -->
-
 <div class="scroll-wrapper-default  mt-40">
 <div 
   class="max-w-7xl mx-auto  p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
@@ -264,15 +182,6 @@
 </div>
 </div>
 
-<!-- 
- <div class="scroll-wrapper-default">
-  <div class="max-w-7xl mx-auto px-6">
-    <Gini />
-  </div>
- </div> -->
-
-
- <!-- </div> -->
 
 
   <div class="max-w-7xl mx-auto  p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
@@ -287,8 +196,6 @@
 
 
 <div class="max-w-7xl mx-auto mt-0 p-6 pt-20 pb-0 text-center  transition-colors duration-300  leading-relaxed space-y-6" >
-
-<!-- <div style="background-color: var(--color-background); margin-left: 8rem;"> -->
 
   <h2 class="text-5xl font-semibold mb-4 py-8">{$_('section-complete-tree.title')}</h2>
 
@@ -315,10 +222,7 @@
 
  <footer class="bg-[var(--color-background-section)] text-[var(--color-text)] mt-20 pt-4 pb-4 border-t border-gray-600 text-xs">
   <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
-    <p class="text-sm">
-      <!-- © {new Date().getFullYear()} Aprendizado de Máquina Interativo. Todos os direitos reservados. -->
-       <!-- Autores: Paula Eduarda de Lima, Mariana Fernandes Rocha e Joel Perca -->
-    </p>
+    <!-- <p class="text-sm"> </p> -->
     <p class="text-xs text-[var(--color-text)]">
       {$_('footer.developed_by')}
     </p>

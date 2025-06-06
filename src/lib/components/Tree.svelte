@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import * as d3 from 'd3';
 
   export let treeData;
@@ -8,16 +8,19 @@
   const nodeSpacingX = 33;
   const nodeSpacingY = 100;
 
-  onMount(() => {
-    if (!treeData) return;
+  function drawTree() {
+    if (!treeData || !svg) return;
 
     const margin = { top: 40, right: 120, bottom: 40, left: 120 };
-    const root = d3.hierarchy(treeData);
-    const leaves = root.leaves();
-    const width = leaves.length * nodeSpacingX + margin.left + margin.right;
+
+    // Pega a largura do contêiner pai do SVG
+    const containerWidth = svg.parentElement.clientWidth || 800;
+    const width = Math.max(containerWidth, 300); // largura mínima para evitar ficar muito pequeno
 
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
+
+    const root = d3.hierarchy(treeData);
 
     const treeLayout = d3.tree()
       .size([innerWidth, innerHeight])
@@ -121,10 +124,26 @@
       .attr("x", 0)
       .attr("dy", (d, i) => i === 0 ? "0" : "1.5em")
       .text(d => d);
+  }
+
+  onMount(() => {
+    drawTree();
+
+    window.addEventListener('resize', drawTree);
+  });
+
+  onDestroy(() => {
+    window.removeEventListener('resize', drawTree);
   });
 </script>
 
 <style>
+  svg {
+    width: 100%;
+    height: 700px;
+    display: block;
+  }
+
   circle {
     transition: r 0.2s ease, fill 0.2s ease;
   }
