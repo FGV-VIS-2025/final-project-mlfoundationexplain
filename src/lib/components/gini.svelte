@@ -240,11 +240,15 @@
   });
 </script>
 
-<div class="flex flex-row gap-2 mb-4">
-  <button on:click={() => addSample(1)}>Adicionar Positivo</button>
-  <button on:click={() => addSample(0)}>Adicionar Negativo</button>
-  <button on:click={() => removeClass(1)}>Remover Positivos</button>
-  <button on:click={() => removeClass(0)}>Remover Negativos</button>
+<div class="button-container">
+  <div class="positive-buttons">
+    <button class = "sf" on:click={() => addSample(1)}>Adicionar San Francisco</button>
+    <button class = "sf" on:click={() => removeClass(1)}>Remover San Francisco</button>
+  </div>
+  <div class="negative-buttons">
+    <button class = "sac" on:click={() => addSample(0)}>Adicionar Sacramento</button>
+    <button class = "sac" on:click={() => removeClass(0)}>Remover Sacramento</button>
+  </div>
 </div>
 
 <div class="container">
@@ -262,27 +266,41 @@
       <br>
       
         
-        {@html $_('section-gini.purity_explanation', {
-          values: {
-            entropy: `<strong>${$_('section-gini.entropy')}</strong>`,
-            gini_index: `<strong>${$_('section-gini.gini_index')}</strong>`
-          }
-        })}
+      {@html $_('section-gini.purity_explanation', {
+        values: {
+          entropy: `<strong>${$_('section-gini.entropy')}</strong>`,
+          gini_index: `<strong>${$_('section-gini.gini_index')}</strong>`
+        }
+      })}
      
       <br>
-      
-        {@html $_('section-gini.metrics_behavior', {
-          values: {
-            information_gain: `<strong>${$_('section-gini.information_gain')}</strong>`,
-            gini_gain: `<strong>${$_('section-gini.gini_gain')}</strong>`
-          }
-        })}
-      
+    </p>
+    <div style="text-align: center; margin: 1em 0;">
+      <!-- Imagem para tema claro -->
+      <img src="https://quicklatex.com/cache3/09/ql_b5c2bb07b8b36054bbfb8e1292eee109_l3.png"
+          alt="Fórmulas (claro)"
+          class="block dark:hidden max-w-full h-auto" />
+
+      <!-- Imagem para tema escuro -->
+      <img src="https://quicklatex.com/cache3/b0/ql_000f9ccebd75a364a83019b889ef72b0_l3.png"
+          alt="Fórmulas (escuro)"
+          class="hidden dark:block max-w-full h-auto" />
+    </div>
+
+    <p>
+    {@html $_('section-gini.metrics_behavior', {
+      values: {
+        information_gain: `<strong>${$_('section-gini.information_gain')}</strong>`,
+        gini_gain: `<strong>${$_('section-gini.gini_gain')}</strong>`
+      }
+    })}
+          
+          
+          <!-- {$_('section-gini.process_conclusion')} -->
       <br>
-      {$_('section-gini.process_conclusion')}
       <strong>{$_('section-gini.interaction_hint')}</strong>
     </p>
-  </div>
+    </div>
 </div>
 
 
@@ -332,5 +350,35 @@
   button:hover {
     background: #7e22ce;
   }
+
+  
+.button-container {
+  display: flex;
+  gap: 1em;
+  justify-content: flex-start; 
+    margin-left: 170px;
+}
+
+.positive-buttons,
+.negative-buttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.sf {
+  background-color: #0c5e27;
+}
+
+.sac {
+  background-color: #4B0082;
+}
+
+.sf:hover {
+  background-color: #278a42;
+}
+
+.sac:hover {
+  background-color: #7e22ce;
+}
 
 </style>
