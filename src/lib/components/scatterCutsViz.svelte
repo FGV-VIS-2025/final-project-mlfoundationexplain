@@ -485,22 +485,33 @@ svg.selectAll('circle')
       .attr('stroke-width', 1.5);
   })
   .on('mousemove', (event, d) => {
-    const [mouseX, mouseY] = d3.pointer(event);
+  const [mouseX, mouseY] = d3.pointer(event);
+  const svgWidth = parseFloat(svg.attr('width'));
+  const svgHeight = parseFloat(svg.attr('height'));
+  
+  const tooltipBBox = tooltip.node().getBBox();
+  const tooltipWidth = tooltipBBox.width;
+  const tooltipHeight = tooltipBBox.height;
 
-    tooltip
-      .attr('transform', `translate(${mouseX + 10},${mouseY - 20})`);
+  // Ajusta a posição se o tooltip ultrapassar o limite direito/inferior
+  let tooltipX = mouseX + 10;
+  let tooltipY = mouseY - 20;
 
-    tooltip.select('.hover-line')
-      .attr('x1', mouseX)
-      .attr('x2', mouseX);
+  if (tooltipX + tooltipWidth > svgWidth) {
+    tooltipX = mouseX - tooltipWidth - 10;
+  }
 
-    tooltipText.text(`Median: ${d.y}`);
-    tooltipText2.text(`Total rooms: ${d.x}`);
+  if (tooltipY < 0) {
+    tooltipY = mouseY + 20;
+  }
 
-    tooltipBox
-      .attr('x', 0)
-      .attr('y', 0);
-  })
+  tooltip.attr('transform', `translate(${tooltipX},${tooltipY})`);
+
+  tooltipText.text(`Median: ${d.y}`);
+  tooltipText2.text(`Total rooms: ${d.x}`);
+  tooltipBox.attr('x', 0).attr('y', 0);
+})
+
   .on('mouseout', (event, d) => {
     tooltip.style('display', 'none');
     d3.select(event.currentTarget)
