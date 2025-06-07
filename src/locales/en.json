@@ -54,9 +54,9 @@
   },
   "section-gini": {
     "title": "How are splits chosen?",
-    "description": "In a decision tree for binary classification, splits are chosen based on the {purity} of regions created after each division. The algorithm greedily searches for the best split at that moment — that is, it chooses the feature and cut point that most increase the purity of the generated subsets.",
+    "description": "In a decision tree for binary classification, splits are chosen based on the {purity} of regions created after each division.",
     "purity": "purity",
-    "purity_explanation": "The purity of a region is a measure of how homogeneous the classes within it are. If all examples in a region belong to the same class, that region is considered pure. To quantify this purity, we use metrics such as {entropy} and the {gini_index}.",
+    "purity_explanation": "The purity of a region is a measure of how homogeneous the classes within it are. If all examples in a region belong to the same class, that region is considered pure. To quantify this purity, we use metrics such as {entropy} (H) and the {gini_index} (G).",
     "entropy": "Entropy",
     "gini_index": "Gini Index",
     "metrics_behavior": "These metrics reach their minimum values (zero) when all examples are from the same class (proportion 0 or 1), and maximum values when there is balance between classes (proportion 0.5), that is, when uncertainty is greatest. The algorithm calculates the purity gain before and after each possible split — called {information_gain} (with entropy) or {gini_gain} — and chooses the cut that most increases this gain.",
