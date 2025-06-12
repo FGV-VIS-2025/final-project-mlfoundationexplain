@@ -215,7 +215,7 @@
       .attr("class", "node")
       .attr("id", d => `node-${d.id}`)
       .attr("transform", d => `translate(${d.x},${d.y})`)
-      .style("cursor", "pointer");
+      .style("cursor", "default");
 
     node.append("circle")
       .attr("r", 12)

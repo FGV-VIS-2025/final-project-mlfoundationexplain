@@ -40,6 +40,13 @@
   --color-classe0: #0c5e27;
   --color-classe1: #4B0082;
 
+
+  --color-classe0-node: #1c7038;
+  --color-classe1-node: #692b96;
+  --color-classe0-stroke: #083517;
+  --color-classe1-stroke: #340058;
+  --color-prediction-glow: #dcd6f7;
+
   --color-gini: #0a377a;
   --color-entropy: #996d44;
 
@@ -73,11 +80,11 @@
   --color-background-section: #27364d;
 
    --color-node-fill: #a3d9b1;         /* preenchimento do nó (verde claro) */
-  --color-node-stroke: #6fbf82;       /* borda do nó (verde médio) */
+  --color-node-stroke: #3b7047;       /* borda do nó (verde médio) */
   --color-node-hover-fill: #c1edc8;   /* nó ao passar o mouse (verde muito claro) */
   
   --color-link-stroke: #8ac998;       /* cor da linha (link) verde médio */
-  --color-shadow-link: #6ad37a;       /* sombra da linha/link verde destaque */
+  --color-shadow-link: #4b8d5a;       /* sombra da linha/link verde destaque */
 
   --color-text-node: #d6eadf;         /* texto dentro do nó (verde claro) */
   --color-text-shadow: #95d196;       /* sombra do texto do nó */
@@ -94,6 +101,13 @@
 
   --color-classe0: #88e788; /* 82c591  F5F5DC*/ 
   --color-classe1: #9774c0;
+
+
+  --color-classe0-node: #baf1ba;
+  --color-classe1-node: #d0c2e0;
+  --color-classe0-stroke: #52d652;
+  --color-classe1-stroke: #825baf;
+  --color-prediction-glow: #ffffff;
 
   --color-gini: #6091ec;
   --color-entropy: #c49f68;
