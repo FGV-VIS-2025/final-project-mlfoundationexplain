@@ -14,14 +14,14 @@
     // Calcula a largura com base no elemento SVG ou na janela
     width = svg.clientWidth || window.innerWidth;
 
-    const margin = { top: 40, right: 120, bottom: 40, left: 120 };
+    const margin = { top: 48, right: 120, bottom: 40, left: 120 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
     const root = d3.hierarchy(treeData);
     const treeLayout = d3.tree()
       .size([innerWidth, innerHeight])
-      .separation((a, b) => (a.parent === b.parent ? 2 : 3));
+      .separation((a, b) => (a.parent === b.parent ? 1: 1));
 
     treeLayout(root);
 
@@ -106,8 +106,17 @@
 
     const text = node.append("text")
       .attr("dy", "0.35em")
-      .attr("y", d => d.children ? -20 : 28)
-      .attr("x", d => d.children ? 10 : 40)
+      // .attr("y", d => d.children ? -20 : 28)
+      // .attr("x", d => d.children ? 10 : -10)
+
+      .attr("y", (d, i) => {
+        if (d.children) return -35;
+        return i % 2 === 0 ? 26 : 38;
+      })
+
+      // .attr("y", d => d.children ? -30 : 28)
+      .attr("text-anchor", "middle")
+      // .attr("x", 0)
       .style("font-size", "14px")
       .style("fill", "var(--color-text-node)")
       .style("text-shadow", "0 0 2px var(--color-text-shadow)");
