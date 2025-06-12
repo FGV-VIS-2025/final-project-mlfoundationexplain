@@ -91,23 +91,23 @@
       .join("g")
       .attr("class", "node")
       .attr("transform", d => `translate(${d.x},${d.y})`)
-      .style("cursor", "pointer");
+      .style("cursor", "default");
 
     node.append("circle")
       .attr("r", 10)
       .attr("fill", `url(#${gradientId})`)
       .attr("stroke", "var(--color-node-stroke)")
       .attr("stroke-width", 2)
-      .on("mouseover", function () {
-        d3.select(this)
-          .attr("fill", "var(--color-node-hover-fill)")
-          .attr("r", 16);
-      })
-      .on("mouseout", function () {
-        d3.select(this)
-          .attr("fill", `url(#${gradientId})`)
-          .attr("r", 12);
-      });
+      // .on("mouseover", function () {
+      //   d3.select(this)
+      //     .attr("fill", "var(--color-node-hover-fill)")
+      //     .attr("r", 16);
+      // })
+      // .on("mouseout", function () {
+      //   d3.select(this)
+      //     .attr("fill", `url(#${gradientId})`)
+      //     .attr("r", 12);
+      // });
 
     // Texto estilizado com múltiplas linhas
     const text = node.append("text")
