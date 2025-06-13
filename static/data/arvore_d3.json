@@ -1,39 +1,39 @@
 {
-  "name": "feature 3 ≤ 185300.0",
+  "name": "median_house_value \n ≤ 185300.0",
   "children": [
     {
-      "name": "feature 3 ≤ 168800.0",
+      "name": "median_house_value \n ≤ 168800.0",
       "children": [
         {
-          "name": "feature 3 ≤ 55700.0",
+          "name": "median_house_value \n ≤ 55700.0",
           "children": [
             {
-              "name": "feature 1 ≤ 836.0",
+              "name": "total_bedrooms \n ≤ 836.0",
               "children": [
-                { "name": "class 0" },
-                { "name": "class 1" }
+                { "name": "Sacramento " },
+                { "name": "San \nFrancisco" }
               ]
             },
             {
-              "name": "feature 0 ≤ 900.0",
+              "name": "total_rooms \n ≤ 900.0",
               "children": [
                 {
-                  "name": "feature 1 ≤ 202.0",
+                  "name": "total_bedrooms \n ≤ 202.0",
                   "children": [
-                    { "name": "class 0" },
+                    { "name": "Sacramento " },
                     {
-                      "name": "feature 0 ≤ 569.0",
+                      "name": "total_rooms \n ≤ 569.0",
                       "children": [
-                        { "name": "class 1" },
+                        { "name": "San \nFrancisco" },
                         {
-                          "name": "feature 2 ≤ 219.0",
+                          "name": "households \n ≤ 219.0",
                           "children": [
-                            { "name": "class 0" },
+                            { "name": "Sacramento " },
                             {
-                              "name": "feature 0 ≤ 670.0",
+                              "name": "total_rooms \n ≤ 670.0",
                               "children": [
-                                { "name": "class 0" },
-                                { "name": "class 1" }
+                                { "name": "Sacramento " },
+                                { "name": "San \nFrancisco" }
                               ]
                             }
                           ]
@@ -43,16 +43,16 @@
                   ]
                 },
                 {
-                  "name": "feature 0 ≤ 1316.0",
+                  "name": "total_rooms \n ≤ 1316.0",
                   "children": [
                     {
-                      "name": "feature 0 ≤ 1257.0",
+                      "name": "total_rooms \n ≤ 1257.0",
                       "children": [
-                        { "name": "class 0" },
-                        { "name": "class 1" }
+                        { "name": "Sacramento " },
+                        { "name": "San \nFrancisco" }
                       ]
                     },
-                    { "name": "class 0" }
+                    { "name": "Sacramento " }
                   ]
                 }
               ]
@@ -60,30 +60,30 @@
           ]
         },
         {
-          "name": "feature 0 ≤ 3236.0",
+          "name": "total_rooms \n ≤ 3236.0",
           "children": [
             {
-              "name": "feature 1 ≤ 364.0",
+              "name": "total_bedrooms \n ≤ 364.0",
               "children": [
                 {
-                  "name": "feature 0 ≤ 1000.0",
+                  "name": "total_rooms \n ≤ 1000.0",
                   "children": [
-                    { "name": "class 1" },
-                    { "name": "class 0" }
+                    { "name": "San \nFrancisco" },
+                    { "name": "Sacramento " }
                   ]
                 },
-                { "name": "class 1" }
+                { "name": "San \nFrancisco" }
               ]
             },
             {
-              "name": "feature 1 ≤ 1240.0",
+              "name": "total_bedrooms \n ≤ 1240.0",
               "children": [
-                { "name": "class 0" },
+                { "name": "Sacramento " },
                 {
-                  "name": "feature 0 ≤ 6132.0",
+                  "name": "total_rooms \n ≤ 6132.0",
                   "children": [
-                    { "name": "class 1" },
-                    { "name": "class 0" }
+                    { "name": "San \nFrancisco" },
+                    { "name": "Sacramento " }
                   ]
                 }
               ]
@@ -93,27 +93,27 @@
       ]
     },
     {
-      "name": "feature 3 ≤ 237500.0",
+      "name": "median_house_value \n ≤ 237500.0",
       "children": [
         {
-          "name": "feature 0 ≤ 2508.0",
+          "name": "total_rooms \n ≤ 2508.0",
           "children": [
             {
-              "name": "feature 1 ≤ 224.0",
+              "name": "total_bedrooms \n ≤ 224.0",
               "children": [
                 {
-                  "name": "feature 0 ≤ 438.0",
+                  "name": "total_rooms \n ≤ 438.0",
                   "children": [
-                    { "name": "class 1" },
+                    { "name": "San \nFrancisco" },
                     {
-                      "name": "feature 3 ≤ 208300.0",
+                      "name": "median_house_value \n ≤ 208300.0",
                       "children": [
-                        { "name": "class 0" },
+                        { "name": "Sacramento " },
                         {
-                          "name": "feature 0 ≤ 893.0",
+                          "name": "total_rooms \n ≤ 893.0",
                           "children": [
-                            { "name": "class 1" },
-                            { "name": "class 0" }
+                            { "name": "San \nFrancisco" },
+                            { "name": "Sacramento " }
                           ]
                         }
                       ]
@@ -121,14 +121,14 @@
                   ]
                 },
                 {
-                  "name": "feature 0 ≤ 2006.0",
+                  "name": "total_rooms \n ≤ 2006.0",
                   "children": [
-                    { "name": "class 1" },
+                    { "name": "San \nFrancisco" },
                     {
-                      "name": "feature 1 ≤ 431.0",
+                      "name": "total_bedrooms \n ≤ 431.0",
                       "children": [
-                        { "name": "class 0" },
-                        { "name": "class 1" }
+                        { "name": "Sacramento " },
+                        { "name": "San \nFrancisco" }
                       ]
                     }
                   ]
@@ -136,32 +136,32 @@
               ]
             },
             {
-              "name": "feature 1 ≤ 846.0",
+              "name": "total_bedrooms \n ≤ 846.0",
               "children": [
                 {
-                  "name": "feature 0 ≤ 3087.0",
+                  "name": "total_rooms \n ≤ 3087.0",
                   "children": [
                     {
-                      "name": "feature 0 ≤ 2604.0",
+                      "name": "total_rooms \n ≤ 2604.0",
                       "children": [
-                        { "name": "class 0" },
-                        { "name": "class 1" }
+                        { "name": "Sacramento " },
+                        { "name": "San \nFrancisco" }
                       ]
                     },
-                    { "name": "class 0" }
+                    { "name": "Sacramento " }
                   ]
                 },
                 {
-                  "name": "feature 0 ≤ 8482.0",
+                  "name": "total_rooms \n ≤ 8482.0",
                   "children": [
                     {
-                      "name": "feature 3 ≤ 201000.0",
+                      "name": "median_house_value \n ≤ 201000.0",
                       "children": [
-                        { "name": "class 0" },
-                        { "name": "class 1" }
+                        { "name": "Sacramento " },
+                        { "name": "San \nFrancisco" }
                       ]
                     },
-                    { "name": "class 0" }
+                    { "name": "Sacramento " }
                   ]
                 }
               ]
@@ -169,56 +169,56 @@
           ]
         },
         {
-          "name": "feature 2 ≤ 279.0",
+          "name": "households \n ≤ 279.0",
           "children": [
             {
-              "name": "feature 2 ≤ 278.0",
+              "name": "households \n ≤ 278.0",
               "children": [
                 {
-                  "name": "feature 3 ≤ 417600.0",
+                  "name": "median_house_value \n ≤ 417600.0",
                   "children": [
                     {
-                      "name": "feature 0 ≤ 1595.0",
+                      "name": "total_rooms \n ≤ 1595.0",
                       "children": [
                         {
-                          "name": "feature 3 ≤ 405800.0",
+                          "name": "median_house_value \n ≤ 405800.0",
                           "children": [
                             {
-                              "name": "feature 0 ≤ 1269.0",
+                              "name": "total_rooms \n ≤ 1269.0",
                               "children": [
-                                { "name": "class 1" },
+                                { "name": "San \nFrancisco" },
                                 {
-                                  "name": "feature 0 ≤ 1386.0",
+                                  "name": "total_rooms \n ≤ 1386.0",
                                   "children": [
-                                    { "name": "class 0" },
-                                    { "name": "class 1" }
+                                    { "name": "Sacramento " },
+                                    { "name": "San \nFrancisco" }
                                   ]
                                 }
                               ]
                             },
-                            { "name": "class 0" }
+                            { "name": "Sacramento " }
                           ]
                         },
-                        { "name": "class 0" }
+                        { "name": "Sacramento " }
                       ]
                     },
-                    { "name": "class 1" }
+                    { "name": "San \nFrancisco" }
                   ]
                 },
-                { "name": "class 0" }
+                { "name": "Sacramento " }
               ]
             },
             {
-              "name": "feature 1 ≤ 370.0",
+              "name": "total_bedrooms \n ≤ 370.0",
               "children": [
                 {
-                  "name": "feature 1 ≤ 357.0",
+                  "name": "total_bedrooms \n ≤ 357.0",
                   "children": [
-                    { "name": "class 1" },
-                    { "name": "class 0" }
+                    { "name": "San \nFrancisco" },
+                    { "name": "Sacramento " }
                   ]
                 },
-                { "name": "class 1" }
+                { "name": "San \nFrancisco" }
               ]
             }
           ]

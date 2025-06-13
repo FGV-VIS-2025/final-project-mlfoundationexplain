@@ -11,7 +11,7 @@
   function drawTree() {
     if (!treeData || !svg) return;
 
-    const margin = { top: 40, right: 120, bottom: 40, left: 120 };
+    const margin = { top: 50, right: 120, bottom: 50, left: 120 };
 
     // Pega a largura do contêiner pai do SVG
     const containerWidth = svg.parentElement.clientWidth || 800;
@@ -112,16 +112,23 @@
     // Texto estilizado com múltiplas linhas
     const text = node.append("text")
       .attr("dy", "0.35em")
-      .attr("y", d => d.children ? -20 : 28)
-      .attr("x", d => d.children ? 10 : 40)
+      .attr("y", (d, i) => d.children ? -35 : (i % 2 === 0 ? 40 :20))
+      // .attr("text-anchor", "middle")
+      .attr("x", (d, i) => d.children ? -25 : (i % 2 === 0 ? -10 : -35))
       .style("font-size", "14px")
+      // .style("font-size", "14px")
       .style("fill", "var(--color-text-node)")
       .style("text-shadow", "0 0 2px var(--color-text-shadow)");
 
     text.selectAll("tspan")
       .data(d => d.data.name.split("\n"))
       .join("tspan")
-      .attr("x", 0)
+      // .attr("x", 0)
+      .attr("x", (d, i, nodes) => {
+      // pegar o 'x' do elemento pai <text> para usar no tspan
+      return d3.select(nodes[i].parentNode).attr("x");
+    })
+      // .attr("x", (d, i) => d.children ? -0 : (i % 2 === 0 ? -0 : 40))
       .attr("dy", (d, i) => i === 0 ? "0" : "1.5em")
       .text(d => d);
   }

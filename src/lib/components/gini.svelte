@@ -9,9 +9,9 @@
   let maxSamples = 30;
   let positiveLine;
 
-  const width = 600;
+  const width = 700;
   const height = 600;
-  const margin = { top: 30, right: 150, bottom: 70, left: 100 };
+  const margin = { top: 30, right: 150, bottom: 70, left: 50 };
 
   const classes = ["Entropia", "Gini"];
   let colorScale;
@@ -39,55 +39,180 @@
   }
 };
 
-  function updateSample() {
-    const total = samples.length;
-    if (total === 0) {
-      sampleText1.text(`Entropia: -`);
-      sampleText2.text(`Gini: -`);
-      dotGroup.selectAll('circle').remove();
-      updateDots(1); // tudo vermelho
-      return;
-    }
+  // function updateSample() {
+  //   const total = samples.length;
+  //   if (total === 0) {
+  //     sampleText1.text(`Entropia: -`);
+  //     sampleText2.text(`Gini: -`);
+  //     dotGroup.selectAll('circle').remove();
+  //     updateDots(1); // tudo vermelho
+  //     return;
+  //   }
 
-    const positives = samples.filter(d => d.label === 1).length;
-    const p = positives / total;
+  //   const positives = samples.filter(d => d.label === 1).length;
+  //   const p = positives / total;
 
-        if (total > 0) {
-      positiveLine
-        .attr('x1', xScale(p))
-        .attr('x2', xScale(p))
-        .attr('stroke-dasharray', '4 2')
-        .attr('opacity', 1);
-    } else {
-      positiveLine.attr('opacity', 0);
-    }
+  //       if (total > 0) {
+  //     positiveLine
+  //       .attr('x1', xScale(p))
+  //       .attr('x2', xScale(p))
+  //       .attr('stroke-dasharray', '4 2')
+  //       .attr('opacity', 1);
+  //   } else {
+  //     positiveLine.attr('opacity', 0);
+  //   }
 
-    sampleText1.text(`Entropia: ${entropy(p).toFixed(3)}`);
-    sampleText2.text(`Gini: ${gini(p).toFixed(3)}`);
-    updateDots(p);
+  //   sampleText1.text(`Entropia: ${entropy(p).toFixed(3)}`);
+  //   sampleText2.text(`Gini: ${gini(p).toFixed(3)}`);
+  //   updateDots(p);
 
-    // Bolinhas à direita
-    const spacing = 12;
-    const startXGreen = width - 60;
-    const startXRed = width - 75;
-    const startY = height - margin.bottom - 10;
+  //   // // Bolinhas à direita
+  //   // const spacing = 12;
+  //   // const startXGreen = width - 60;
+  //   // const startXRed = width - 75;
+  //   // const startY = height - margin.bottom - 10;
 
-    dotGroup.selectAll('circle').remove();
-    let posIndex = 0, negIndex = 0;
-    samples.forEach(val => {
-      const isPositive = val.label === 1;
-      const colIndex = isPositive ? posIndex++ : negIndex++;
-      const x = isPositive ? startXGreen : startXRed;
-      const y = startY - colIndex * spacing;
+  //   // dotGroup.selectAll('circle').remove();
+  //   // let posIndex = 0, negIndex = 0;
+  //   // samples.forEach(val => {
+  //   //   const isPositive = val.label === 1;
+  //   //   const colIndex = isPositive ? posIndex++ : negIndex++;
+  //   //   const x = isPositive ? startXGreen : startXRed;
+  //   //   const y = startY - colIndex * spacing;
 
-      dotGroup.append('circle')
-        .attr('cx', x)
-        .attr('cy', y)
-        .attr('r', 6)
-        .attr('fill', isPositive ? 'var(--color-classe0)' : 'var(--color-classe1)')
-        .attr('opacity', 1);
-    });
+  //   //   dotGroup.append('circle')
+  //   //     .attr('cx', x)
+  //   //     .attr('cy', y)
+  //   //     .attr('r', 6)
+  //   //     .attr('fill', isPositive ? 'var(--color-classe0)' : 'var(--color-classe1)')
+  //   //     .attr('opacity', 1);
+  //   // });
+
+  //       const spacing = 14;
+  //   const maxPerCol = 10;
+  //   const colSpacing = 16;
+  //   const startXGreen = width - 60;
+  //   const startXRed = width - 75;
+  //   const startY = height - margin.bottom - 10;
+
+  //   dotGroup.selectAll('circle').remove();
+  //   let posIndex = 0, negIndex = 0;
+
+  //   samples.forEach(val => {
+  //     const isPositive = val.label === 1;
+  //     const index = isPositive ? posIndex++ : negIndex++;
+  //     const row = index % maxPerCol;
+  //     const col = Math.floor(index / maxPerCol);
+
+  //     const baseX = isPositive ? startXGreen : startXRed;
+  //     const x = baseX + col * colSpacing;
+  //     const y = startY - row * spacing;
+
+  //     dotGroup.append('circle')
+  //       .attr('cx', x)
+  //       .attr('cy', y)
+  //       .attr('r', 6)
+  //       .attr('fill', isPositive ? 'var(--color-classe0)' : 'var(--color-classe1)')
+  //       .attr('opacity', 1);
+  //   });
+
+  // }
+
+
+function updateSample() {
+  const total = samples.length;
+  if (total === 0) {
+    sampleText1.text(`Entropia: -`);
+    sampleText2.text(`Gini: -`);
+    dotGroup.selectAll('*').remove();
+    updateDots(1); // tudo vermelho
+    return;
   }
+
+  const positives = samples.filter(d => d.label === 1).length;
+  const p = positives / total;
+
+  if (total > 0) {
+    positiveLine
+      .attr('x1', xScale(p))
+      .attr('x2', xScale(p))
+      .attr('stroke-dasharray', '4 2')
+      .attr('opacity', 1);
+  } else {
+    positiveLine.attr('opacity', 0);
+  }
+
+  sampleText1.text(`Entropia: ${entropy(p).toFixed(3)}`);
+  sampleText2.text(`Gini: ${gini(p).toFixed(3)}`);
+  updateDots(p);
+
+  // === Layout ===
+  const circleRadius =10;
+  const circleSpacingY = 22;
+  const circleSpacingX = 22;
+  const maxRows = 10;
+
+  const baseX = width - 100;
+  const baseY = height - margin.bottom - 10;
+
+  // Limpa bolinhas e textos
+  dotGroup.selectAll('*').remove();
+
+  // Rótulos
+  // dotGroup.append('text')
+  //   .attr('x', baseX + circleSpacingX * 1.5)
+  //   .attr('y', baseY + 20)
+  //   .text('SAC')
+  //   .attr('text-anchor', 'middle')
+  //   .attr('fill', 'var(--color-classe1)')
+  //   .attr('font-size', 12);
+
+  // dotGroup.append('text')
+  //   .attr('x', baseX + circleSpacingX * 4.5)
+  //   .attr('y', baseY + 20)
+  //   .text('SF')
+  //   .attr('text-anchor', 'middle')
+  //   .attr('fill', 'var(--color-classe0)')
+  //   .attr('font-size', 12);
+  // Rótulo SAC (classe 0)
+dotGroup.append('text')
+  .attr('x', baseX + 0.5 * circleSpacingX)
+  .attr('y', baseY + 20)
+  .text('SAC')
+  .attr('text-anchor', 'middle')
+  .attr('fill', 'var(--color-classe1)')
+  .attr('font-size', 12);
+
+// Rótulo SF (classe 1)
+dotGroup.append('text')
+  .attr('x', baseX + 3.5 * circleSpacingX)
+  .attr('y', baseY + 20)
+  .text('SF')
+  .attr('text-anchor', 'middle')
+  .attr('fill', 'var(--color-classe0)')
+  .attr('font-size', 12);
+
+
+  let posCount = 0, negCount = 0;
+  samples.forEach((val, i) => {
+    const isPositive = val.label === 1;
+    const count = isPositive ? posCount++ : negCount++;
+    const col = count % 2;
+    const row = Math.floor(count / 2);
+
+    const x = baseX + (isPositive ? 3 + col : col) * circleSpacingX;
+    const y = baseY - row * circleSpacingY;
+
+    dotGroup.append('circle')
+      .attr('cx', x)
+      .attr('cy', y)
+      .attr('r', circleRadius)
+      .attr('fill', isPositive ? 'var(--color-classe0)' : 'var(--color-classe1)')
+      .attr('opacity', 1);
+  });
+}
+
+
 
   function updateDots(p) {
     const numDots = 50;
@@ -143,7 +268,7 @@
 
     svg.append('text')
       .attr('x', width / 2)
-      .attr('y', height - 40)
+      .attr('y', height - 10)
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
       .attr('fill', 'var(--color-text)')
@@ -151,8 +276,8 @@
 
     svg.append('text')
       .attr('transform', 'rotate(-90)')
-      .attr('x', -height / 2)
-      .attr('y', 18)
+      .attr('x', -height / 2 )
+      .attr('y', 10)
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
       .attr('fill', 'var(--color-text)')
@@ -163,36 +288,36 @@
       .datum(values)
       .attr('fill', 'none')
       .attr('stroke', colorScale("Entropia"))
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 7)
       .attr('d', d3.line().x(d => xScale(d)).y(d => yScale(entropy(d))));
 
     g.append('path')
       .datum(values)
       .attr('fill', 'none')
       .attr('stroke', colorScale("Gini"))
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 7)
       .attr('d', d3.line().x(d => xScale(d)).y(d => yScale(gini(d))));
 
     positiveLine = g.append('line')
       .attr('y1', 0)
       .attr('y2', height - margin.top - margin.bottom)
       .attr('stroke', 'var(--color-text)')
-      .attr('stroke-width', 4)
+      .attr('stroke-width', 3)
       .attr('opacity', 0);  // Inicialmente invisível
 
     const legend = svg.append('g').attr('transform', `translate(${width - 130},${margin.top})`);
-    legend.append('rect').attr('width', 12).attr('height', 12).attr('fill', colorScale("Entropia"));
-    legend.append('text').attr('x', 18).attr('y', 10).text('Entropia').attr('fill', 'var(--color-text)').attr('font-size', 12);
-    legend.append('rect').attr('y', 20).attr('width', 12).attr('height', 12).attr('fill', colorScale("Gini"));
-    legend.append('text').attr('x', 18).attr('y', 30).text('Gini').attr('fill', 'var(--color-text)').attr('font-size', 12);
+    legend.append('rect').attr('y', -2).attr('width', 15).attr('width', 15).attr('height', 15).attr('fill', colorScale("Entropia"));
+    legend.append('text').attr('x', 18).attr('y', 10).text('Entropia').attr('fill', 'var(--color-text)').attr('font-size', 16);
+    legend.append('rect').attr('y', 18).attr('width', 15).attr('height', 15).attr('fill', colorScale("Gini"));
+    legend.append('text').attr('x', 18).attr('y', 30).text('Gini').attr('fill', 'var(--color-text)').attr('font-size', 16);
 
     // Hover Tooltip
     hoverTooltip = svg.append('g').style('display', 'none');
     hoverLine = hoverTooltip.append('line')
       .attr('y1', margin.top)
       .attr('y2', height - margin.bottom)
-      .attr('stroke', '#aaa')
-      .attr('stroke-dasharray', '4 2');
+      .attr('stroke', '#252525')
+      .attr('stroke-dasharray', '7 5');
 
     hoverBox = hoverTooltip.append('rect')
       .attr('width', 140)
@@ -240,22 +365,25 @@
   });
 </script>
 
-<div class="button-container">
-  <div class="positive-buttons">
-    <button class = "sf" on:click={() => addSample(1)}>Adicionar San Francisco</button>
-    <button class = "sf" on:click={() => removeClass(1)}>Remover San Francisco</button>
-  </div>
-  <div class="negative-buttons">
-    <button class = "sac" on:click={() => addSample(0)}>Adicionar Sacramento</button>
-    <button class = "sac" on:click={() => removeClass(0)}>Remover Sacramento</button>
-  </div>
-</div>
-
 <div class="container">
-  <div bind:this={svgContainer}></div>
+  <div class="grafico">
+    <div class="button-container">
+      <div class="positive-buttons">
+        <button class="sf" on:click={() => addSample(1)}>+ San Francisco</button>
+        <button class="sf" on:click={() => removeClass(1)}>- San Francisco</button>
+      </div>
+      <div class="negative-buttons">
+        <button class="sac" on:click={() => addSample(0)}>+ Sacramento</button>
+        <button class="sac" on:click={() => removeClass(0)}>- Sacramento</button>
+      </div>
+    </div>
+
+    <!-- Aqui será renderizado o SVG -->
+    <div bind:this={svgContainer} class="svg-container"></div>
+  </div>
+
   <div class="descricao">
-  
-    <h3>{$_('section-gini.title')}</h3>
+   <h3>{$_('section-gini.title')}</h3>
     <p>
 
       {@html $_('section-gini.description', {
@@ -301,7 +429,8 @@
       <strong>{$_('section-gini.interaction_hint')}</strong>
     </p>
     </div>
-</div>
+  </div>
+
 
 
 <style>
@@ -312,24 +441,43 @@
   }
 
    .container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 40px;
-    margin-top: 20px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.grafico {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.svg-container {
+  /* Aqui você pode controlar o tamanho ou margens do gráfico */
+  margin-top: 1em;
+}
+
+.button-container {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1em;
+}
 
   .descricao {
     display: flex;
     flex-direction: column;
     max-width: 500px;
-    font-size: 16px;
+    font-size: 18px;
     color: var(--color-text);
-    line-height: 1.4;
+    line-height: 1.5;
+    margin-left: 200px;
   }
 
+  
   .descricao h3 {
-    font-size: 18px;
+    font-size: 23px;
     font-weight: bold;
     margin-bottom: 10px;
     color: var(--color-text);
@@ -342,8 +490,8 @@
   font-size: 0.85rem;
   border: none;
   border-radius: 4px;
-    background: var(--color-button-previsão);
-  color: white;
+  background: var(--color-button-previsão);
+  color: var(--color-text-button);
   cursor: pointer;
   transition: background-color 0.3s ease;
   }
@@ -351,26 +499,26 @@
     background: #7e22ce;
   }
 
-  
+/*   
 .button-container {
   display: flex;
   gap: 1em;
   justify-content: flex-start; 
     margin-left: 170px;
-}
+} */
 
-.positive-buttons,
+/* .positive-buttons,
 .negative-buttons {
   display: flex;
   flex-direction: column;
-}
+} */
 
 .sf {
-  background-color: #0c5e27;
+  background-color: var(--color-classe0);
 }
 
 .sac {
-  background-color: #4B0082;
+  background-color: var(--color-classe1);
 }
 
 .sf:hover {
