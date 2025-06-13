@@ -23,13 +23,75 @@
 
   const margin = { top: 40, right: 40, bottom: 80, left: 100 };
   const chartWidth = width - margin.left - margin.right;
-  const chartHeight = height - margin.top - margin.bottom;
+  const fullHeight = height - margin.top - margin.bottom;
+  const proportionHeight = (fullHeight * 0.5); // ou outro fator, ex: 0.6
+  const histogramHeight = fullHeight - proportionHeight;
 
   // Variáveis reativas
   let xScale, yScale;
   let plotPoints = [];
   let minValue = 0,
     maxValue = 0;
+
+
+  let proportionBelow = [];
+  let proportionAbove = [];
+  let proportionLineLeft, proportionLineRight;
+  let proportionYScale;
+
+  function computeProportionCurve(points, cidadeAlvo = "San Francisco", numCortes = 20) {
+    if (!points || points.length === 0) return [];
+
+    const minValue = d3.min(points, d => d.value);
+    const maxValue = d3.max(points, d => d.value);
+
+    const dadosCidade = points.filter(d => d.city === cidadeAlvo);
+    const totalCidade = dadosCidade.length;
+
+    if (totalCidade === 0) return [];
+
+    const cortes = d3.range(numCortes).map(i => 
+      minValue + (i * (maxValue - minValue)) / (numCortes - 1)
+    );
+
+    const result = cortes.map(corte => {
+      const abaixo = dadosCidade.filter(d => d.value < corte).length;
+      const acima = totalCidade - abaixo;
+
+      return {
+        cut: corte,
+        proportionBelow: abaixo / totalCidade,
+        proportionAbove: acima / totalCidade,
+      };
+    });
+
+    return result;
+  }
+
+  function getProportionLeft(value, proportionData) {
+  if (!proportionData || proportionData.length === 0) return 0;
+
+  const i = d3.bisector(d => d.x).left(proportionData, value);
+
+  if (i === 0) {
+    return proportionData[0].y;
+  } else if (i >= proportionData.length) {
+    return proportionData[proportionData.length - 1].y;
+  } else {
+    const a = proportionData[i - 1];
+    const b = proportionData[i];
+    const t = (value - a.x) / (b.x - a.x);
+    return a.y + t * (b.y - a.y);
+  }
+}
+
+let proportionLeft, proportionRight;
+$: {
+  if (cutoffValue && proportionBelow?.length) {
+    proportionLeft = getProportionLeft(cutoffValue, proportionBelow);
+    proportionRight = 1 - proportionLeft;
+  }
+}
 
   // Processar dados por feature
   function processDataPoints() {
@@ -106,6 +168,11 @@
     if (!data || data.length === 0) return;
 
     const frequencies = processDataPoints();
+    // Calcular curvas de proporção abaixo e acima do corte
+    const proporcao = computeProportionCurve(frequencies, "San Francisco", 20);
+    proportionBelow = proporcao.map(d => ({ x: d.cut, y: d.proportionBelow }));
+    proportionAbove = proporcao.map(d => ({ x: d.cut, y: d.proportionAbove }));
+    console.log(proportionAbove)
 
     // Calcular frequência máxima real por bin
     const binCounts = {};
@@ -123,7 +190,26 @@
     yScale = d3
       .scaleLinear()
       .domain([0, maxFrequency + 1])
-      .range([chartHeight, 0]);
+      .range([histogramHeight, 0]);
+
+    // Criar escala para proporção (de 0 a 1) no eixo Y, usando o mesmo chartHeight
+    proportionYScale = d3
+      .scaleLinear()
+      .domain([0, 1])
+      .range([proportionHeight, 0]);
+
+    // Gerar path para a curva de proporção
+    proportionLineLeft = d3
+      .line()
+      .x((d) => xScale(d.x))
+      .y((d) => proportionYScale(d.y))
+      .curve(d3.curveMonotoneX)(proportionBelow);
+
+    proportionLineRight = d3
+      .line()
+      .x((d) => xScale(d.x))
+      .y((d) => proportionYScale(d.y))
+      .curve(d3.curveMonotoneX)(proportionAbove);
 
     // Criar histograma uma vez para todos os pontos
     const histogram = d3
@@ -324,9 +410,57 @@
 <div class="chart-container">
   <svg bind:this={svg} {width} {height}>
     <g transform="translate({margin.left},{margin.top})">
+<!-- Grupo da curva de proporção -->
+<g transform="translate(0, {histogramHeight + 65})">  <!-- adiciona espaçamento entre os blocos -->
+  {#if proportionLineLeft}
+    <path
+      d={proportionLineLeft}
+      fill="none"
+      stroke="var(--color-classe1)"
+      stroke-width="2"
+      opacity="0.9"
+      class="proportion-line"
+    />
+  {/if}
+  {#if proportionLineRight}
+    <path
+      d={proportionLineRight}
+      fill="none"
+      stroke="var(--color-classe1)"
+      stroke-width="2"
+      opacity="0.9"
+      class="proportion-line"
+    />
+  {/if}
+    <!-- Eixo Y para a proporção -->
+    <g class="axis">
+      <line
+        x1="0"
+        y1="0"
+        x2="0"
+        y2={proportionHeight}
+        stroke="currentColor"
+        stroke-width="1"
+        opacity="0.6"
+      />
+      {#each d3.range(0, 1.1, 0.2) as tick}
+        <g transform="translate(0, {proportionYScale(tick)})">
+          <line x1="-6" x2="0" stroke="currentColor" opacity="0.6" />
+          <text
+            x="-10"
+            dy="0.35em"
+            text-anchor="end"
+            class="tick-label"
+            fill="var(--color-text)">{tick.toFixed(1)}</text
+          >
+        </g>
+      {/each}
+    </g>
+  </g>
+
       <!-- Eixos -->
       <!-- Eixo X -->
-      <g class="axis" transform="translate(0,{chartHeight})">
+      <g class="axis" transform="translate(0,{histogramHeight})">
         <line
           x1="0"
           y1="0"
@@ -355,7 +489,7 @@
           x1="0"
           y1="0"
           x2="0"
-          y2={chartHeight}
+          y2={histogramHeight}
           stroke="currentColor"
           stroke-width="1"
           opacity="0.6"
@@ -377,7 +511,7 @@
       <!-- Etiquetas de eixos -->
       <text
         x={chartWidth / 2}
-        y={chartHeight + 50}
+        y={histogramHeight + 50}
         text-anchor="middle"
         class="axis-label"
         fill="var(--color-text)"
@@ -386,7 +520,7 @@
       </text>
 
       <text
-        x={-chartHeight / 2}
+        x={-histogramHeight / 2}
         y="-60"
         text-anchor="middle"
         class="axis-label"
@@ -423,7 +557,19 @@
           x1={cutoffX}
           y1="0"
           x2={cutoffX}
-          y2={chartHeight}
+          y2={histogramHeight}
+          stroke="#28a745"
+          stroke-width="2"
+          stroke-dasharray="5,5"
+          class="cutoff-line"
+        />
+
+        <!-- Linha de corte no gráfico de linha (abaixo do histograma) -->
+        <line
+          x1={cutoffX}
+          y1={histogramHeight + 40}
+          x2={cutoffX}
+          y2={histogramHeight + fullHeight}
           stroke="#28a745"
           stroke-width="2"
           stroke-dasharray="5,5"
@@ -442,33 +588,43 @@
           on:mousedown={handleMouseDown}
         />
 
-        <!-- Tooltip do valor de corte -->
-        <g class="cutoff-tooltip" transform="translate({chartWidth - 120}, 20)">
-          <rect
-            x="0"
-            width="115"
-            height="25"
-            y="0"
-            rx="4"
-            fill="rgba(40, 167, 69, 0.95)"
-            stroke="currentColor"
-            stroke-width="1"
-            stroke-opacity="0.3"
-            filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"
-          />
-          <text
-            x="57.5"
-            y="16"
-            text-anchor="middle"
-            fill="white"
-            font-size="12"
-            font-weight="600"
-          >
-            {$_("scatterplot.cutoff_tooltip", {
-              values: { value: formattedCutoff },
-            })}
-          </text>
-        </g>
+      <!-- Tooltip combinado: cutoff + proporções -->
+      <g class="cutoff-tooltip" transform="translate({chartWidth - 120}, 20)">
+        <rect
+          x="0"
+          width="115"
+          height="55"
+          y="0"
+          rx="4"
+          fill="rgba(40, 167, 69, 0.95)"
+          stroke="currentColor"
+          stroke-width="1"
+          stroke-opacity="0.3"
+          filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"
+        />
+        <text
+          x="57.5"
+          y="16"
+          text-anchor="middle"
+          fill="white"
+          font-size="12"
+          font-weight="600"
+        >
+        {$_("scatterplot.cutoff_tooltip", {
+        values: { value: formattedCutoff },
+        })}
+        </text>
+        <text
+          x="57.5"
+          y="34"
+          text-anchor="middle"
+          fill="white"
+          font-size="11"
+        >
+          ↙ {(proportionLeft * 100).toFixed(1)}% ⬌ ↗ {(proportionRight * 100).toFixed(1)}%
+        </text>
+      </g>
+
       {/if}
     </g>
 
