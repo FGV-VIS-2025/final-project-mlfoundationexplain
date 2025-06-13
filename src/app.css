@@ -8,9 +8,11 @@
 :root {
   --color-background: #84c495;
   --color-background-viz-light: #67ad7a;
+  --color-background-viz-light2: #5b4f6b;
   --color-background-intro: #62926f;
   --color-text-title:#13062b;
   --color-text: #1c0e36;
+  --color-text-button: #ffffff;
   --color-text-auxiliary:#8c7da7;
   --color-primary: #4d1374; /* 601374*/
   --color-primary2:#391253; 
@@ -67,10 +69,12 @@
 /* Tema escuro (aplicado quando <html class="dark">) */
 .dark {
   --color-background: #1e293b;
-  --color-background-viz-light: #5b4f6b;
+  --color-background-viz-light: #4c3b57;
+  --color-background-viz-light2: #5b4f6b;
   --color-background-intro: #557e60;
   --color-text-title:#ffffff;
   --color-text: #ffffff;
+  --color-text-button: #360b53;
   --color-text-auxiliary:#bbb4b4;
   --color-primary: #601374;
   --color-secondary: #6b4c74;

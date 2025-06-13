@@ -9,9 +9,9 @@
   let maxSamples = 30;
   let positiveLine;
 
-  const width = 600;
+  const width = 700;
   const height = 600;
-  const margin = { top: 30, right: 150, bottom: 70, left: 100 };
+  const margin = { top: 30, right: 150, bottom: 70, left: 50 };
 
   const classes = ["Entropia", "Gini"];
   let colorScale;
@@ -277,7 +277,7 @@ dotGroup.append('text')
     svg.append('text')
       .attr('transform', 'rotate(-90)')
       .attr('x', -height / 2 )
-      .attr('y', 45)
+      .attr('y', 10)
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
       .attr('fill', 'var(--color-text)')
@@ -365,22 +365,25 @@ dotGroup.append('text')
   });
 </script>
 
-<div class="button-container">
-  <div class="positive-buttons">
-    <button class = "sf" on:click={() => addSample(1)}>+ San Francisco</button>
-    <button class = "sf" on:click={() => removeClass(1)}>- San Francisco</button>
-  </div>
-  <div class="negative-buttons">
-    <button class = "sac" on:click={() => addSample(0)}>+ Sacramento</button>
-    <button class = "sac" on:click={() => removeClass(0)}>- Sacramento</button>
-  </div>
-</div>
-
 <div class="container">
-  <div bind:this={svgContainer}></div>
+  <div class="grafico">
+    <div class="button-container">
+      <div class="positive-buttons">
+        <button class="sf" on:click={() => addSample(1)}>+ San Francisco</button>
+        <button class="sf" on:click={() => removeClass(1)}>- San Francisco</button>
+      </div>
+      <div class="negative-buttons">
+        <button class="sac" on:click={() => addSample(0)}>+ Sacramento</button>
+        <button class="sac" on:click={() => removeClass(0)}>- Sacramento</button>
+      </div>
+    </div>
+
+    <!-- Aqui será renderizado o SVG -->
+    <div bind:this={svgContainer} class="svg-container"></div>
+  </div>
+
   <div class="descricao">
-  
-    <h3>{$_('section-gini.title')}</h3>
+   <h3>{$_('section-gini.title')}</h3>
     <p>
 
       {@html $_('section-gini.description', {
@@ -426,7 +429,8 @@ dotGroup.append('text')
       <strong>{$_('section-gini.interaction_hint')}</strong>
     </p>
     </div>
-</div>
+  </div>
+
 
 
 <style>
@@ -437,24 +441,43 @@ dotGroup.append('text')
   }
 
    .container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 40px;
-    margin-top: 20px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.grafico {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.svg-container {
+  /* Aqui você pode controlar o tamanho ou margens do gráfico */
+  margin-top: 1em;
+}
+
+.button-container {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 1em;
+}
 
   .descricao {
     display: flex;
     flex-direction: column;
     max-width: 500px;
-    font-size: 16px;
+    font-size: 18px;
     color: var(--color-text);
-    line-height: 1.4;
+    line-height: 1.5;
+    margin-left: 200px;
   }
 
+  
   .descricao h3 {
-    font-size: 18px;
+    font-size: 23px;
     font-weight: bold;
     margin-bottom: 10px;
     color: var(--color-text);
@@ -467,8 +490,8 @@ dotGroup.append('text')
   font-size: 0.85rem;
   border: none;
   border-radius: 4px;
-    background: var(--color-button-previsão);
-  color: white;
+  background: var(--color-button-previsão);
+  color: var(--color-text-button);
   cursor: pointer;
   transition: background-color 0.3s ease;
   }
@@ -476,26 +499,26 @@ dotGroup.append('text')
     background: #7e22ce;
   }
 
-  
+/*   
 .button-container {
   display: flex;
   gap: 1em;
   justify-content: flex-start; 
     margin-left: 170px;
-}
+} */
 
-.positive-buttons,
+/* .positive-buttons,
 .negative-buttons {
   display: flex;
   flex-direction: column;
-}
+} */
 
 .sf {
-  background-color: #0c5e27;
+  background-color: var(--color-classe0);
 }
 
 .sac {
-  background-color: #4B0082;
+  background-color: var(--color-classe1);
 }
 
 .sf:hover {
