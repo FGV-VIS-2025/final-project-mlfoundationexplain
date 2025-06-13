@@ -59,7 +59,11 @@
           }
         });
       },
-      { threshold: 0.5, rootMargin: "0px 0px -50% 0px" }
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50% 0px"
+      }
+
     );
 
     stepRefs.forEach((ref) => {
@@ -76,7 +80,7 @@
   <!-- Coluna com o conteúdo textual rolável -->
   <div class="md:w-2/5 w-full md:px-8 px-4 md:pl-16 pl-8">
     {#each steps as step, stepIndex}
-      <div
+      <!-- <div
         class="md:my-16 my-8 md:p-10 p-8 border-l-4 rounded-r-xl transition-all duration-300
                md:min-h-[80vh] min-h-0 flex flex-col justify-center
                 backdrop-blur-sm border-gray-200 dark:border-gray-700
@@ -84,7 +88,16 @@
           ? 'border-l-purple-600 transform translate-x-1 dark:border-l-purple-400 dark:from-purple-900/20 dark:to-gray-800/80'
           : ''}"
         bind:this={stepRefs[stepIndex]}
-      >
+      > -->
+        <div
+  class="md:my-[30rem] my-[10rem] md:p-10 p-8 border-l-4 rounded-r-xl transition-all duration-300
+         md:min-h-[100vh] min-h-[80vh] flex flex-col justify-center
+         backdrop-blur-sm border-gray-200 dark:border-gray-700
+         {stepIndex === currentStep
+    ? 'border-l-purple-600 transform translate-x-1 dark:border-l-purple-400 dark:from-purple-900/20 dark:to-gray-800/80'
+    : ''}"
+  bind:this={stepRefs[stepIndex]}
+>
         <div class="mb-6">
           <span
             class="text-purple-600 text-sm font-semibold uppercase tracking-wide dark:text-purple-400"
