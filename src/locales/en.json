@@ -156,26 +156,58 @@
   "step3": {
     "steps": [
       {
-        "title": "Depth 0 – Tree Root",
+        "title": "Depth 0 0 Tree Root",
         "content": "At the top of the tree, we have the first decision based on the condition <code>feature 1 ≤ 185300</code>. This split separates the data into two large groups..."
       },
       {
-        "title": "Depth 1 – First Branch Division",
+        "title": "Depth 1 - First Branch Division",
         "content": "The tree now splits into two main paths. On the left side..."
       },
       {
-        "title": "Depth 2 – Detailed Ramifications",
+        "title": "Depth 2 - Detailed Ramifications",
         "content": "Next, new divisions emerge, such as <code>feature 1 ≤ 72600</code>..."
       },
       {
-        "title": "Depth 3 – Very Specific Conditions",
+        "title": "Depth 3 - Very Specific Conditions",
         "content": "At this level, we have more specific divisions, such as <code>feature 0 ≤ 448</code>..."
       },
       {
-        "title": "Depth 4 – Tree Leaves",
+        "title": "Depth 4 - Tree Leaves",
         "content": "The tree leaves represent the final predictions: \"Sacramento\" or \"San Francisco\"..."
       }
     ],
     "step_not_available": "Step {number} not available."
+  },
+  "about": {
+    "title": "About",
+    "presentation-title": "Presentation",
+    "presentation-text": "On the Home tab, you will find our interactive visualization that guides the explanation of how the decision tree algorithm works. In addition to showing the tree structure, we offer dynamic visualizations that help understand the tree-building process, allowing comprehension of how the splits are chosen.",
+    "resume-title": "Project Summary",
+    "resume-text": "The platform presents ",
+    "modules": "visual and interactive modules ",
+    "resume-text2": "that facilitate the understanding of ",
+    "models": "models based on binary trees.",
+    "list-title": "Main features include:",
+    "item1": "Dynamic construction of the decision tree along with the cuts in the 2D data space",
+    "item2": "Interactive prediction simulations",
+    "item3": "Impurity metric charts (Gini Index and Entropy)",
+    "item4": "Histograms illustrating univariate splits",
+    "item5": "Dendrogram illustrating manual pruning of complex trees",
+    "accessibility": "The project was also developed with a focus on accessibility and customization, including:",
+    "acc-list1": "Multilingual support (Portuguese, Spanish, and English)",
+    "acc-list2": "Toggle between light and dark themes",
+    "article-title": "Article",
+    "click": "Click here",
+    "article-text": " to access the full article",
+    "video-title": "Presentation Video",
+    "team-members": "Team Members",
+    "instructions-title": "Execution Instructions",
+    "instructions-text": "This project was created using",
+    "local-run": ". To run locally:",
+    "run-step1": "Clone the repository available via the 'GitHub' tab on this page.",
+    "run-step2": "Install dependencies with ",
+    "run-step3": "Run the development server with ",
+    "run-step4": "Access in the browser",
+    "run-step5": "(or the port shown in the terminal)"
   }
 }

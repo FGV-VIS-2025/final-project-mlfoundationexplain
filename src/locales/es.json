@@ -156,26 +156,58 @@
   "step3": {
     "steps": [
       {
-        "title": "Profundidad 0 – Raíz del Árbol",
+        "title": "Profundidad 0 - Raíz del Árbol",
         "content": "En la parte superior del árbol, tenemos la primera decisión basada en la condición <code>feature 1 ≤ 185300</code>. Esta división separa los datos en dos grandes grupos..."
       },
       {
-        "title": "Profundidad 1 – Primera División de Ramas",
+        "title": "Profundidad 1 - Primera División de Ramas",
         "content": "El árbol ahora se divide en dos caminos principales. En el lado izquierdo..."
       },
       {
-        "title": "Profundidad 2 – Ramificaciones Detalladas",
+        "title": "Profundidad 2 - Ramificaciones Detalladas",
         "content": "A continuación, surgen nuevas divisiones, como <code>feature 1 ≤ 72600</code>..."
       },
       {
-        "title": "Profundidad 3 – Condiciones Muy Específicas",
+        "title": "Profundidad 3 - Condiciones Muy Específicas",
         "content": "En este nivel, tenemos divisiones más específicas, como <code>feature 0 ≤ 448</code>..."
       },
       {
-        "title": "Profundidad 4 – Hojas del Árbol",
+        "title": "Profundidad 4 - Hojas del Árbol",
         "content": "Las hojas del árbol representan las predicciones finales: \"Sacramento\" o \"San Francisco\"..."
       }
     ],
     "step_not_available": "Etapa {number} no disponible."
+  },
+  "about": {
+    "title": "Acerca de",
+    "presentation-title": "Presentación",
+    "presentation-text": "En la pestaña de Inicio, encontrarás nuestra visualización interactiva que guía la explicación del funcionamiento del algoritmo de árbol de decisión. Además de mostrar la estructura del árbol, ofrecemos visualizaciones dinámicas que ayudan a comprender el proceso de construcción del árbol, permitiendo entender cómo se eligen las divisiones.",
+    "resume-title": "Resumen del Proyecto",
+    "resume-text": "La plataforma presenta ",
+    "modules": "módulos visuales e interactivos ",
+    "resume-text2": "que facilitan la comprensión de los ",
+    "models": "modelos basados en árboles binarios.",
+    "list-title": "Entre las principales funcionalidades están:",
+    "item1": "Construcción dinámica del árbol de decisión junto con los cortes en el espacio 2D de los datos",
+    "item2": "Simulaciones de predicción interactivas",
+    "item3": "Gráficos de las métricas de impureza (Índice de Gini y Entropía)",
+    "item4": "Histogramas que ilustran los cortes univariados",
+    "item5": "Dendrograma que ilustra la poda manual de árboles complejos",
+    "accessibility": "El proyecto también fue desarrollado con enfoque en accesibilidad y personalización, incluyendo:",
+    "acc-list1": "Soporte multilingüe (Portugués, Español e Inglés)",
+    "acc-list2": "Alternancia entre temas claro y oscuro",
+    "article-title": "Artículo",
+    "click": "Haz clic aquí",
+    "article-text": " para acceder al artículo completo",
+    "video-title": "Video de Presentación",
+    "team-members": "Miembros del Equipo",
+    "instructions-title": "Instrucciones de Ejecución",
+    "instructions-text": "Este proyecto fue creado usando",
+    "local-run": ". Para ejecutarlo localmente:",
+    "run-step1": "Clona el repositorio disponible en la pestaña 'GitHub' en este sitio.",
+    "run-step2": "Instala las dependencias con ",
+    "run-step3": "Ejecuta el servidor de desarrollo con ",
+    "run-step4": "Accede en el navegador",
+    "run-step5": "(o el puerto indicado en la terminal)"
   }
 }
