@@ -187,6 +187,7 @@
     "modules": "módulos visuales e interactivos ",
     "resume-text2": "que facilitan la comprensión de los ",
     "models": "modelos basados en árboles binarios.",
+    "images": "Vistas del modelo",
     "list-title": "Entre las principales funcionalidades están:",
     "item1": "Construcción dinámica del árbol de decisión junto con los cortes en el espacio 2D de los datos",
     "item2": "Simulaciones de predicción interactivas",

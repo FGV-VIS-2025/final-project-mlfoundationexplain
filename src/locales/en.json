@@ -186,6 +186,7 @@
     "resume-text": "The platform presents ",
     "modules": "visual and interactive modules ",
     "resume-text2": "that facilitate the understanding of ",
+    "images": "Model views",
     "models": "models based on binary trees.",
     "list-title": "Main features include:",
     "item1": "Dynamic construction of the decision tree along with the cuts in the 2D data space",

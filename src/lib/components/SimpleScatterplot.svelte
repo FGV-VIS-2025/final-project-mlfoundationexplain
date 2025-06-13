@@ -437,7 +437,7 @@
           <path
             d={proportionLineLeft}
             fill="none"
-            stroke="blue"
+            stroke="red"
             stroke-width="2"
             opacity="0.6"
             class="proportion-line"
@@ -504,7 +504,7 @@
       <!-- Legenda das linhas -->
         <g transform="translate({chartWidth - 160}, {histogramHeight + 65})">
           <g transform="translate(90, -30)">
-            <line x1="0" y1="5" x2="20" y2="5" stroke="blue" stroke-width="2" opacity="0.6" />
+            <line x1="0" y1="5" x2="20" y2="5" stroke="red" stroke-width="2" opacity="0.6" />
             <text x="25" y="9" font-size="9" fill="var(--color-text)">Impureza esquerda</text>
           </g>
           <g transform="translate(90, -20)">
