@@ -1,7 +1,7 @@
 <script>
   // adicionar as imagens com os gráficos sem sobreposição
   import corte from '$lib/image/corte2d.png';
-  import corteTree from '$lib/image/corteEArvore.png';
+  import corteTree from '$lib/image/corteeArv.png';
   import prev from '$lib/image/previsao.png';
   import { _ } from 'svelte-i18n';
 </script>
@@ -38,26 +38,27 @@
         <li>{$_('about.acc-list2')}</li>
       </ul>
 
-    <!-- <section class="space-y-8">
-  <h2 class="text-2xl font-bold underline">Visualizações do Modelo</h2>
+    <section class="space-y-8">
+      <h2 class="text-2xl font-bold">{$_('about.images')}</h2>
 
-  <div class="flex flex-col gap-8 items-center">
-    <div class="text-center">
-      <img src="{corte}" alt="Corte 2D" class="max-w-full rounded-xl shadow-md" />
-      <p class="mt-2 text-sm text-gray-600">Corte em 2D representando a separação das classes.</p>
-    </div>
+      <div class="flex flex-col gap-8 items-center">
+        
+        <div class="text-center">
+          <img src="{corteTree}" alt="Corte e Árvore" class="w-[700px] max-w-full rounded-xl shadow-md" />
+          <p class="mt-2 text-sm text-gray-600">Visualização combinada da árvore de decisão e seus cortes no plano.</p>
+        </div>
+        <div class="text-center">
+          <img src="{prev}" alt="Previsão" class="w-[700px] max-w-full rounded-xl shadow-md" />
+          <p class="mt-2 text-sm text-gray-600">Resultado das previsões do modelo em relação aos dados originais.</p>
+        </div>
+        
+        <div class="text-center">
+          <img src="{corte}" alt="Corte 2D" class="w-[700px] max-w-full rounded-xl shadow-md" />
+          <p class="mt-2 text-sm text-gray-600">Corte em 2D representando a separação das classes.</p>
+        </div>
+      </div>
+    </section>
 
-    <div class="text-center">
-      <img src="{corteTree}" alt="Corte e Árvore" class="max-w-full rounded-xl shadow-md" />
-      <p class="mt-2 text-sm text-gray-600">Visualização combinada da árvore de decisão e seus cortes no plano.</p>
-    </div>
-
-    <div class="text-center">
-      <img src="{prev}" alt="Previsão" class="max-w-full rounded-xl shadow-md" />
-      <p class="mt-2 text-sm text-gray-600">Resultado das previsões do modelo em relação aos dados originais.</p>
-    </div>
-  </div>
-</section> -->
 
     <br>
     <h2 class="text-3xl font-extrabold mb-6">{$_('about.article-title')}</h2>
