@@ -289,8 +289,10 @@
 
     const text = node.append("text")
       .attr("dy", "0.35em")
-      .attr("y", d => d.children ? -35 : 28)
-      .attr("x", d => d.children ? 10 : 40)
+      .attr("y", d => d.children ? -41 : 28)
+      // .attr("x", d => d.children ? 10 : 40)
+      .attr("x", 0) // Centralizado no círculo
+      .attr("text-anchor", "middle") // Alinhamento horizontal central
       .style("font-size", "14px")
       .style("fill", "var(--color-text-node)")
       .style("text-shadow", "0 0 2px var(--color-text-shadow)");
