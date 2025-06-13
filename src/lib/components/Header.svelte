@@ -68,6 +68,7 @@
     <div class="right">
       <nav class="nav-links">
         <a href="./">{$_("header.home")}</a>
+        <a href="/about">{$_("about.title")}</a>
         <a
           href="https://github.com/FGV-VIS-2025/final-project-mlfoundationexplain"
           >GitHub</a
