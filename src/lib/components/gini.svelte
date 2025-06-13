@@ -39,55 +39,180 @@
   }
 };
 
-  function updateSample() {
-    const total = samples.length;
-    if (total === 0) {
-      sampleText1.text(`Entropia: -`);
-      sampleText2.text(`Gini: -`);
-      dotGroup.selectAll('circle').remove();
-      updateDots(1); // tudo vermelho
-      return;
-    }
+  // function updateSample() {
+  //   const total = samples.length;
+  //   if (total === 0) {
+  //     sampleText1.text(`Entropia: -`);
+  //     sampleText2.text(`Gini: -`);
+  //     dotGroup.selectAll('circle').remove();
+  //     updateDots(1); // tudo vermelho
+  //     return;
+  //   }
 
-    const positives = samples.filter(d => d.label === 1).length;
-    const p = positives / total;
+  //   const positives = samples.filter(d => d.label === 1).length;
+  //   const p = positives / total;
 
-        if (total > 0) {
-      positiveLine
-        .attr('x1', xScale(p))
-        .attr('x2', xScale(p))
-        .attr('stroke-dasharray', '4 2')
-        .attr('opacity', 1);
-    } else {
-      positiveLine.attr('opacity', 0);
-    }
+  //       if (total > 0) {
+  //     positiveLine
+  //       .attr('x1', xScale(p))
+  //       .attr('x2', xScale(p))
+  //       .attr('stroke-dasharray', '4 2')
+  //       .attr('opacity', 1);
+  //   } else {
+  //     positiveLine.attr('opacity', 0);
+  //   }
 
-    sampleText1.text(`Entropia: ${entropy(p).toFixed(3)}`);
-    sampleText2.text(`Gini: ${gini(p).toFixed(3)}`);
-    updateDots(p);
+  //   sampleText1.text(`Entropia: ${entropy(p).toFixed(3)}`);
+  //   sampleText2.text(`Gini: ${gini(p).toFixed(3)}`);
+  //   updateDots(p);
 
-    // Bolinhas à direita
-    const spacing = 12;
-    const startXGreen = width - 60;
-    const startXRed = width - 75;
-    const startY = height - margin.bottom - 10;
+  //   // // Bolinhas à direita
+  //   // const spacing = 12;
+  //   // const startXGreen = width - 60;
+  //   // const startXRed = width - 75;
+  //   // const startY = height - margin.bottom - 10;
 
-    dotGroup.selectAll('circle').remove();
-    let posIndex = 0, negIndex = 0;
-    samples.forEach(val => {
-      const isPositive = val.label === 1;
-      const colIndex = isPositive ? posIndex++ : negIndex++;
-      const x = isPositive ? startXGreen : startXRed;
-      const y = startY - colIndex * spacing;
+  //   // dotGroup.selectAll('circle').remove();
+  //   // let posIndex = 0, negIndex = 0;
+  //   // samples.forEach(val => {
+  //   //   const isPositive = val.label === 1;
+  //   //   const colIndex = isPositive ? posIndex++ : negIndex++;
+  //   //   const x = isPositive ? startXGreen : startXRed;
+  //   //   const y = startY - colIndex * spacing;
 
-      dotGroup.append('circle')
-        .attr('cx', x)
-        .attr('cy', y)
-        .attr('r', 6)
-        .attr('fill', isPositive ? 'var(--color-classe0)' : 'var(--color-classe1)')
-        .attr('opacity', 1);
-    });
+  //   //   dotGroup.append('circle')
+  //   //     .attr('cx', x)
+  //   //     .attr('cy', y)
+  //   //     .attr('r', 6)
+  //   //     .attr('fill', isPositive ? 'var(--color-classe0)' : 'var(--color-classe1)')
+  //   //     .attr('opacity', 1);
+  //   // });
+
+  //       const spacing = 14;
+  //   const maxPerCol = 10;
+  //   const colSpacing = 16;
+  //   const startXGreen = width - 60;
+  //   const startXRed = width - 75;
+  //   const startY = height - margin.bottom - 10;
+
+  //   dotGroup.selectAll('circle').remove();
+  //   let posIndex = 0, negIndex = 0;
+
+  //   samples.forEach(val => {
+  //     const isPositive = val.label === 1;
+  //     const index = isPositive ? posIndex++ : negIndex++;
+  //     const row = index % maxPerCol;
+  //     const col = Math.floor(index / maxPerCol);
+
+  //     const baseX = isPositive ? startXGreen : startXRed;
+  //     const x = baseX + col * colSpacing;
+  //     const y = startY - row * spacing;
+
+  //     dotGroup.append('circle')
+  //       .attr('cx', x)
+  //       .attr('cy', y)
+  //       .attr('r', 6)
+  //       .attr('fill', isPositive ? 'var(--color-classe0)' : 'var(--color-classe1)')
+  //       .attr('opacity', 1);
+  //   });
+
+  // }
+
+
+function updateSample() {
+  const total = samples.length;
+  if (total === 0) {
+    sampleText1.text(`Entropia: -`);
+    sampleText2.text(`Gini: -`);
+    dotGroup.selectAll('*').remove();
+    updateDots(1); // tudo vermelho
+    return;
   }
+
+  const positives = samples.filter(d => d.label === 1).length;
+  const p = positives / total;
+
+  if (total > 0) {
+    positiveLine
+      .attr('x1', xScale(p))
+      .attr('x2', xScale(p))
+      .attr('stroke-dasharray', '4 2')
+      .attr('opacity', 1);
+  } else {
+    positiveLine.attr('opacity', 0);
+  }
+
+  sampleText1.text(`Entropia: ${entropy(p).toFixed(3)}`);
+  sampleText2.text(`Gini: ${gini(p).toFixed(3)}`);
+  updateDots(p);
+
+  // === Layout ===
+  const circleRadius =10;
+  const circleSpacingY = 22;
+  const circleSpacingX = 22;
+  const maxRows = 10;
+
+  const baseX = width - 100;
+  const baseY = height - margin.bottom - 10;
+
+  // Limpa bolinhas e textos
+  dotGroup.selectAll('*').remove();
+
+  // Rótulos
+  // dotGroup.append('text')
+  //   .attr('x', baseX + circleSpacingX * 1.5)
+  //   .attr('y', baseY + 20)
+  //   .text('SAC')
+  //   .attr('text-anchor', 'middle')
+  //   .attr('fill', 'var(--color-classe1)')
+  //   .attr('font-size', 12);
+
+  // dotGroup.append('text')
+  //   .attr('x', baseX + circleSpacingX * 4.5)
+  //   .attr('y', baseY + 20)
+  //   .text('SF')
+  //   .attr('text-anchor', 'middle')
+  //   .attr('fill', 'var(--color-classe0)')
+  //   .attr('font-size', 12);
+  // Rótulo SAC (classe 0)
+dotGroup.append('text')
+  .attr('x', baseX + 0.5 * circleSpacingX)
+  .attr('y', baseY + 20)
+  .text('SAC')
+  .attr('text-anchor', 'middle')
+  .attr('fill', 'var(--color-classe1)')
+  .attr('font-size', 12);
+
+// Rótulo SF (classe 1)
+dotGroup.append('text')
+  .attr('x', baseX + 3.5 * circleSpacingX)
+  .attr('y', baseY + 20)
+  .text('SF')
+  .attr('text-anchor', 'middle')
+  .attr('fill', 'var(--color-classe0)')
+  .attr('font-size', 12);
+
+
+  let posCount = 0, negCount = 0;
+  samples.forEach((val, i) => {
+    const isPositive = val.label === 1;
+    const count = isPositive ? posCount++ : negCount++;
+    const col = count % 2;
+    const row = Math.floor(count / 2);
+
+    const x = baseX + (isPositive ? 3 + col : col) * circleSpacingX;
+    const y = baseY - row * circleSpacingY;
+
+    dotGroup.append('circle')
+      .attr('cx', x)
+      .attr('cy', y)
+      .attr('r', circleRadius)
+      .attr('fill', isPositive ? 'var(--color-classe0)' : 'var(--color-classe1)')
+      .attr('opacity', 1);
+  });
+}
+
+
 
   function updateDots(p) {
     const numDots = 50;
