@@ -143,7 +143,7 @@
 
     svg.append('text')
       .attr('x', width / 2)
-      .attr('y', height - 40)
+      .attr('y', height - 10)
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
       .attr('fill', 'var(--color-text)')
@@ -151,8 +151,8 @@
 
     svg.append('text')
       .attr('transform', 'rotate(-90)')
-      .attr('x', -height / 2)
-      .attr('y', 18)
+      .attr('x', -height / 2 )
+      .attr('y', 45)
       .attr('text-anchor', 'middle')
       .attr('font-size', 13)
       .attr('fill', 'var(--color-text)')
@@ -163,36 +163,36 @@
       .datum(values)
       .attr('fill', 'none')
       .attr('stroke', colorScale("Entropia"))
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 7)
       .attr('d', d3.line().x(d => xScale(d)).y(d => yScale(entropy(d))));
 
     g.append('path')
       .datum(values)
       .attr('fill', 'none')
       .attr('stroke', colorScale("Gini"))
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 7)
       .attr('d', d3.line().x(d => xScale(d)).y(d => yScale(gini(d))));
 
     positiveLine = g.append('line')
       .attr('y1', 0)
       .attr('y2', height - margin.top - margin.bottom)
       .attr('stroke', 'var(--color-text)')
-      .attr('stroke-width', 4)
+      .attr('stroke-width', 3)
       .attr('opacity', 0);  // Inicialmente invisível
 
     const legend = svg.append('g').attr('transform', `translate(${width - 130},${margin.top})`);
-    legend.append('rect').attr('width', 12).attr('height', 12).attr('fill', colorScale("Entropia"));
-    legend.append('text').attr('x', 18).attr('y', 10).text('Entropia').attr('fill', 'var(--color-text)').attr('font-size', 12);
-    legend.append('rect').attr('y', 20).attr('width', 12).attr('height', 12).attr('fill', colorScale("Gini"));
-    legend.append('text').attr('x', 18).attr('y', 30).text('Gini').attr('fill', 'var(--color-text)').attr('font-size', 12);
+    legend.append('rect').attr('y', -2).attr('width', 15).attr('width', 15).attr('height', 15).attr('fill', colorScale("Entropia"));
+    legend.append('text').attr('x', 18).attr('y', 10).text('Entropia').attr('fill', 'var(--color-text)').attr('font-size', 16);
+    legend.append('rect').attr('y', 18).attr('width', 15).attr('height', 15).attr('fill', colorScale("Gini"));
+    legend.append('text').attr('x', 18).attr('y', 30).text('Gini').attr('fill', 'var(--color-text)').attr('font-size', 16);
 
     // Hover Tooltip
     hoverTooltip = svg.append('g').style('display', 'none');
     hoverLine = hoverTooltip.append('line')
       .attr('y1', margin.top)
       .attr('y2', height - margin.bottom)
-      .attr('stroke', '#aaa')
-      .attr('stroke-dasharray', '4 2');
+      .attr('stroke', '#252525')
+      .attr('stroke-dasharray', '7 5');
 
     hoverBox = hoverTooltip.append('rect')
       .attr('width', 140)
@@ -242,12 +242,12 @@
 
 <div class="button-container">
   <div class="positive-buttons">
-    <button class = "sf" on:click={() => addSample(1)}>Adicionar San Francisco</button>
-    <button class = "sf" on:click={() => removeClass(1)}>Remover San Francisco</button>
+    <button class = "sf" on:click={() => addSample(1)}>+ San Francisco</button>
+    <button class = "sf" on:click={() => removeClass(1)}>- San Francisco</button>
   </div>
   <div class="negative-buttons">
-    <button class = "sac" on:click={() => addSample(0)}>Adicionar Sacramento</button>
-    <button class = "sac" on:click={() => removeClass(0)}>Remover Sacramento</button>
+    <button class = "sac" on:click={() => addSample(0)}>+ Sacramento</button>
+    <button class = "sac" on:click={() => removeClass(0)}>- Sacramento</button>
   </div>
 </div>
 
