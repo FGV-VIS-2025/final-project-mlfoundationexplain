@@ -16,38 +16,71 @@
   let feature1 = 0;
   let finalPrediction = null;
 
+  // function preprocessTree(root) {
+  //   root.each(d => {
+  //     const match = d.data.name.match(/feature (\d+) ≤ ([\d\.]+)/);
+  //     if (match) {
+  //       d.data.feature = `feature ${match[1]}`;
+  //       d.data.threshold = Number(match[2]);
+  //       d.data.isLeaf = false;
+  //     } else {
+  //       d.data.isLeaf = true;
+  //     }
+  //   });
+  // }
+
   function preprocessTree(root) {
-    root.each(d => {
-      const match = d.data.name.match(/feature (\d+) ≤ ([\d\.]+)/);
-      if (match) {
-        d.data.feature = `feature ${match[1]}`;
-        d.data.threshold = Number(match[2]);
-        d.data.isLeaf = false;
-      } else {
-        d.data.isLeaf = true;
-      }
-    });
-  }
-
-  function traverseTree(node, input) {
-    if (node.data.isLeaf || !node.children) {
-      currentPath.push(node);
-      return node;
-    }
-
-    currentPath.push(node);
-
-    const featureIndex = Number(node.data.feature.split(" ")[1]);
-    const featureKey = featureIndex === 0 ? "feature0" : "feature1";
-    const featureValue = input[featureKey];
-
-    const [left, right] = node.children;
-    if (featureValue <= node.data.threshold) {
-      return traverseTree(left, input);
+  root.each(d => {
+    const match = d.data.name.match(/^([^\n]+)\s+≤\s+([\d.]+)/);
+    if (match) {
+      d.data.feature = match[1].trim();     // "median_house_value" ou "total_bedrooms"
+      d.data.threshold = Number(match[2]);
+      d.data.isLeaf = false;
     } else {
-      return traverseTree(right, input);
+      d.data.isLeaf = true;
     }
+  });
+}
+
+
+  // function traverseTree(node, input) {
+  //   if (node.data.isLeaf || !node.children) {
+  //     currentPath.push(node);
+  //     return node;
+  //   }
+
+  //   currentPath.push(node);
+
+  //   const featureIndex = Number(node.data.feature.split(" ")[1]);
+  //   const featureKey = featureIndex === 0 ? "feature0" : "feature1";
+  //   const featureValue = input[featureKey];
+
+  //   const [left, right] = node.children;
+  //   if (featureValue <= node.data.threshold) {
+  //     return traverseTree(left, input);
+  //   } else {
+  //     return traverseTree(right, input);
+  //   }
+  // }
+  function traverseTree(node, input) {
+  if (node.data.isLeaf || !node.children) {
+    currentPath.push(node);
+    return node;
   }
+
+  currentPath.push(node);
+
+  const featureKey = node.data.feature;
+  const featureValue = input[featureKey];
+
+  const [left, right] = node.children;
+  if (featureValue <= node.data.threshold) {
+    return traverseTree(left, input);
+  } else {
+    return traverseTree(right, input);
+  }
+}
+
 
   // function highlightPath(nodes) {
   //   const delay = 800;
@@ -115,31 +148,52 @@
 }
 
 
+  // function simulatePrediction() {
+  //   if (!treeData) return;
+
+  //   finalPrediction = null;
+  //   currentPath = [];
+  //   const input = {
+  //     feature0: Number(feature0),
+  //     feature1: Number(feature1)
+  //   };
+  //   const root = d3.hierarchy(treeData);
+  //   root.each((d, i) => d.id = i);
+
+  //   preprocessTree(root);
+  //   const finalNode = traverseTree(root, input);
+  //   highlightPath(currentPath);
+
+  //   if (finalNode?.data?.name) {
+  //     finalPrediction = finalNode.data.name;
+  //   }
+  // }
   function simulatePrediction() {
-    if (!treeData) return;
+  if (!treeData) return;
 
-    finalPrediction = null;
-    currentPath = [];
-    const input = {
-      feature0: Number(feature0),
-      feature1: Number(feature1)
-    };
-    const root = d3.hierarchy(treeData);
-    root.each((d, i) => d.id = i);
+  finalPrediction = null;
+  currentPath = [];
+  const input = {
+    total_bedrooms: Number(feature0),
+    median_house_value: Number(feature1)
+  };
+  const root = d3.hierarchy(treeData);
+  root.each((d, i) => d.id = i);
 
-    preprocessTree(root);
-    const finalNode = traverseTree(root, input);
-    highlightPath(currentPath);
+  preprocessTree(root);
+  const finalNode = traverseTree(root, input);
+  highlightPath(currentPath);
 
-    if (finalNode?.data?.name) {
-      finalPrediction = finalNode.data.name;
-    }
+  if (finalNode?.data?.name) {
+    finalPrediction = finalNode.data.name;
   }
+}
+
 
   onMount(() => {
     if (!treeData) return;
 
-    const margin = { top: 40, right: 120, bottom: 40, left: 120 };
+    const margin = { top: 50, right: 120, bottom: 40, left: 0 };
     const root = d3.hierarchy(treeData);
     root.each((d, i) => d.id = i);
 
@@ -169,7 +223,7 @@
       .style("background-color", "var(--color-background-section)")
       .style("font-family", "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif")
       .append("g")
-      .attr("transform", `translate(${margin.left},${margin.top})`);
+      .attr("transform", `translate(${margin.left -30},${margin.top})`);
 
     const defs = svgEl.append("defs");
 
@@ -235,8 +289,10 @@
 
     const text = node.append("text")
       .attr("dy", "0.35em")
-      .attr("y", d => d.children ? -20 : 28)
-      .attr("x", d => d.children ? 10 : 40)
+      .attr("y", d => d.children ? -41 : 28)
+      // .attr("x", d => d.children ? 10 : 40)
+      .attr("x", 0) // Centralizado no círculo
+      .attr("text-anchor", "middle") // Alinhamento horizontal central
       .style("font-size", "14px")
       .style("fill", "var(--color-text-node)")
       .style("text-shadow", "0 0 2px var(--color-text-shadow)");
@@ -289,6 +345,13 @@
 @media (max-width: 700px) {
   .tree-layout-container {
     flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .side-panel {
+    flex: 1 1 100%;
+    max-width: 500px;
+    margin-top: 1rem;
   }
 }
 
@@ -302,7 +365,10 @@
   flex: 0 0 280px;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
+
+  justify-content: flex-start; /* já deve estar */
+  align-items: stretch;        /* novo */
 }
 
 
@@ -310,7 +376,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-bottom: 1rem;
     flex-wrap: wrap;
     color: #333;
@@ -327,13 +393,14 @@
     color: var(--color-text);
   }
 
-  .input-group input {
-    padding: 0.4rem 0.6rem;
-    border: 1px solid #ccc;
-    border-radius: 0.4rem;
-    width: 140px;
-    font-size: 1.1rem;
-  }
+ .input-group input {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  width: 100%;               /* ocupar toda a largura disponível */
+  font-size: 1.1rem;
+  box-sizing: border-box;
+}
 
   button.predict-button {
 
@@ -350,10 +417,12 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s ease;
+    align-self: stretch;
   }
 
   button.predict-button:hover {
     background: linear-gradient(to right, #4338ca, #2563eb);
+    
   }
 
   .prediction-result {
@@ -366,7 +435,7 @@
     border-left: 5px solid var(--color-node-active);
     border-radius: 0.4rem;
     font-size: 1.1rem;
-    max-width: 240px;
+    max-width: 100%;
   }
 </style>
 
@@ -377,14 +446,24 @@
 
   <div class="side-panel">
     <div class="control-panel">
-  <div class="input-group">
+  <!-- <div class="input-group">
     <label for="feature0">feature 0:</label>
     <input id="feature0" type="number" bind:value={feature0} />
   </div>
   <div class="input-group">
     <label for="feature1">feature 1:</label>
     <input id="feature1" type="number" bind:value={feature1} />
-  </div>
+  </div> -->
+
+  <div class="input-group">
+  <label for="feature0">total_bedrooms:</label>
+  <input id="feature0" type="number" bind:value={feature0} />
+</div>
+<div class="input-group">
+  <label for="feature1">median_house_value:</label>
+  <input id="feature1" type="number" bind:value={feature1} />
+</div>
+
 
   <div class="button-group">
     <button class="predict-button" on:click={simulatePrediction}>

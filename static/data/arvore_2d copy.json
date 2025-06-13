@@ -1,0 +1,83 @@
+{
+  "name": "median_house_value \n\u2264 185300.00",
+  "children": [
+    {
+      "name": "median_house_value \n\u2264 112500.00",
+      "children": [
+        {
+          "name": "median_house_value \n\u2264 72600.00",
+          "children": [
+            {
+              "name": "Sacramento"
+            },
+            {
+              "name": "total_bedrooms \n\u2264 2061.00",
+              "children": [
+                {
+                  "name": "Sacramento"
+                },
+                {
+                  "name": "Sacramento"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "total_bedrooms \n\u2264 2324.00",
+          "children": [
+            {
+              "name": "Sacramento"
+            },
+            {
+              "name": "Sacramento"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "median_house_value \n\u2264 237500.00",
+      "children": [
+        {
+          "name": "San Francisco"
+        },
+        {
+          "name": "total_bedrooms \n\u2264 1335.00",
+          "children": [
+            {
+              "name": "San Francisco"
+            },
+            {
+              "name": "median_house_value \n\u2264 328100.00",
+              "children": [
+                {
+                  "name": "median_house_value \n\u2264 297600.00",
+                  "children": [
+                    {
+                      "name": "total_bedrooms \n\u2264 1871.00",
+                      "children": [
+                        {
+                          "name": "San Francisco"
+                        },
+                        {
+                          "name": "San Francisco"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "San Francisco"
+                    }
+                  ]
+                },
+                {
+                  "name": "San Francisco"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
