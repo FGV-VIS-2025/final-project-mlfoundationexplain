@@ -3,42 +3,39 @@
   import corte from '$lib/image/corte2d.png';
   import corteTree from '$lib/image/corteEArvore.png';
   import prev from '$lib/image/previsao.png';
+  import { _ } from 'svelte-i18n';
 </script>
 
 <div class="max-w-7xl mx-auto p-6 py-40 text-justify bg-[var(--color-background)] text-[var(--color-text)] transition-colors duration-300 leading-relaxed space-y-6">
 
-  <h2 class="text-3xl font-extrabold mb-6">Apresentação</h2>
+  <h2 class="text-3xl font-extrabold mb-6">{$_('about.presentation-title')}</h2>
 
   <p>
-  Na aba Início, você encontrará nossa visualização interativa que orienta a explicação do 
-  funcionamento do algoritmo de árvore de decisão. Além de mostrar a estrutura da árvore, 
-  oferecemos visualizações dinâmicas que ajudam a entender o processo de construção da árvore, 
-  permitindo o entendimento da escolha dos cortes que definem suas divisões.
-</p>
+    {$_('about.presentation-text')}
+  </p>
 
   <div>
   
-    <h2 class="text-3xl font-extrabold mb-6">Resumo do Projeto</h2>
+    <h2 class="text-3xl font-extrabold mb-6">{$_('about.resume-title')}</h2>
 
     <p>
-      A plataforma apresenta <strong>módulos visuais e interativos</strong> que facilitam a compreensão dos 
-      <strong>modelos baseados em árvores binárias</strong>. 
+      {$_('about.resume-text')} <strong>{$_('about.modules')}</strong> {$_('about.resume-text2')} <strong>{$_('about.models')}</strong>
     </p>
 
-    <p>Entre os principais recursos estão:</p>
+    <p>{$_('about.list-title')}</p>
       <ul>
-        <li>Construção dinâmica da árvore de decisão junto aos cortes no espaço 2D dos dados</li>
-        <li>Simulações de predição interativas</li>
-        <li>Gráficos das métricas de impureza (Índice de Gini e Entropia)</li>
-        <li>Histogramas que ilustram os cortes univariados</li>
-        <li>Dendograma que ilustra a poda manual de árvores complexas</li>
+        <li>{$_('about.item1')}</li>
+        <li>{$_('about.item2')}</li>
+        <li>{$_('about.item3')}</li>
+        <li>{$_('about.item4')}</li>
+        <li>{$_('about.item5')}</li>
       </ul>
 
     <br>
-    <p>O projeto também foi desenvolvido com foco em acessibilidade e personalização, incluindo:</p>
+    <p>{$_('about.accessibility')}</p>
       <ul>
-        <li>Suporte multilíngue (Português, Espanhol e Inglês)</li>
-        <li>Alternância entre temas claro e escuro</li>
+        <li>{$_('about.acc-list1')}</li>
+        <li>{$_('about.acc-list2')}</li>
       </ul>
 
     <!-- <section class="space-y-8">
@@ -63,15 +60,15 @@
 </section> -->
 
     <br>
-    <h2 class="text-3xl font-extrabold mb-6">Artigo</h2>
+    <h2 class="text-3xl font-extrabold mb-6">{$_('about.article-title')}</h2>
     <p>
       <a href="https://exemplo.com/artigo" target="_blank" rel="noopener noreferrer">
-        <span class="underline">Clique aqui</span> para acessar o artigo completo
+        <span class="underline">{$_('about.click')}</span> {$_('about.article-text')}
       </a>
     </p>
 
 
-    <h2 class="text-3xl font-extrabold mb-6" >Vídeo de Apresentação</h2>
+    <h2 class="text-3xl font-extrabold mb-6" >{$_('about.video-title')}</h2>
     <div>
       <iframe
         width="560"
@@ -85,7 +82,7 @@
     </div>
     
     <br>
-    <h2 class="text-3xl font-extrabold mb-6">Membros da Equipe</h2>
+    <h2 class="text-3xl font-extrabold mb-6">{$_('about.team-members')}</h2>
     <ul>
       <li>Paula Eduarda de Lima</li>
       <li>Mariana Fernandes Rocha</li>
@@ -95,18 +92,18 @@
 
     <br>
 
-    <h2 class="text-3xl font-extrabold mb-6">Instruções de Execução</h2>
+    <h2 class="text-3xl font-extrabold mb-6">{$_('about.instructions-title')}</h2>
     <p>
-    Este projeto foi criado usando <strong><em>SvelteKit</em></strong>. Para rodar localmente:
+    {$_('about.instructions-text')} <strong><em>SvelteKit</em></strong>. {$_('about.local-run')}
     </p>
       <ul class="list-disc list-inside space-y-1">
-        <li>Clone o repositório acessível por meio da aba "GitHub" no menu desta página.</li>
-        <li>Instale as dependências com <strong><em>npm install</em></strong></li>
-        <li>Rode o servidor de desenvolvimento com <strong><em>npm run dev</em></strong></li>
+        <li>{$_('about.run-step1')}</li>
+        <li>{$_('about.run-step2')}<strong><em>npm install</em></strong></li>
+        <li>{$_('about.run-step3')}<strong><em>npm run dev</em></strong></li>
         <li>
-          Acesse no navegador 
+          {$_('about.run-step4')}
           <span class="underline">http://localhost:5173</span>
-          (ou a porta informada no terminal)
+          {$_('about.run-step5')}
         </li>
       </ul>
 
