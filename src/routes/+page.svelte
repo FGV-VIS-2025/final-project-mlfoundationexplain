@@ -22,7 +22,7 @@
     const res = await fetch('data/arvore_d3.json');
     treeJson = await res.json();
 
-     const res2 = await fetch('data/arvore_2d.json');
+     const res2 = await fetch('data/arvore_2d copy.json');
     treeJson_2d = await res2.json();
   });
 </script>
