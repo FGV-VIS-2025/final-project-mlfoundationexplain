@@ -173,3 +173,10 @@ body {
   background-color: var(--color-section);
   color: var(--color-text);
 }
+
+ul {
+  list-style-type: disc; /* Bolinha padrão para lista não ordenada */
+  margin-left: 1.5rem;    /* Espaçamento à esquerda para identar */
+  padding-left: 0;        /* Remove padding extra se quiser */
+}
+
