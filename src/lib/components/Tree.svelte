@@ -11,7 +11,7 @@
   function drawTree() {
     if (!treeData || !svg) return;
 
-    const margin = { top: 50, right: 120, bottom: 50, left: 120 };
+    const margin = { top: 45, right: 40, bottom: 58, left: 40 };
 
     // Pega a largura do contêiner pai do SVG
     const containerWidth = svg.parentElement.clientWidth || 800;
@@ -112,9 +112,9 @@
     // Texto estilizado com múltiplas linhas
     const text = node.append("text")
       .attr("dy", "0.35em")
-      .attr("y", (d, i) => d.children ? -35 : (i % 2 === 0 ? 40 :20))
+      .attr("y", (d, i) => d.children ? -33 : (i % 2 === 0 ? 44 :20))
       // .attr("text-anchor", "middle")
-      .attr("x", (d, i) => d.children ? -25 : (i % 2 === 0 ? -10 : -35))
+      .attr("x", (d, i) => d.children ? -25 : (i % 2 === 0 ? -10 : -50))
       .style("font-size", "14px")
       // .style("font-size", "14px")
       .style("fill", "var(--color-text-node)")
@@ -129,7 +129,7 @@
       return d3.select(nodes[i].parentNode).attr("x");
     })
       // .attr("x", (d, i) => d.children ? -0 : (i % 2 === 0 ? -0 : 40))
-      .attr("dy", (d, i) => i === 0 ? "0" : "1.5em")
+      .attr("dy", (d, i) => i === 0 ? "0" : "1em")
       .text(d => d);
   }
 
