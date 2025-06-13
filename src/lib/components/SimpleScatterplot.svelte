@@ -23,13 +23,80 @@
 
   const margin = { top: 40, right: 40, bottom: 80, left: 100 };
   const chartWidth = width - margin.left - margin.right;
-  const chartHeight = height - margin.top - margin.bottom;
+  const fullHeight = height - margin.top - margin.bottom;
+  const proportionHeight = (fullHeight * 0.5); // ou outro fator, ex: 0.6
+  const histogramHeight = fullHeight - proportionHeight;
 
   // Variáveis reativas
   let xScale, yScale;
   let plotPoints = [];
   let minValue = 0,
     maxValue = 0;
+
+
+  let proportionBelow = [];
+  let proportionAbove = [];
+  let proportionLineLeft, proportionLineRight, ganhoLine;
+  let proportionYScale;
+  let ganho, melhorCorte;
+
+  let proportionBelowCut,  proportionAboveCut;//= proportionBelow.find(p => Math.abs(p.x - cutoffValue) < 1e-6);
+  // $: proportionAboveCut = proportionAbove.find(p => Math.abs(p.x - cutoffValue) < 1e-6);
+
+  // calcular a entropia das duas regiões que foram divididas
+  function weightedEntropy(e1, size1, e2, size2, total) {
+    return (size1 / total) * e1 + (size2 / total) * e2;
+  }
+
+  // Calcula a proporção da classe SF para cada região
+  function computeProportionCurve(points, cidadeAlvo = "San Francisco", numCortes = 20) {
+    if (!points || points.length === 0) return [];
+
+    const values = points.map(d => d.value);
+    const minValue = d3.min(values);
+    const maxValue = d3.max(values);
+    const total = points.length;
+
+    // Gera cortes apenas entre valores distintos
+    const cortes = Array.from(new Set(
+      d3.range(numCortes).map(i =>
+        minValue + (i * (maxValue - minValue)) / (numCortes - 1)
+      )
+    ));
+
+    function entropy(p) {
+      if (p === 0 || p === 1) return 0; // evita -0 * log2(0)
+      const e = -p * Math.log2(p) - (1 - p) * Math.log2(1 - p);
+      return isNaN(e) ? 0 : e;
+    }
+
+    const result = cortes.map(corte => {
+      const abaixo = points.filter(d => d.value < corte);
+      const acima = points.filter(d => d.value >= corte);
+
+      const numAbaixo = abaixo.length;
+      const numAcima = acima.length;
+
+      const sfAbaixo = abaixo.filter(d => d.city === cidadeAlvo).length;
+      const sfAcima = acima.filter(d => d.city === cidadeAlvo).length;
+
+      const pAbaixo = numAbaixo > 0 ? sfAbaixo / numAbaixo : 0;
+      const pAcima = numAcima > 0 ? sfAcima / numAcima : 0;
+
+      const entBelow = entropy(pAbaixo);
+      const entAbove = entropy(pAcima);
+      const weighted = weightedEntropy(entBelow, numAbaixo, entAbove, numAcima, total);
+
+      return {
+        cut: corte,
+        proportionBelow: entropy(pAbaixo),
+        proportionAbove: entropy(pAcima),
+        weightedEntropy: weighted,
+      };
+    });
+
+    return result;
+}
 
   // Processar dados por feature
   function processDataPoints() {
@@ -106,6 +173,13 @@
     if (!data || data.length === 0) return;
 
     const frequencies = processDataPoints();
+    // Calcular curvas de proporção abaixo e acima do corte
+    const proporcao = computeProportionCurve(frequencies, "San Francisco", 20);
+    proportionBelow = proporcao.map(d => ({ x: d.cut, y: d.proportionBelow }));
+    proportionAbove = proporcao.map(d => ({ x: d.cut, y: d.proportionAbove }));
+    ganho = proporcao.map(d => ({ x: d.cut, y: d.weightedEntropy - 0.1 }));
+    melhorCorte = proporcao.reduce((min, r) => r.weightedEntropy < min.weightedEntropy ? r : min);
+    console.log(melhorCorte)
 
     // Calcular frequência máxima real por bin
     const binCounts = {};
@@ -123,7 +197,32 @@
     yScale = d3
       .scaleLinear()
       .domain([0, maxFrequency + 1])
-      .range([chartHeight, 0]);
+      .range([histogramHeight, 0]);
+
+    // Criar escala para proporção (de 0 a 1) no eixo Y, usando o mesmo chartHeight
+    proportionYScale = d3
+      .scaleLinear()
+      .domain([0, 1])
+      .range([proportionHeight, 0]);
+
+    // Gerar path para a curva de proporção
+    proportionLineLeft = d3
+      .line()
+      .x((d) => xScale(d.x))
+      .y((d) => proportionYScale(d.y))
+      .curve(d3.curveMonotoneX)(proportionBelow);
+
+    proportionLineRight = d3
+      .line()
+      .x((d) => xScale(d.x))
+      .y((d) => proportionYScale(d.y))
+      .curve(d3.curveMonotoneX)(proportionAbove);
+
+    ganhoLine = d3
+      .line()
+      .x((d) => xScale(d.x))
+      .y((d) => proportionYScale(d.y))
+      .curve(d3.curveMonotoneX)(ganho);
 
     // Criar histograma uma vez para todos os pontos
     const histogram = d3
@@ -235,6 +334,14 @@
       minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     });
+
+    proportionBelowCut = proportionBelow.reduce((prev, curr) =>
+      Math.abs(curr.x - cutoffValue) < Math.abs(prev.x - cutoffValue) ? curr : prev
+    );
+
+    proportionAboveCut = proportionAbove.reduce((prev, curr) =>
+      Math.abs(curr.x - cutoffValue) < Math.abs(prev.x - cutoffValue) ? curr : prev
+    );
   }
 
   function handlePointHover(point, event) {
@@ -324,9 +431,98 @@
 <div class="chart-container">
   <svg bind:this={svg} {width} {height}>
     <g transform="translate({margin.left},{margin.top})">
+      <!-- Grupo da curva de proporção -->
+      <g transform="translate(0, {histogramHeight + 65})">  <!-- adiciona espaçamento entre os blocos -->
+        {#if proportionLineLeft}
+          <path
+            d={proportionLineLeft}
+            fill="none"
+            stroke="red"
+            stroke-width="2"
+            opacity="0.6"
+            class="proportion-line"
+          />
+        {/if}
+        {#if proportionLineRight}
+          <path
+            d={proportionLineRight}
+            fill="none"
+            stroke="yellow"
+            stroke-width="2"
+            opacity="0.6"
+            class="proportion-line"
+          />
+        {/if}
+        {#if ganhoLine}
+          <path
+            d={ganhoLine}
+            fill="none"
+            stroke="var(--color-text)"
+            stroke-width="2"
+            opacity="0.9"
+            class="proportion-line"
+          />
+        {/if}
+        {#if melhorCorte}
+        <line
+          x1={xScale(melhorCorte.cut)}
+          x2={xScale(melhorCorte.cut)}
+          y1={0}
+          y2={proportionHeight}
+          stroke="gray"
+          stroke-width="1.5"
+          stroke-dasharray="4,3"
+          opacity="0.7"
+        />
+      {/if}
+          <!-- Eixo Y para a proporção -->
+          <g class="axis">
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2={proportionHeight}
+              stroke="currentColor"
+              stroke-width="1"
+              opacity="0.6"
+            />
+            {#each d3.range(0, 1.1, 0.2) as tick}
+              <g transform="translate(0, {proportionYScale(tick)})">
+                <line x1="-6" x2="0" stroke="currentColor" opacity="0.6" />
+                <text
+                  x="-10"
+                  dy="0.35em"
+                  text-anchor="end"
+                  class="tick-label"
+                  fill="var(--color-text)">{tick.toFixed(1)}</text
+                >
+              </g>
+            {/each}
+          </g>
+        </g>
+
+      <!-- Legenda das linhas -->
+        <g transform="translate({chartWidth - 160}, {histogramHeight + 65})">
+          <g transform="translate(90, -30)">
+            <line x1="0" y1="5" x2="20" y2="5" stroke="red" stroke-width="2" opacity="0.6" />
+            <text x="25" y="9" font-size="9" fill="var(--color-text)">Impureza esquerda</text>
+          </g>
+          <g transform="translate(90, -20)">
+            <line x1="0" y1="5" x2="20" y2="5" stroke="yellow" stroke-width="2" opacity="0.6" />
+            <text x="25" y="9" font-size="9" fill="var(--color-text)">Impureza direita</text>
+          </g>
+          <g transform="translate(90, -10)">
+            <line x1="0" y1="5" x2="20" y2="5" stroke="var(--color-text)" stroke-width="2" opacity="0.9" />
+            <text x="25" y="9" font-size="9" fill="var(--color-text)">Impureza ponderada</text>
+          </g>
+          <g transform="translate(90, -40)">
+            <line x1="0" y1="5" x2="20" y2="5" stroke="gray" stroke-width="2" stroke-dasharray="4,3" opacity="0.9" />
+            <text x="25" y="9" font-size="9" fill="var(--color-text)">Melhor corte</text>
+          </g>
+        </g>
       <!-- Eixos -->
       <!-- Eixo X -->
-      <g class="axis" transform="translate(0,{chartHeight})">
+      <g class="axis" transform="translate(0,{histogramHeight})">
         <line
           x1="0"
           y1="0"
@@ -355,7 +551,7 @@
           x1="0"
           y1="0"
           x2="0"
-          y2={chartHeight}
+          y2={histogramHeight}
           stroke="currentColor"
           stroke-width="1"
           opacity="0.6"
@@ -377,7 +573,7 @@
       <!-- Etiquetas de eixos -->
       <text
         x={chartWidth / 2}
-        y={chartHeight + 50}
+        y={histogramHeight + 50}
         text-anchor="middle"
         class="axis-label"
         fill="var(--color-text)"
@@ -386,7 +582,7 @@
       </text>
 
       <text
-        x={-chartHeight / 2}
+        x={-histogramHeight / 2}
         y="-60"
         text-anchor="middle"
         class="axis-label"
@@ -395,6 +591,16 @@
       >
         {$_("scatterplot.frequency")}
       </text>
+
+      <!-- Legenda do scatterplot -->
+        <g transform="translate({chartWidth-50}, -40)">
+          <circle cx="5" cy="6" r="6" fill="var(--color-classe0)" />
+          <text x="15" y="10" font-size="9" fill="var(--color-text)">San Francisco</text>
+        </g>
+        <g transform="translate({chartWidth-50}, -25)">
+          <circle cx="5" cy="6" r="6" fill="var(--color-classe1)" />
+          <text x="15" y="10" font-size="9" fill="var(--color-text)">Sacramento</text>
+        </g>
 
       <!-- Pontos do scatter plot -->
       {#each plotPoints as point}
@@ -423,7 +629,19 @@
           x1={cutoffX}
           y1="0"
           x2={cutoffX}
-          y2={chartHeight}
+          y2={histogramHeight}
+          stroke="#28a745"
+          stroke-width="2"
+          stroke-dasharray="5,5"
+          class="cutoff-line"
+        />
+
+        <!-- Linha de corte no gráfico de linha (abaixo do histograma) -->
+        <line
+          x1={cutoffX}
+          y1={histogramHeight + 40}
+          x2={cutoffX}
+          y2={histogramHeight + fullHeight}
           stroke="#28a745"
           stroke-width="2"
           stroke-dasharray="5,5"
@@ -442,33 +660,51 @@
           on:mousedown={handleMouseDown}
         />
 
-        <!-- Tooltip do valor de corte -->
-        <g class="cutoff-tooltip" transform="translate({chartWidth - 120}, 20)">
-          <rect
-            x="0"
-            width="115"
-            height="25"
-            y="0"
-            rx="4"
-            fill="rgba(40, 167, 69, 0.95)"
-            stroke="currentColor"
-            stroke-width="1"
-            stroke-opacity="0.3"
-            filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"
-          />
-          <text
-            x="57.5"
-            y="16"
-            text-anchor="middle"
-            fill="white"
-            font-size="12"
-            font-weight="600"
-          >
-            {$_("scatterplot.cutoff_tooltip", {
-              values: { value: formattedCutoff },
-            })}
-          </text>
-        </g>
+      <!-- Tooltip combinado: cutoff + proporções -->
+      <g class="cutoff-tooltip" transform="translate({chartWidth - 120}, 20)">
+        <rect
+          x="-7"
+          width="130"
+          height="55"
+          y="0"
+          rx="4"
+          fill="rgba(40, 167, 69, 0.95)"
+          stroke="currentColor"
+          stroke-width="1"
+          stroke-opacity="0.3"
+          filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"
+        />
+        <text
+          x="57.5"
+          y="16"
+          text-anchor="middle"
+          fill="white"
+          font-size="12"
+          font-weight="600"
+        >
+        {$_("scatterplot.cutoff_tooltip", {
+        values: { value: formattedCutoff },
+        })}
+        </text>
+        <text
+          x="57.5"
+          y="34"
+          text-anchor="middle"
+          fill="white"
+          font-size="10"
+        >Impureza esquerda: {(proportionBelowCut?.y ).toFixed(3)}
+        </text>
+
+        <text
+          x="57.5"
+          y="49"
+          text-anchor="middle"
+          fill="white"
+          font-size="10"
+        >Impureza direita: {(proportionAboveCut?.y).toFixed(3)}
+        </text>
+      </g>
+
       {/if}
     </g>
 
