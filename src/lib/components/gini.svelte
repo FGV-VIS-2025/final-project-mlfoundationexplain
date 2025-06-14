@@ -466,9 +466,20 @@ dotGroup.append('text')
 }
 
   .descricao {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     max-width: 500px;
+    font-size: 18px;
+    color: var(--color-text);
+    line-height: 1.5;
+    margin-left: 200px; */
+
+
+    width: 500px; /* Largura fixa */
+    flex: 0 0 500px; /* Não cresce nem encolhe */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     font-size: 18px;
     color: var(--color-text);
     line-height: 1.5;
