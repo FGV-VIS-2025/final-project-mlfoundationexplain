@@ -134,9 +134,9 @@
   }
 
   .container {
-    max-width: 1120px;
+    max-width: 1320px;
     margin: 0 auto;
-    padding: 0.5rem 1.2rem;
+    padding: 0.5rem 0.1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -152,7 +152,7 @@
 
   .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
   }
 
   .nav-links a {
@@ -176,12 +176,12 @@
     display: flex;
     align-items: center;
     flex: 1;
-    margin-right: 0rem;
+    margin-right: 2rem;
   }
 
   .right {
     display: flex;
     align-items: center;
-    gap: 4rem;
+    gap: 3rem;
   }
 </style>
