@@ -1,0 +1,269 @@
+{
+  "feature": "feature 3",
+  "threshold": 185300.0,
+  "left": {
+    "feature": "feature 3",
+    "threshold": 168800.0,
+    "left": {
+      "feature": "feature 3",
+      "threshold": 55700.0,
+      "left": {
+        "feature": "feature 1",
+        "threshold": 836.0,
+        "left": {
+          "class": 0
+        },
+        "right": {
+          "class": 1
+        }
+      },
+      "right": {
+        "feature": "feature 0",
+        "threshold": 900.0,
+        "left": {
+          "feature": "feature 1",
+          "threshold": 202.0,
+          "left": {
+            "class": 0
+          },
+          "right": {
+            "feature": "feature 0",
+            "threshold": 569.0,
+            "left": {
+              "class": 1
+            },
+            "right": {
+              "feature": "feature 2",
+              "threshold": 219.0,
+              "left": {
+                "class": 0
+              },
+              "right": {
+                "feature": "feature 0",
+                "threshold": 670.0,
+                "left": {
+                  "class": 0
+                },
+                "right": {
+                  "class": 1
+                }
+              }
+            }
+          }
+        },
+        "right": {
+          "feature": "feature 0",
+          "threshold": 1316.0,
+          "left": {
+            "feature": "feature 0",
+            "threshold": 1257.0,
+            "left": {
+              "class": 0
+            },
+            "right": {
+              "class": 1
+            }
+          },
+          "right": {
+            "class": 0
+          }
+        }
+      }
+    },
+    "right": {
+      "feature": "feature 0",
+      "threshold": 3236.0,
+      "left": {
+        "feature": "feature 1",
+        "threshold": 364.0,
+        "left": {
+          "feature": "feature 0",
+          "threshold": 1000.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 0
+          }
+        },
+        "right": {
+          "class": 1
+        }
+      },
+      "right": {
+        "feature": "feature 1",
+        "threshold": 1240.0,
+        "left": {
+          "class": 0
+        },
+        "right": {
+          "feature": "feature 0",
+          "threshold": 6132.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 0
+          }
+        }
+      }
+    }
+  },
+  "right": {
+    "feature": "feature 3",
+    "threshold": 237500.0,
+    "left": {
+      "feature": "feature 0",
+      "threshold": 2508.0,
+      "left": {
+        "feature": "feature 1",
+        "threshold": 224.0,
+        "left": {
+          "feature": "feature 0",
+          "threshold": 438.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "feature": "feature 3",
+            "threshold": 208300.0,
+            "left": {
+              "class": 0
+            },
+            "right": {
+              "feature": "feature 0",
+              "threshold": 893.0,
+              "left": {
+                "class": 1
+              },
+              "right": {
+                "class": 0
+              }
+            }
+          }
+        },
+        "right": {
+          "feature": "feature 0",
+          "threshold": 2006.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "feature": "feature 1",
+            "threshold": 431.0,
+            "left": {
+              "class": 0
+            },
+            "right": {
+              "class": 1
+            }
+          }
+        }
+      },
+      "right": {
+        "feature": "feature 1",
+        "threshold": 846.0,
+        "left": {
+          "feature": "feature 0",
+          "threshold": 3087.0,
+          "left": {
+            "feature": "feature 0",
+            "threshold": 2604.0,
+            "left": {
+              "class": 0
+            },
+            "right": {
+              "class": 1
+            }
+          },
+          "right": {
+            "class": 0
+          }
+        },
+        "right": {
+          "feature": "feature 0",
+          "threshold": 8482.0,
+          "left": {
+            "feature": "feature 3",
+            "threshold": 201000.0,
+            "left": {
+              "class": 0
+            },
+            "right": {
+              "class": 1
+            }
+          },
+          "right": {
+            "class": 0
+          }
+        }
+      }
+    },
+    "right": {
+      "feature": "feature 2",
+      "threshold": 279.0,
+      "left": {
+        "feature": "feature 2",
+        "threshold": 278.0,
+        "left": {
+          "feature": "feature 3",
+          "threshold": 417600.0,
+          "left": {
+            "feature": "feature 0",
+            "threshold": 1595.0,
+            "left": {
+              "feature": "feature 3",
+              "threshold": 405800.0,
+              "left": {
+                "feature": "feature 0",
+                "threshold": 1269.0,
+                "left": {
+                  "class": 1
+                },
+                "right": {
+                  "feature": "feature 0",
+                  "threshold": 1386.0,
+                  "left": {
+                    "class": 0
+                  },
+                  "right": {
+                    "class": 1
+                  }
+                }
+              },
+              "right": {
+                "class": 0
+              }
+            },
+            "right": {
+              "class": 0
+            }
+          },
+          "right": {
+            "class": 1
+          }
+        },
+        "right": {
+          "class": 0
+        }
+      },
+      "right": {
+        "feature": "feature 1",
+        "threshold": 370.0,
+        "left": {
+          "feature": "feature 1",
+          "threshold": 357.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 0
+          }
+        },
+        "right": {
+          "class": 1
+        }
+      }
+    }
+  }
+}

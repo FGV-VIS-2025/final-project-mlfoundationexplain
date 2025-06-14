@@ -1,0 +1,55 @@
+{
+  "name": "feature 1 ≤ 185300",
+  "children": [
+    {
+      "name": "feature 1 ≤ 112500",
+      "children": [
+        {
+          "name": "feature 1 ≤ 72600",
+          "children": [
+            {
+              "name": "Sacramento"
+            },
+            {
+              "name": "feature 0 ≤ 448",
+              "children": [
+                { "name": "Sacramento" },
+                { "name": "Sacramento" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "feature 0 ≤ 460",
+          "children": [
+            { "name": "Sacramento" },
+            { "name": "Sacramento" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "feature 1 ≤ 237500",
+      "children": [
+        {
+          "name": "San Francisco"
+        },
+        {
+          "name": "feature 0 ≤ 302",
+          "children": [
+            {
+              "name": "San Francisco"
+            },
+            {
+              "name": "feature 0 ≤ 366",
+              "children": [
+                { "name": "San Francisco" },
+                { "name": "San Francisco" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
