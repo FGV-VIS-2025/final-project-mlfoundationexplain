@@ -173,7 +173,7 @@
       {/key}
       <div class="mt-4 text-center">
         <p class="text-gray-600 text-sm italic dark:text-gray-400">
-          {$_("cutoffs.city_comparison")}
+          <!-- {$_("cutoffs.city_comparison")} -->
         </p>
       </div>
     {:else}
