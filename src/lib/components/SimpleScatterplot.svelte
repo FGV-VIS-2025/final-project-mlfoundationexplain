@@ -168,6 +168,7 @@
     return points;
   }
 
+  
   // Atualizar escalas e pontos do gráfico
   function updateVisualization() {
     if (!data || data.length === 0) return;
@@ -431,14 +432,35 @@
 <div class="chart-container">
   <svg bind:this={svg} {width} {height}>
     <g transform="translate({margin.left},{margin.top})">
+
+
+      <!-- Fundo colorido do histograma -->
+      <rect
+        x="0"
+        y="-10"
+        width={cutoffX}
+        height={histogramHeight +10}
+        fill="var(--color--gini--left)"
+        opacity="0.18"
+      />
+      <rect
+        x={cutoffX}
+        y="-10"
+        width={chartWidth - cutoffX + 5}
+        height={histogramHeight +10}
+        fill="var(--color--gini--right)"
+        opacity="0.18"
+      />
+
+
       <!-- Grupo da curva de proporção -->
       <g transform="translate(0, {histogramHeight + 65})">  <!-- adiciona espaçamento entre os blocos -->
         {#if proportionLineLeft}
           <path
             d={proportionLineLeft}
             fill="none"
-            stroke="red"
-            stroke-width="2"
+            stroke="var(--color--gini--left)"
+            stroke-width="2.3"
             opacity="0.6"
             class="proportion-line"
           />
@@ -447,8 +469,8 @@
           <path
             d={proportionLineRight}
             fill="none"
-            stroke="yellow"
-            stroke-width="2"
+            stroke= "var(--color--gini--right)"
+            stroke-width="2.3"
             opacity="0.6"
             class="proportion-line"
           />
@@ -457,8 +479,8 @@
           <path
             d={ganhoLine}
             fill="none"
-            stroke="var(--color-text)"
-            stroke-width="2"
+            stroke="var(--color--gini--prop)"
+            stroke-width="3.5"
             opacity="0.9"
             class="proportion-line"
           />
@@ -501,18 +523,20 @@
           </g>
         </g>
 
+        
+
       <!-- Legenda das linhas -->
         <g transform="translate({chartWidth - 160}, {histogramHeight + 65})">
           <g transform="translate(90, -30)">
-            <line x1="0" y1="5" x2="20" y2="5" stroke="red" stroke-width="2" opacity="0.6" />
+            <line x1="0" y1="5" x2="20" y2="5" stroke="var(--color--gini--left)" stroke-width="2" opacity="0.6" />
             <text x="25" y="9" font-size="9" fill="var(--color-text)">Impureza esquerda</text>
           </g>
           <g transform="translate(90, -20)">
-            <line x1="0" y1="5" x2="20" y2="5" stroke="yellow" stroke-width="2" opacity="0.6" />
+            <line x1="0" y1="5" x2="20" y2="5" stroke="var(--color--gini--right)" stroke-width="2" opacity="0.6" />
             <text x="25" y="9" font-size="9" fill="var(--color-text)">Impureza direita</text>
           </g>
           <g transform="translate(90, -10)">
-            <line x1="0" y1="5" x2="20" y2="5" stroke="var(--color-text)" stroke-width="2" opacity="0.9" />
+            <line x1="0" y1="5" x2="20" y2="5" stroke="var(--color--gini--prop)" stroke-width="2" opacity="0.9" />
             <text x="25" y="9" font-size="9" fill="var(--color-text)">Impureza ponderada</text>
           </g>
           <g transform="translate(90, -40)">
@@ -570,6 +594,8 @@
         {/each}
       </g>
 
+      
+
       <!-- Etiquetas de eixos -->
       <text
         x={chartWidth / 2}
@@ -616,7 +642,7 @@
             : "var(--color-classe0)"}
           stroke-width="1.5"
           class="dot"
-          opacity="0.8"
+          opacity="0.9"
           on:mouseenter={(e) => handlePointHover(point, e)}
           on:mouseleave={handlePointLeave}
           on:mousemove={(e) => handlePointHover(point, e)}
