@@ -98,7 +98,7 @@
       .style("cursor", "default");
 
     node.append("circle")
-      .attr("r", 10)
+      .attr("r", 8)
       .attr("fill", d => {
         if (!d.children) {
           const label = d.data.name.split(":").pop().trim();
@@ -119,8 +119,8 @@
     // Texto ////////////////////////////////////////////////////
     const text = node.append("text")
       .attr("dy", "0.35em")
-      .attr("y", (d, i) => d.children ? -33 : (i % 2 === 0 ? 40 : 20))
-      .attr("x", (d, i) => d.children ? -30 : (i % 2 === 0 ? -10 : -55))
+      .attr("y", (d, i) => d.children ? -28 : (i % 2 === 0 ? 18 : 18))
+      .attr("x", (d, i) => d.children ? -30 : (i % 2 === 0 ? -25 : -55))
       .style("font-size", "14px")
       .style("fill", d => {
         if (!d.children) {

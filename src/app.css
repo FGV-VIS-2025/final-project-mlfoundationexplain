@@ -88,7 +88,7 @@
   --color-background-section: #27364d;
 
    --color-node-fill: #a3d9b1;         /* preenchimento do nó (verde claro) */
-  --color-node-stroke: #3b7047;       /* borda do nó (verde médio) */
+  --color-node-stroke: #4b8f5b;       /* borda do nó (verde médio) */
   --color-node-hover-fill: #c1edc8;   /* nó ao passar o mouse (verde muito claro) */
   
   --color-link-stroke: #8ac998;       /* cor da linha (link) verde médio */
