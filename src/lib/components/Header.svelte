@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { _, locale, locales } from "svelte-i18n";
   import { changeLocale } from "../../i18n.js";
+  import { base } from '$app/paths';
 
   let scrollProgress = 0;
   let darkMode = false;
@@ -67,8 +68,8 @@
 
     <div class="right">
       <nav class="nav-links">
-        <a href="./">{$_("header.home")}</a>
-        <a href="/about">{$_("about.title")}</a>
+          <a href="{base}/">{$_("header.home")}</a>
+          <a href="{base}/about">{$_("about.title")}</a>
         <a
           href="https://github.com/FGV-VIS-2025/final-project-mlfoundationexplain"
           >GitHub</a
