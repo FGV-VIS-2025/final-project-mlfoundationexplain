@@ -31,10 +31,22 @@
     const allNodes = root.descendants();
     const allLinks = root.links();
 
-    const visibleNodes = allNodes.slice(0, step + 1);
-    const visibleLinks = allLinks.slice(0, step);
+    // const visibleNodes = allNodes.slice(0, step + 1);
+    // const visibleLinks = allLinks.slice(0, step);
+
+    const visibleNodes = computeVisibleNodes(root, step);
+
+  // Gerar os links apenas entre os nós visíveis
+  const visibleLinks = allLinks.filter(link =>
+    visibleNodes.includes(link.source) && visibleNodes.includes(link.target)
+    );
 
     d3.select(svg).selectAll("*").remove();
+
+    if (visibleNodes.length === 0) {
+      return; // Árvore vazia nos steps 0 e 1
+    }
+
 
     const svgEl = d3.select(svg)
       .attr("width", width)
@@ -165,10 +177,11 @@
           const label = d.data.name.split(":").pop().trim();
           // Encontra o índice da classe
           const index = leafColorScale.domain().indexOf(label);
-          return `var(--color-classe${index}-stroke)`; // mesma cor da borda
+          return `var(--color-classe${index}-text)`; // mesma cor da borda
         }
         return "var(--color-text-node)";
-      });
+      })
+      .style("text-shadow", "0 0 2px var(--color-prediction-glow)");
 
 
     text.selectAll("tspan")
@@ -186,6 +199,28 @@
   });
 
   afterUpdate(renderTree);
+
+
+
+
+  function computeVisibleNodes(rootNode, currentStep) {
+  if (currentStep < 1) return [];
+
+  const depthLimit = currentStep - 1; // Começa a mostrar no step 2
+  const nodes = [];
+
+  function traverse(node, depth) {
+    if (depth > depthLimit) return;
+    nodes.push(node);
+    if (node.children) {
+      node.children.forEach(child => traverse(child, depth + 1));
+    }
+  }
+
+  traverse(rootNode, 0);
+  return nodes;
+}
+
 </script>
 
 <style>
