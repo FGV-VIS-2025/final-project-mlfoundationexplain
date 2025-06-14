@@ -7,7 +7,7 @@
   const height = 700;
 
   const leafColorScale = d3.scaleOrdinal()
-    .domain(["San Francisco", "Sacramento"]) // Ajuste para suas classes
+    .domain(["San \nFrancisco", "Sacramento"]) // Ajuste para suas classes
     .range(["var(--color-classe0-node)", "var(--color-classe1-node)"]);
 
   function drawTree() {
@@ -120,17 +120,18 @@
     const text = node.append("text")
       .attr("dy", "0.35em")
       .attr("y", (d, i) => d.children ? -33 : (i % 2 === 0 ? 40 : 20))
-      .attr("x", (d, i) => d.children ? -25 : (i % 2 === 0 ? -10 : -55))
+      .attr("x", (d, i) => d.children ? -30 : (i % 2 === 0 ? -10 : -55))
       .style("font-size", "14px")
       .style("fill", d => {
         if (!d.children) {
           const label = d.data.name.split(":").pop().trim();
           const index = leafColorScale.domain().indexOf(label);
-          return `var(--color-classe${index}-stroke)`;
+          return `var(--color-classe${index}-text)`;
         }
         return "var(--color-text-node)";
       })
       .style("text-shadow", "0 0 2px var(--color-prediction-glow)");
+
 
     text.selectAll("tspan")
       .data(d => d.data.name.split("\n"))
