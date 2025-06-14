@@ -7,7 +7,7 @@
 
 
   let currentStep = 0;
-  const totalSteps = 21;
+  const totalSteps = 10;
 
   let stepRefs = [];
 
@@ -110,7 +110,7 @@
           }
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.9 }
     );
 
     stepRefs.forEach(el => {
@@ -215,7 +215,7 @@
 
   .step {
     margin: 20rem 0;
-    margin-top: 0;
+    margin-top: 20;
     padding: 1rem;
     border-left: 4px solid #ccc;
     transition: border-color 0.3s ease;
