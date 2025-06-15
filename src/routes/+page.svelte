@@ -242,7 +242,7 @@
 
 
 
-<div class="max-w-7xl mx-auto mt-0 p-6 pt-20 pb-0 text-center  transition-colors duration-300  leading-relaxed space-y-6" >
+<div class="max-w-7xl mx-auto mt-0 p-0 pt-2 pb-0 text-center  transition-colors duration-300  leading-relaxed space-y-6" >
 
   <h2 class="text-5xl font-semibold mb-4 py-8">{$_('section-complete-tree.title')}</h2>
 
@@ -259,7 +259,7 @@
 
 </div>
 
-<div class="my-19 mt-40 mb-40">
+<div class="my-19 mt-10 mb-1">
   {#if treeJson}
     <DecisionTree treeData={treeJson} />
   {:else}
