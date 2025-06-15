@@ -43,7 +43,7 @@
   },
 
   "section-dataset": {
-    "title": "Sobre el Conjunto de Datos",
+    "title": "Acerca del conjunto de datos utilizado",
     "paragraph1": "El conjunto de datos original contiene información sobre viviendas en distritos específicos de California, con estadísticas resumidas basadas en los datos del censo de 1990. Para el propósito específico de nuestra visualización —que se centra en la <b>clasificación de viviendas entre Sacramento y San Francisco</b>— realizamos una selección y transformación de las variables. El objetivo era centrarse en las características intrínsecas de la vivienda y su ubicación para la tarea de clasificación binaria.",
     "paragraph2": "En consecuencia, se eliminaron las variables que no contribuían directamente a la descripción de las características de la propiedad o que resultaban redundantes para la clasificación geográfica tras la introducción de la variable <code>city</code>.",
     "variables_intro": "Las variables utilizadas en nuestra visualización son:",
@@ -91,7 +91,9 @@
   },
   "cutoffs": {
     "title": "Visualización de los cortes individualmente",
-    "paragraph": "Una forma de visualizar estos cortes es proyectando sobre una sola variable, para observar cómo ocurre la distribución univariada y determinar el punto que mejor separa las clases. A continuación, algunos ejemplos:",
+    "paragraph": "Una forma de ver estos cortes es proyectando sobre una variable para observar cómo ocurre la distribución univariada y cortar en el punto donde las clases están mejor separadas.",
+    "paragraph2": "<p>La elección del mejor punto de corte en un árbol de decisión se realiza evaluando, para cada valor posible de la variable, cómo la división de los datos impacta en la pureza de los grupos formados. En el gráfico de arriba, la distribución de los datos se muestra como un histograma, separado por clases (San Francisco y Sacramento). La línea discontinua representa el punto de corte seleccionado — aquel que genera la menor <strong>impureza ponderada</strong> entre los dos lados (izquierda y derecha).<br><br>Matemáticamente, esta elección se realiza minimizando la siguiente función de impureza ponderada:</p>",
+    "paragraph3": "<p>Donde:<br>– <strong>N<sub>izq</sub></strong> y <strong>N<sub>der</sub></strong> son el número de muestras en los grupos de la izquierda y la derecha después del corte.<br>– <strong>N<sub>total</sub></strong> es el número total de muestras antes del corte.<br>– <strong>Impureza<sub>izq</sub></strong> y <strong>Impureza<sub>der</sub></strong> son las impurezas calculadas en cada lado, que pueden medirse por <em>Índice de Gini</em>, <em>Entropía</em> u otra métrica.<br><br>Debajo del histograma, los gráficos de impureza indican cómo varía a lo largo de los posibles valores de corte: las líneas de impureza izquierda y derecha muestran cuán homogéneos son los grupos tras cada posible división. El punto de corte elegido es aquel donde la impureza ponderada alcanza su valor más bajo, buscando la separación más eficiente entre las clases.<br>Modifique el corte para ver el cambio de impurezas:</p>",
     "feature_label": "Característica {number}",
     "characteristic": "Característica:",
     "value_range": "Rango de valores:",

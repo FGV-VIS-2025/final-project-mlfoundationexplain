@@ -521,6 +521,47 @@
               </g>
             {/each}
           </g>
+          
+          <!-- Eixo Y para a proporção -->
+          <g class="axis">
+            <line
+              x1="0"
+              y1="0"
+              x2="0"
+              y2={proportionHeight}
+              stroke="currentColor"
+              stroke-width="1"
+              opacity="0.6"
+            />
+
+            {#each d3.range(0, 1.1, 0.2) as tick}
+              <g transform="translate(0, {proportionYScale(tick)})">
+                <line x1="-6" x2="0" stroke="currentColor" opacity="0.6" />
+                <text
+                  x="-10"
+                  dy="0.35em"
+                  text-anchor="end"
+                  class="tick-label"
+                  fill="var(--color-text)"
+                >
+                  {tick.toFixed(1)}
+                </text>
+              </g>
+            {/each}
+
+            <!-- Título do eixo Y -->
+            <text
+              x="-{proportionHeight / 2}"
+              y="-60"
+              transform="rotate(-90)"
+              text-anchor="middle"
+              fill="var(--color-text)"
+              class="axis-label"
+            >
+              Impureza
+            </text>
+          </g>
+
         </g>
 
         
