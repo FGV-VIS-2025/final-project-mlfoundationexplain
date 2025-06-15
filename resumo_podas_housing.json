@@ -1,0 +1,120 @@
+{
+  "dataset": "housing",
+  "tamanho_treino": 599,
+  "tamanho_validacao": 258,
+  "features": [
+    "total_rooms",
+    "total_bedrooms",
+    "households",
+    "median_house_value"
+  ],
+  "melhores_modelos": {
+    "melhor_acuracia_validacao": {
+      "metodo": "profundidade_2",
+      "acuracia": 0.95,
+      "nos": 7
+    },
+    "melhor_generalizacao": {
+      "metodo": "profundidade_2",
+      "diferenca_acc": 0.005,
+      "nos": 7
+    },
+    "menor_complexidade": {
+      "metodo": "profundidade_2",
+      "nos": 7,
+      "acuracia": 0.95
+    }
+  },
+  "todos_resultados": [
+    {
+      "M\u00e9todo": "original",
+      "Acc_Train": 1.0,
+      "Acc_Val": 0.876,
+      "Diferen\u00e7a_Acc": -0.124,
+      "Total_N\u00f3s": 77,
+      "Folhas": 39,
+      "Profundidade": 9
+    },
+    {
+      "M\u00e9todo": "validacao",
+      "Acc_Train": 0.99,
+      "Acc_Val": 0.919,
+      "Diferen\u00e7a_Acc": -0.071,
+      "Total_N\u00f3s": 67,
+      "Folhas": 34,
+      "Profundidade": 8
+    },
+    {
+      "M\u00e9todo": "custo_complexidade_alpha_0.001",
+      "Acc_Train": 0.975,
+      "Acc_Val": 0.93,
+      "Diferen\u00e7a_Acc": -0.045,
+      "Total_N\u00f3s": 55,
+      "Folhas": 28,
+      "Profundidade": 8
+    },
+    {
+      "M\u00e9todo": "custo_complexidade_alpha_0.01",
+      "Acc_Train": 0.975,
+      "Acc_Val": 0.93,
+      "Diferen\u00e7a_Acc": -0.045,
+      "Total_N\u00f3s": 55,
+      "Folhas": 28,
+      "Profundidade": 8
+    },
+    {
+      "M\u00e9todo": "custo_complexidade_alpha_0.1",
+      "Acc_Train": 0.975,
+      "Acc_Val": 0.93,
+      "Diferen\u00e7a_Acc": -0.045,
+      "Total_N\u00f3s": 55,
+      "Folhas": 28,
+      "Profundidade": 8
+    },
+    {
+      "M\u00e9todo": "profundidade_2",
+      "Acc_Train": 0.945,
+      "Acc_Val": 0.95,
+      "Diferen\u00e7a_Acc": 0.005,
+      "Total_N\u00f3s": 7,
+      "Folhas": 4,
+      "Profundidade": 2
+    },
+    {
+      "M\u00e9todo": "profundidade_3",
+      "Acc_Train": 0.953,
+      "Acc_Val": 0.942,
+      "Diferen\u00e7a_Acc": -0.011,
+      "Total_N\u00f3s": 15,
+      "Folhas": 8,
+      "Profundidade": 3
+    },
+    {
+      "M\u00e9todo": "profundidade_4",
+      "Acc_Train": 0.965,
+      "Acc_Val": 0.946,
+      "Diferen\u00e7a_Acc": -0.019,
+      "Total_N\u00f3s": 31,
+      "Folhas": 16,
+      "Profundidade": 4
+    },
+    {
+      "M\u00e9todo": "profundidade_5",
+      "Acc_Train": 0.977,
+      "Acc_Val": 0.915,
+      "Diferen\u00e7a_Acc": -0.062,
+      "Total_N\u00f3s": 51,
+      "Folhas": 26,
+      "Profundidade": 5
+    },
+    {
+      "M\u00e9todo": "hibrida",
+      "Acc_Train": 0.945,
+      "Acc_Val": 0.95,
+      "Diferen\u00e7a_Acc": 0.005,
+      "Total_N\u00f3s": 11,
+      "Folhas": 6,
+      "Profundidade": 4
+    }
+  ]
+}
