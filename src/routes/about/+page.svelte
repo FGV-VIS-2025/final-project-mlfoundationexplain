@@ -63,7 +63,7 @@
     <br>
     <h2 class="text-3xl font-extrabold mb-6">{$_('about.article-title')}</h2>
     <p>
-      <a href="https://exemplo.com/artigo" target="_blank" rel="noopener noreferrer">
+      <a href="https://github.com/FGV-VIS-2025/final-project-mlfoundationexplain/blob/main/Artigo/relatorio.pdf" target="_blank" rel="noopener noreferrer">
         <span class="underline">{$_('about.click')}</span> {$_('about.article-text')}
       </a>
     </p>
