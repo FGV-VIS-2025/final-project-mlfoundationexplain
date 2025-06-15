@@ -10,6 +10,7 @@
   import DecisionTree from "$lib/components/Tree.svelte";
 
   import DecisionTree2 from "$lib/components/TreeInteractive.svelte";
+  import PruningControls from "$lib/components/PruningControls.svelte";
 
   let treeJson = null;
   let treeJson_2d = null;
@@ -19,7 +20,6 @@
 
   import { onMount } from "svelte";
 
-  // Configuración de métodos de poda disponibles
   const pruningMethods = [
     {
       id: "original",
@@ -65,12 +65,11 @@
     },
   ];
 
-  // Función para convertir formato de cortes a D3
   function convertToD3Format(cortes, featureNames) {
     if ("class" in cortes) {
       const className = cortes.class === 0 ? "Sacramento" : "San \nFrancisco";
       return {
-        name: `Clase: ${className}`,
+        name: `${className}`,
       };
     }
 
@@ -93,38 +92,30 @@
     };
   }
 
-  // Cargar árbol específico según método seleccionado
   async function loadPruningTree(methodId) {
     const method = pruningMethods.find((m) => m.id === methodId);
     if (!method) return;
 
     try {
-      // Establecer loading state
       isLoadingTree = true;
       treeJson = null;
-      
+
       const response = await fetch(`trees/${method.file}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const cortesData = await response.json();
 
-      // Convertir al formato D3
       const featureNames = [
         "total_rooms",
         "total_bedrooms",
         "households",
         "median_house_value",
       ];
-      
-      // Forzar reactividad asignando nuevo objeto
-      treeJson = convertToD3Format(cortesData, featureNames);
 
-      console.log(`✅ Cargado exitosamente: ${method.name}`, treeJson);
+      treeJson = convertToD3Format(cortesData, featureNames);
     } catch (error) {
-      console.error(`❌ Error cargando ${method.name}:`, error);
-      // En caso de error, mostrar un árbol vacío o mensaje
       treeJson = null;
     } finally {
       isLoadingTree = false;
@@ -358,113 +349,13 @@
 </div>
 
 <!-- Pruning Controls Section -->
-<div class="max-w-7xl mx-auto p-6 mb-8">
-  <div
-    class="bg-[var(--color-background-section)] rounded-lg border border-gray-300 p-6 shadow-lg"
-  >
-    <h3
-      class="text-2xl font-semibold mb-4 text-center text-[var(--color-text)]"
-    >
-      Métodos de Poda de Árboles de Decisión
-    </h3>
-
-    <p class="text-sm text-[var(--color-text)] mb-6 text-center opacity-80">
-      Selecciona un método de poda para ver cómo afecta la estructura del árbol
-      de decisión
-    </p>
-
-    <!-- Pruning Method Selector -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-      {#each pruningMethods as method}
-        <button
-          class="relative p-4 rounded-lg border-2 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-left pruning-button"
-          class:selected={selectedPruningMethod === method.id}
-          class:opacity-50={isLoadingTree}
-          style="border-color: {method.color}; background-color: {selectedPruningMethod ===
-          method.id
-            ? method.color + '20'
-            : 'transparent'}; color: var(--color-text);"
-          on:click={() => !isLoadingTree && handlePruningChange(method.id)}
-          disabled={isLoadingTree}
-        >
-          <div class="flex items-start space-x-3">
-            <div
-              class="w-4 h-4 rounded-full mt-1 flex-shrink-0"
-              style="background-color: {method.color};"
-            ></div>
-            <div class="flex-1">
-              <h4 class="font-semibold text-sm mb-1">{method.name}</h4>
-              <p class="text-xs opacity-75 leading-tight">
-                {method.description}
-              </p>
-            </div>
-          </div>
-          {#if selectedPruningMethod === method.id}
-            <div class="absolute top-2 right-2">
-              {#if isLoadingTree}
-                <svg class="animate-spin w-5 h-5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H4zm6 14a6 6 0 110-12 6 6 0 010 12z"/>
-                </svg>
-              {:else}
-                <svg
-                  class="w-5 h-5 text-green-500"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-              {/if}
-            </div>
-          {/if}
-        </button>
-      {/each}
-    </div>
-
-    <!-- Selected Method Info -->
-    {#if selectedPruningMethod}
-      {@const currentMethod = pruningMethods.find(
-        (m) => m.id === selectedPruningMethod
-      )}
-      <div
-        class="bg-[var(--color-background)] rounded-lg p-4 border-l-4"
-        style="border-left-color: {currentMethod.color};"
-      >
-        <div class="flex items-center space-x-2 mb-2">
-          <div
-            class="w-3 h-3 rounded-full"
-            style="background-color: {currentMethod.color};"
-          ></div>
-          <h4 class="font-semibold text-[var(--color-text)]">
-            Método Seleccionado: {currentMethod.name}
-          </h4>
-        </div>
-        <p class="text-sm text-[var(--color-text)] opacity-80">
-          {currentMethod.description}
-        </p>
-
-        <!-- Show accuracy info if available -->
-        {#if pruningData && pruningData.comparacion && pruningData.comparacion[currentMethod.id]}
-          {@const methodData = pruningData.comparacion[currentMethod.id]}
-          <div class="mt-3 text-xs text-[var(--color-text)] opacity-70">
-            <span class="font-medium"
-              >Precisión: {(methodData.accuracy * 100).toFixed(1)}%</span
-            >
-            {#if methodData.nodes !== undefined}
-              | <span>Nodos: {methodData.nodes}</span>
-            {/if}
-            {#if methodData.depth !== undefined}
-              | <span>Profundidad: {methodData.depth}</span>
-            {/if}
-          </div>
-        {/if}
-      </div>
-    {/if}
-  </div>
-</div>
+<PruningControls
+  {selectedPruningMethod}
+  {isLoadingTree}
+  {pruningData}
+  {pruningMethods}
+  on:pruningChange={(event) => handlePruningChange(event.detail)}
+/>
 
 <div class="my-19 mt-10 mb-1">
   {#if isLoadingTree}
@@ -490,7 +381,7 @@
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
         </svg>
-        <span>Cargando árbol de decisión...</span>
+        <span>{$_("pruning.loading")}</span>
       </div>
     </div>
   {:else if treeJson}
@@ -498,7 +389,7 @@
   {:else}
     <div class="text-center py-8">
       <div class="text-[var(--color-text)] opacity-60">
-        <p>Error al cargar el árbol. Por favor, intenta seleccionar otro método de poda.</p>
+        <p>{$_("pruning.error")}</p>
       </div>
     </div>
   {/if}
@@ -514,36 +405,3 @@
     </p>
   </div>
 </footer>
-
-<style>
-  .selected {
-    box-shadow:
-      0 0 0 2px currentColor,
-      0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transform: scale(1.02);
-  }
-
-  .pruning-button {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .pruning-button:hover {
-    box-shadow:
-      0 4px 6px -1px rgba(0, 0, 0, 0.1),
-      0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-
-  .pruning-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-</style>

@@ -57,8 +57,6 @@
     "paragraph3": "Esta selección permitió que la visualización se centrara en las relaciones entre las características de las viviendas y su clasificación geográfica."
   },
 
-
-
   "section-prediction": {
     "title": "Cómo funciona la predicción en un árbol de decisión",
     "description": "Durante el proceso de {prediction}, el árbol de decisión recibe una nueva entrada (o muestra) y la recorre desde el {root_to_leaf}, siguiendo las condiciones definidas en cada punto de decisión. En cada etapa, analiza el valor de una {feature} de la entrada y elige la {corresponding_branch} basándose en la condición (por ejemplo, si el valor es menor o mayor que un cierto límite). Este camino es {unique} y lleva directamente hasta una {leaf}, donde se registra la clase predicha (en clasificadores) o un valor numérico (en modelos de regresión). El proceso es {fast_interpretable}, funcionando como una secuencia lógica de decisiones que culmina en una conclusión final.",
@@ -169,6 +167,16 @@
     "accuracy": "100% de precisión",
     "overfitting": "sobreajuste",
     "example_text": "Ve abajo cómo quedaría el árbol completo generado con todas las características de nuestros datos de ejemplo"
+  },
+  "pruning": {
+    "title": "Métodos de Poda de Árboles de Decisión",
+    "description": "Selecciona un método de poda para ver cómo afecta la estructura del árbol de decisión",
+    "selected_method": "Método Seleccionado:",
+    "loading": "Cargando árbol de decisión...",
+    "error": "Error al cargar el árbol. Por favor, intenta seleccionar otro método de poda.",
+    "accuracy": "Precisión:",
+    "nodes": "Nodos:",
+    "depth": "Profundidad:"
   },
   "footer": {
     "developed_by": "Desarrollado por Paula Eduarda de Lima, Mariana Fernandes Rocha y Joel Perca con SvelteKit & D3.js"

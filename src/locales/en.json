@@ -57,8 +57,6 @@
     "paragraph3": "This selection allowed the visualization to focus on the relationships between property characteristics and geographic classification."
   },
 
-
-
   "section-prediction": {
     "title": "How prediction works in a decision tree",
     "description": "During the {prediction} process, the decision tree receives a new input (or sample) and traverses it from {root_to_leaf}, following the conditions defined at each decision point. At each step, it analyzes the value of a {feature} from the input and chooses the {corresponding_branch} based on the condition (for example, whether the value is less than or greater than a certain threshold). This path is {unique} and leads directly to a {leaf}, where the predicted class (in classifiers) or a numerical value (in regression models) is recorded. The process is {fast_interpretable}, functioning as a logical sequence of decisions that culminates in a final conclusion.",
@@ -169,6 +167,16 @@
     "accuracy": "100% accuracy",
     "overfitting": "overfitting",
     "example_text": "See below how the complete tree generated with all features from our example data would look"
+  },
+  "pruning": {
+    "title": "Decision Tree Pruning Methods",
+    "description": "Select a pruning method to see how it affects the decision tree structure",
+    "selected_method": "Selected Method:",
+    "loading": "Loading decision tree...",
+    "error": "Error loading tree. Please try selecting another pruning method.",
+    "accuracy": "Accuracy:",
+    "nodes": "Nodes:",
+    "depth": "Depth:"
   },
   "footer": {
     "developed_by": "Developed by Paula Eduarda de Lima, Mariana Fernandes Rocha and Joel Perca with SvelteKit & D3.js"
