@@ -1,6 +1,7 @@
 <!-- src/routes/+page.svelte -->
 
 <script>
+
   import ScrollStory1 from '$lib/components/ScrollStory1.svelte';
   import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
   import ScrollStory3 from '$lib/components/ScrollStory3.svelte';
@@ -24,6 +25,16 @@
 
      const res2 = await fetch('data/arvore_2d copy.json');
     treeJson_2d = await res2.json();
+
+     if (window && window.renderMathInElement) {
+      window.renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "$", right: "$", display: false }
+        ]
+      });
+    }
   });
 </script>
 
@@ -228,16 +239,44 @@
 </div>
 </div>
 
+<!-- 
+<div class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  style="color: var(--color-text);">
+
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-3xl font-semibold text-center mb-4 py-8">{$_('cutoffs.title')}</h2>
+
+
+    <p>{@html $_('cutoffs.paragraph')}</p>
+
+    
+
+    <CuttOffs />
+  </div>
+</div> -->
+
 
 <div class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
   style="color: var(--color-text);">
 
   <div class="max-w-7xl mx-auto px-6">
     <h2 class="text-3xl font-semibold text-center mb-4 py-8">{$_('cutoffs.title')}</h2>
+
     <p>{@html $_('cutoffs.paragraph')}</p>
+    <p>{@html $_('cutoffs.paragraph2')}</p>
+    
+  <div style="text-align: center; margin: 1em 0;">
+    {@html $_('cutoffs.formula')}
+  </div>
+
+
+    <p>{@html $_('cutoffs.paragraph3')}</p>
+
+
     <CuttOffs />
   </div>
 </div>
+
 
 
 

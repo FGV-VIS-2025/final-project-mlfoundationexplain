@@ -15,19 +15,19 @@
   $: steps = [
     {
       feature: "total_rooms",
-      cutoff: 3000,
+      cutoff: 7190.1578947368425,
     },
     {
       feature: "total_bedrooms",
-      cutoff: 800,
+      cutoff: 434.57894736842104,
     },
     {
       feature: "households",
-      cutoff: 500,
+      cutoff: 401.57894736842104,
     },
     {
       feature: "median_house_value",
-      cutoff: 250000,
+      cutoff: 180131.8947368421,
     },
   ];
 
@@ -77,7 +77,7 @@
   <div class="md:w-1/3.5 w-full md:px-8 px-4 md:pl-0 pl-0">
     {#each steps as step, stepIndex}
       <div
-        class="md:my-[30rem] my-[10rem] md:p-10 p-8 border-l-4 rounded-r-xl transition-all duration-300
+        class="md:my-[20rem] my-[1rem] md:p-10 p-8 border-l-4 rounded-r-xl transition-all duration-300
                md:min-h-[50vh] min-h-[30vh] flex flex-col justify-center
                backdrop-blur-sm border-gray-200 dark:border-gray-700
                {stepIndex === currentStep ? 'transform translate-x-1' : ''}"
