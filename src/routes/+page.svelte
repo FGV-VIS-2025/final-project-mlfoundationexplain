@@ -229,15 +229,16 @@
 </div>
 
 
-
-  <div class="max-w-7xl mx-auto  p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
-  style=" color: var(--color-text);">
+<div class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  style="color: var(--color-text);">
 
   <div class="max-w-7xl mx-auto px-6">
-    <p>Uma forma de ver esses corter é projentando em uma variável, para observar como ocorre a distribuição univariada e cortar no ponto onde é melhor dividida as clases. Abaixo alguns exemplo:</p>
+    <h2 class="text-3xl font-semibold text-center mb-4 py-8">{$_('cutoffs.title')}</h2>
+    <p>{@html $_('cutoffs.paragraph')}</p>
     <CuttOffs />
   </div>
 </div>
+
 
 
 

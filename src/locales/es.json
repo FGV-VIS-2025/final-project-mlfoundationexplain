@@ -92,6 +92,8 @@
     }
   },
   "cutoffs": {
+    "title": "Visualización de los cortes individualmente",
+    "paragraph": "Una forma de visualizar estos cortes es proyectando sobre una sola variable, para observar cómo ocurre la distribución univariada y determinar el punto que mejor separa las clases. A continuación, algunos ejemplos:",
     "feature_label": "Característica {number}",
     "characteristic": "Característica:",
     "value_range": "Rango de valores:",

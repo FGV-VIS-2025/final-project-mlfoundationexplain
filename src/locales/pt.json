@@ -57,7 +57,6 @@
     "paragraph3": "Essa seleção permitiu que a visualização se concentrasse nas relações entre as características das casas e sua classificação geográfica."
   },
 
-
   "section-prediction": {
     "title": "Como funciona a previsão em uma árvore de decisão",
     "description": "Durante o processo de {prediction}, a árvore de decisão recebe uma nova entrada (ou amostra) e a percorre do {root_to_leaf}, seguindo as condições definidas em cada ponto de decisão. A cada etapa, ela analisa o valor de uma {feature} da entrada e escolhe o {corresponding_branch} com base na condição (por exemplo, se o valor é menor ou maior que um certo limite). Esse caminho é {unique} e leva diretamente até uma {leaf}, onde está registrada a classe prevista (em classificadores) ou um valor numérico (em modelos de regressão). O processo é {fast_interpretable}, funcionando como uma sequência lógica de decisões que culmina em uma conclusão final.",
@@ -95,7 +94,10 @@
     "step": "Passo {number}",
     "stage": "Etapa {number}"
   },
+
   "cutoffs": {
+    "title": "Visualização dos cortes individualmente",
+    "paragraph": "Uma forma de ver esses cortes é projetando em uma variável, para observar como ocorre a distribuição univariada e cortar no ponto onde é melhor dividida as classes. Abaixo alguns exemplos:",
     "feature_label": "Feature {number}",
     "characteristic": "Característica:",
     "value_range": "Faixa de valores:",

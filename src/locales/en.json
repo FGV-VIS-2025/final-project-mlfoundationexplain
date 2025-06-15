@@ -92,6 +92,8 @@
     }
   },
   "cutoffs": {
+    "title": "Individual Cutoff Visualization",
+    "paragraph": "One way to visualize these splits is by projecting onto a single variable, to observe how the univariate distribution occurs and determine the point that best separates the classes. Below are some examples:",
     "feature_label": "Feature {number}",
     "characteristic": "Characteristic:",
     "value_range": "Value range:",
