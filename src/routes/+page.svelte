@@ -122,18 +122,15 @@
     }
   }
 
-  // Manejar cambio de método de poda
   function handlePruningChange(methodId) {
     selectedPruningMethod = methodId;
     loadPruningTree(methodId);
   }
 
   onMount(async () => {
-    // Cargar árbol 2D para la sección interactiva
     const res2 = await fetch("data/arvore_2d copy.json");
     treeJson_2d = await res2.json();
 
-    // Cargar datos de resumen de podas
     try {
       const summaryRes = await fetch("trees/resumo_podas_housing.json");
       pruningData = await summaryRes.json();
@@ -141,7 +138,6 @@
       console.error("Error cargando resumen de podas:", error);
     }
 
-    // Cargar árbol inicial (original)
     await loadPruningTree("original");
     if (window && window.renderMathInElement) {
       window.renderMathInElement(document.body, {
