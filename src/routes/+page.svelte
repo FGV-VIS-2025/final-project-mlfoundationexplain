@@ -1,8 +1,6 @@
 <!-- src/routes/+page.svelte -->
 
 <script>
-  import ScrollStory1 from '$lib/components/ScrollStory1.svelte';
-  import ScrollStory2 from '$lib/components/ScrollStory2.svelte';
   import ScrollStory3 from '$lib/components/ScrollStory3.svelte';
   import Introduction from '$lib/components/Introduction.svelte';
   import CuttOffs from '$lib/components/CuttOffs.svelte';
