@@ -56,14 +56,10 @@
 
 Este projeto tem como objetivo principal ampliar a experiência prática no desenvolvimento, 
 implementação e avaliação de métodos de visualização, abordando um problema de visualização 
-concreto e propondo uma solução inovadora e criativa. A área da ciência de dados e aprendizado 
-de máquina, em particular, frequentemente se depara com a necessidade de explicar conceitos 
-complexos de forma acessível. O desafio reside em transformar modelos abstratos e conjuntos 
+concreto e propondo uma solução inovadora e criativa. O desafio reside em transformar modelos abstratos e conjuntos 
 de dados multifacetados em insights compreensíveis e interativos.
 Para este propósito, utilizamos o conjunto de dados do Censo Habitacional da Califórnia de 
-1990. Este dataset é amplamente reconhecido como uma excelente ferramenta introdutória para a 
-implementação de algoritmos de aprendizado de máquina devido à sua estrutura acessível.
-O dataset contém informações sobre casas em distritos específicos da Califórnia, 
+1990. O dataset contém informações sobre casas em distritos específicos da Califórnia, 
 incluindo estatísticas resumidas baseadas nos dados do censo de 1990, com variáveis como 
 longitude, latitude, idade média das casas, número total de cômodos, população, renda média, 
 valor médio das casas e proximidade com o oceano.
@@ -72,7 +68,6 @@ com foco específico na explicação de árvores de decisão binária.
 
 \section{Dados}
 
-O conjunto de dados central para este projeto é o Censo Habitacional da Califórnia de 1990. 
 O conjunto de dados original contém informações sobre casas em distritos específicos da Califórnia, 
 com estatísticas resumidas baseadas nos dados do censo de 1990. Para o propósito específico de nossa 
 visualização, que foca na classificação de casas entre Sacramento e São Francisco, realizamos uma seleção 
@@ -82,28 +77,24 @@ foram deletadas variáveis que não contribuíam diretamente para a descrição 
 ou que eram redundantes para a classificação geográfica após a introdução da variável city.
 
 As variáveis utilizadas em nossa visualização são:
-\item total_rooms: Representa o número total de cômodos dentro de um quarteirão. 
+
+\begin{itemize}
+\item \textbf{total\_rooms}: Representa o número total de cômodos dentro de um quarteirão. 
 Esta variável contribui para entender o tamanho ou a capacidade de uma propriedade.
-\item total_bedrooms: Indica o número total de quartos dentro de um quarteirão. 
-Complementa total_rooms ao fornecer uma medida mais específica sobre a composição dos imóveis.
-\item households: Corresponde ao número total de famílias que residem em unidades habitacionais dentro de um quarteirão. 
+\item \textbf{total\_bedrooms}: Indica o número total de quartos dentro de um quarteirão. 
+Complementa total\_rooms ao fornecer uma medida mais específica sobre a composição dos imóveis.
+\item \textbf{households}: Corresponde ao número total de famílias que residem em unidades habitacionais dentro de um quarteirão. 
 Oferece contexto sobre a densidade populacional e o uso das propriedades.
-\item median_house_value: É o valor médio das casas dentro de um quarteirão, medido em dólares americanos. 
+\item \textbf{median\_house\_value}: É o valor médio das casas dentro de um quarteirão, medido em dólares americanos. 
 Embora não seja o alvo da nossa classificação, esta variável é um indicador socioeconômico relevante 
 que pode estar correlacionado com a localização.
-\item city: Esta é uma variável-alvo criada para o nosso problema de classificação. Ela indica se uma casa está localizada 
+\item \textbf{city}: Esta é uma variável-alvo criada para o nosso problema de classificação. Ela indica se uma casa está localizada 
 em Sacramento ou São Francisco.
+\end{itemize}
 
-Essa seleção permitiu que a visualização se concentrasse nas relações entre as características 
-das casas e a sua classificação geográfica, sem a complexidade de variáveis que não eram essenciais 
-para o problema de classificação proposto.
+Essa seleção permitiu que a visualização se concentrasse nas relações entre as características das casas e a sua classificação geográfica.
 
 \section{Metodologia e construção da visualização}
-
-Nossa visualização foi concebida para ser uma solução para um problema de visualização: 
-a desmistificação de algoritmos de aprendizado de máquina, com foco específico nas árvores de decisão. 
-Para isso, buscamos inspiração nas introduções visuais à machine learning, como as apresentadas por 
-R2D3 ("A visual introduction to machine learning") e MLU ("Decision Trees"). 
 
 A metodologia central adotada para a construção da nossa visualização é a abordagem "ScrollStory". Este 
 formato permite que a visualização gráfica permaneça fixa no centro da tela, enquanto o usuário rola através 
@@ -116,7 +107,7 @@ para o componente da visualização (Viz1.svelte e Viz2.svelte), fixado vertical
 
 A construção da visualização focou em ilustrar os fundamentos de como uma árvore de decisão classifica os 
 dados, empregando as variáveis selecionadas do conjunto de dados do Censo Habitacional da Califórnia de 1990: 
-total_rooms, total_bedrooms, households, median_house_value e a variável alvo city (Sacramento ou São Francisco). 
+total\_rooms, total\_bedrooms, households, media\_house\_value e a variável alvo city (Sacramento ou São Francisco). 
  
 Em resumo, a construção da visualização utilizou uma abordagem de storytelling interativo baseada em scroll e 
 ferramentas de desenvolvimento web modernas para traduzir os conceitos abstratos do treinamento de árvores de 
@@ -134,16 +125,14 @@ Os conceitos de aprendizado de máquina visualizados incluem:
 \begin{itemize}
     \item Classificação: O problema central da visualização é categorizar (classificar) casas como pertencentes a 
     Sacramento ou São Francisco, uma tarefa de classificação binária.
-    \item Características (Features): As variáveis do conjunto de dados (total_rooms, total_bedrooms, households, median_house_value)
+    \item Características (Features): As variáveis do conjunto de dados (total\_rooms, total\_bedrooms, households, median\_house\_value)
     são apresentadas como "dimensões", "features" ou "preditores", que o modelo usa para tomar decisões.
-    \item Divisões (Splits) e Limites (Boundaries): A visualização demonstra como uma árvore de decisão identifica "limites" 
-    nos dados, que são os "pontos de divisão" (split points).
-    \item Ramificações (Forks): As decisões da árvore são representadas como "instruções se-então" (if-then statements) 
-    ou "ramificações" (forks), que dividem os dados em dois "ramos" (branches) com base em um valor.
-    \item Purity (Pureza) e Ganho de Informação (Information Gain): A visualização tem como objetivo mostrar como as 
+    \item Divisões e Limites: A visualização demonstra como uma árvore de decisão identifica "limites" 
+    nos dados, que são os "pontos de divisão".
+    \item Ramificações: As decisões da árvore são representadas como "instruções se-então" (if-then statements) 
+    ou "ramificações", que dividem os dados em dois "ramos" com base em um valor.
+    \item Pureza e Ganho de Informação: A visualização tem como objetivo mostrar como as 
     decisões são tomadas para tornar os ramos resultantes o mais "homogêneos" ou "puros" possível. 
-    Isso se baseia em conceitos como Entropia, que mede a "impureza" de uma coleção de pontos de dados, e o 
-    Ganho de Informação, que visa maximizar a redução na entropia após uma divisão.
     \item Overfitting: A visualização, assim como as referências, busca contextualizar o problema do overfitting, 
     onde o modelo aprende detalhes irrelevantes dos dados de treinamento, resultando em desempenho menos ideal em dados não vistos.
 \end{itemize}
@@ -156,21 +145,32 @@ Para aprimorar ainda mais esta ferramenta educacional e abordar as limitações 
 várias direções para trabalhos futuros podem ser exploradas:
 
 \begin{itemize}
-    
-    
-    \item Controle e Visualização de Poda (Pruning): Para combater o problema do overfitting, seria valioso adicionar 
-    interatividade que permita ao usuário controlar a profundidade máxima da árvore ou o número mínimo de amostras 
-    por nó folha. Isso visualizaria diretamente como a poda afeta a complexidade do modelo e sua capacidade de generalização.
-    \item Introdução a Ensembles (Random Forests): Dado que árvores de decisão individuais podem ser instáveis e sensíveis a 
-    pequenas perturbações nos dados, uma próxima etapa natural seria introduzir visualmente o conceito de Random Forests. 
-    Isso demonstraria como a combinação de múltiplas árvores pode mitigar a alta variância e melhorar a robustez das previsões.
-    \item Expansão para Problemas de Regressão: Embora o foco atual seja em classificação, árvores de decisão também são usadas para regressão. Uma futura extensão poderia adaptar a visualização para explicar como o algoritmo faz previsões de valores contínuos.
-    \item Coleta e Incorporação de dados fornecidos pelo usuário: UUma interativa adicional possível é a possibilidade do próprio usuário conseguir 
-    fornecer uma base de dados e montamos uma análise sobre as melhores variáveis de corte e ponto de profundidade máximo antes de acontecer o overfitting
-    
+    \item Controle de poda interativo para evitar overfitting, o usuário escolhe os parâmetros de profundidade e pureza para realizar a poda.
+    \item Extensão para Random Forests.
+    \item Adaptação para regressão.
+    \item Entrada de dados customizados pelo usuário, a possibilidade do usuário poder enviar seu dataset e o interface ser capaz de  constriur a árvore de classificação e realizar a poda.
 \end{itemize}
-Ao perseguir essas avenidas, a visualização não apenas aprofundaria a compreensão dos usuários sobre árvores de decisão, mas também os prepararia para conceitos mais avançados e práticos em machine learning, reforçando a missão de tornar a ciência de dados mais acessível através do design visual interativo.
 
 \section{Referências}
+\begin{thebibliography}{9}
 
+\bibitem{r2d3}
+R2D3. 
+\textit{A Visual Introduction to Machine Learning}.  
+Disponível em: \url{http://www.r2d3.us/visual-intro-to-machine-learning-part-1/}. 
+
+\bibitem{mlu}
+MLU. 
+\textit{Decision Trees – Explained Visually}.
+
+Disponível em: \url{https://mlu-explain.github.io/decision-tree/}. 
+
+\bibitem{California Housing}
+MLU. 
+\textit{California Housing Prices}.
+
+Disponível em: \url{https://www.kaggle.com/datasets/camnugent/california-housing-prices/data}. 
+Acesso em: jun. 2025.
+
+\end{thebibliography}
 \end{document}
