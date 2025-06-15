@@ -112,6 +112,67 @@
 <!-- </div> -->
 
 
+
+
+
+
+
+
+<!-- Seção explicando o dataset usado -->
+<div
+  class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  style="background-color: #2e5a3d; color: white;  margin-top: 80px;"
+>
+  <h2 class="text-3xl font-extrabold mb-6">Dados</h2>
+
+  <p>
+  O conjunto de dados original contém informações sobre casas em distritos específicos da Califórnia, com estatísticas resumidas baseadas nos dados do censo de 1990. 
+  Para o propósito específico da nossa visualização — que foca na <b>classificação de casas entre Sacramento e São Francisco</b> — realizamos uma seleção e transformação das variáveis. 
+  O objetivo foi concentrar-se nas características intrínsecas dos imóveis e em sua localização, visando à tarefa de classificação binária.
+</p>
+
+<p>
+  Consequentemente, foram removidas as variáveis que não contribuíam diretamente para a descrição das características das propriedades ou que se tornaram redundantes para a classificação geográfica após a introdução da variável <code>city</code>.
+</p>
+
+<p>As variáveis utilizadas em nossa visualização são:</p>
+
+<ul class="list-disc ml-6 space-y-2">
+  <li>
+    <b>total rooms</b>: Representa o número total de cômodos dentro de um quarteirão. Essa variável contribui para entender o tamanho ou a capacidade dos imóveis.
+  </li>
+  <li>
+    <b>total bedrooms</b>: Indica o número total de quartos dentro de um quarteirão. Complementa <i>total rooms</i> ao fornecer uma medida mais específica sobre a composição dos imóveis.
+  </li>
+  <li>
+    <b>households</b>: Corresponde ao número total de famílias que residem em unidades habitacionais dentro de um quarteirão. Oferece contexto sobre a densidade populacional e o uso das propriedades.
+  </li>
+  <li>
+    <b>median house value</b>: Refere-se ao valor médio das casas dentro de um quarteirão, medido em dólares americanos. Embora não seja a variável-alvo da nossa classificação, ela é um indicador socioeconômico relevante, que pode estar correlacionado com a localização.
+  </li>
+  <li>
+    <b>city</b>: Variável-alvo criada para o nosso problema de classificação. Indica se uma casa está localizada em <b>Sacramento</b> ou <b>São Francisco</b>.
+  </li>
+</ul>
+
+<p>
+  Essa seleção permitiu que a visualização se concentrasse nas relações entre as características dos imóveis e sua classificação geográfica.
+</p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="max-w-7xl mx-auto pt-40 pb-10 text-justify  transition-colors duration-300 ">
 
   <h2 class="text-3xl font-extrabold pb-10">{$_('section-tree-creation.title')}</h2>
