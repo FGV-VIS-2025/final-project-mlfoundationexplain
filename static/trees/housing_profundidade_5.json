@@ -1,0 +1,178 @@
+{
+  "feature": "median_house_value",
+  "threshold": 185300.0,
+  "left": {
+    "feature": "median_house_value",
+    "threshold": 168800.0,
+    "left": {
+      "feature": "median_house_value",
+      "threshold": 55700.0,
+      "left": {
+        "feature": "total_bedrooms",
+        "threshold": 836.0,
+        "left": {
+          "class": 0
+        },
+        "right": {
+          "class": 1
+        }
+      },
+      "right": {
+        "feature": "total_rooms",
+        "threshold": 900.0,
+        "left": {
+          "feature": "total_bedrooms",
+          "threshold": 202.0,
+          "left": {
+            "class": 0
+          },
+          "right": {
+            "class": 0
+          }
+        },
+        "right": {
+          "feature": "total_rooms",
+          "threshold": 1316.0,
+          "left": {
+            "class": 0
+          },
+          "right": {
+            "class": 0
+          }
+        }
+      }
+    },
+    "right": {
+      "feature": "total_rooms",
+      "threshold": 3236.0,
+      "left": {
+        "feature": "total_bedrooms",
+        "threshold": 364.0,
+        "left": {
+          "feature": "total_rooms",
+          "threshold": 1000.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 0
+          }
+        },
+        "right": {
+          "class": 1
+        }
+      },
+      "right": {
+        "feature": "total_bedrooms",
+        "threshold": 1240.0,
+        "left": {
+          "class": 0
+        },
+        "right": {
+          "feature": "total_rooms",
+          "threshold": 6132.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 0
+          }
+        }
+      }
+    }
+  },
+  "right": {
+    "feature": "median_house_value",
+    "threshold": 237500.0,
+    "left": {
+      "feature": "total_rooms",
+      "threshold": 2508.0,
+      "left": {
+        "feature": "total_bedrooms",
+        "threshold": 224.0,
+        "left": {
+          "feature": "total_rooms",
+          "threshold": 438.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 0
+          }
+        },
+        "right": {
+          "feature": "total_rooms",
+          "threshold": 2006.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 1
+          }
+        }
+      },
+      "right": {
+        "feature": "total_bedrooms",
+        "threshold": 846.0,
+        "left": {
+          "feature": "total_rooms",
+          "threshold": 3087.0,
+          "left": {
+            "class": 0
+          },
+          "right": {
+            "class": 0
+          }
+        },
+        "right": {
+          "feature": "total_rooms",
+          "threshold": 8482.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 0
+          }
+        }
+      }
+    },
+    "right": {
+      "feature": "households",
+      "threshold": 279.0,
+      "left": {
+        "feature": "households",
+        "threshold": 278.0,
+        "left": {
+          "feature": "median_house_value",
+          "threshold": 417600.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 1
+          }
+        },
+        "right": {
+          "class": 0
+        }
+      },
+      "right": {
+        "feature": "total_bedrooms",
+        "threshold": 370.0,
+        "left": {
+          "feature": "total_bedrooms",
+          "threshold": 357.0,
+          "left": {
+            "class": 1
+          },
+          "right": {
+            "class": 0
+          }
+        },
+        "right": {
+          "class": 1
+        }
+      }
+    }
+  }
+}

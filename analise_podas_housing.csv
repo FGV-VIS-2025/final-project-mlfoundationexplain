@@ -1,0 +1,11 @@
+Método,Acc_Train,Acc_Val,Diferença_Acc,Total_Nós,Folhas,Profundidade
+original,1.0,0.876,-0.124,77,39,9
+validacao,0.99,0.919,-0.071,67,34,8
+custo_complexidade_alpha_0.001,0.975,0.93,-0.045,55,28,8
+custo_complexidade_alpha_0.01,0.975,0.93,-0.045,55,28,8
+custo_complexidade_alpha_0.1,0.975,0.93,-0.045,55,28,8
+profundidade_2,0.945,0.95,0.005,7,4,2
+profundidade_3,0.953,0.942,-0.011,15,8,3
+profundidade_4,0.965,0.946,-0.019,31,16,4
+profundidade_5,0.977,0.915,-0.062,51,26,5
+hibrida,0.945,0.95,0.005,11,6,4
