@@ -19,7 +19,7 @@
   --color-secondary: #7e6f99 ;/* #916f99 */
   --color-secondary2: #6b4c74 ;/* #916f99 */
   --color-accent: #461353;
-  --color-accent2: #723381;
+  --color-accent2: #5d0082;
   --color-section : #2e3e5a ;
   --color-background-section: #78b387;
 
@@ -190,6 +190,7 @@ body {
 
 .scroll-wrapper-dark {
   background-color: #2e3e5a;
+  /* background-color: #2e5a3d; */
   color: white;
 }
 

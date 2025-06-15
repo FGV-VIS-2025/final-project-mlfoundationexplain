@@ -41,6 +41,24 @@
     "classification": "classification",
     "regression": "regression"
   },
+
+  "section-dataset": {
+    "title": "About the Dataset",
+    "paragraph1": "The original dataset contains information about houses in specific districts of California, with summarized statistics based on the 1990 census data. For the specific purpose of our visualization — which focuses on the <b>classification of houses between Sacramento and San Francisco</b> — we selected and transformed variables. The goal was to focus on intrinsic property characteristics and location for the binary classification task.",
+    "paragraph2": "Consequently, variables that did not directly contribute to describing property characteristics, or that became redundant for geographic classification after introducing the <code>city</code> variable, were removed.",
+    "variables_intro": "The variables used in our visualization are:",
+    "variables": {
+      "total_rooms": "<b>total rooms</b>: Represents the total number of rooms within a block. This variable helps to understand the size or capacity of a property.",
+      "total_bedrooms": "<b>total bedrooms</b>: Indicates the total number of bedrooms within a block. It complements <i>total rooms</i> by providing a more specific measure of the property's composition.",
+      "households": "<b>households</b>: Corresponds to the total number of households residing in housing units within a block. It provides context about population density and property usage.",
+      "median_house_value": "<b>median house value</b>: Refers to the median house value within a block, measured in US dollars. Although it is not the target variable for our classification, it is a relevant socioeconomic indicator that may correlate with location.",
+      "city": "<b>city</b>: This is the target variable created for our classification problem. It indicates whether a house is located in <b>Sacramento</b> or <b>San Francisco</b>."
+    },
+    "paragraph3": "This selection allowed the visualization to focus on the relationships between property characteristics and geographic classification."
+  },
+
+
+
   "section-prediction": {
     "title": "How prediction works in a decision tree",
     "description": "During the {prediction} process, the decision tree receives a new input (or sample) and traverses it from {root_to_leaf}, following the conditions defined at each decision point. At each step, it analyzes the value of a {feature} from the input and chooses the {corresponding_branch} based on the condition (for example, whether the value is less than or greater than a certain threshold). This path is {unique} and leads directly to a {leaf}, where the predicted class (in classifiers) or a numerical value (in regression models) is recorded. The process is {fast_interpretable}, functioning as a logical sequence of decisions that culminates in a final conclusion.",
@@ -74,6 +92,8 @@
     }
   },
   "cutoffs": {
+    "title": "Individual Cutoff Visualization",
+    "paragraph": "One way to visualize these splits is by projecting onto a single variable, to observe how the univariate distribution occurs and determine the point that best separates the classes. Below are some examples:",
     "feature_label": "Feature {number}",
     "characteristic": "Characteristic:",
     "value_range": "Value range:",

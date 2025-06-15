@@ -41,6 +41,24 @@
     "classification": "clasificación",
     "regression": "regresión"
   },
+
+  "section-dataset": {
+    "title": "Sobre el Conjunto de Datos",
+    "paragraph1": "El conjunto de datos original contiene información sobre viviendas en distritos específicos de California, con estadísticas resumidas basadas en los datos del censo de 1990. Para el propósito específico de nuestra visualización —que se centra en la <b>clasificación de viviendas entre Sacramento y San Francisco</b>— realizamos una selección y transformación de las variables. El objetivo era centrarse en las características intrínsecas de la vivienda y su ubicación para la tarea de clasificación binaria.",
+    "paragraph2": "En consecuencia, se eliminaron las variables que no contribuían directamente a la descripción de las características de la propiedad o que resultaban redundantes para la clasificación geográfica tras la introducción de la variable <code>city</code>.",
+    "variables_intro": "Las variables utilizadas en nuestra visualización son:",
+    "variables": {
+      "total_rooms": "<b>total rooms</b>: Representa el número total de habitaciones dentro de una manzana. Esta variable ayuda a entender el tamaño o la capacidad de una propiedad.",
+      "total_bedrooms": "<b>total bedrooms</b>: Indica el número total de dormitorios dentro de una manzana. Complementa a <i>total rooms</i> proporcionando una medida más específica de la composición de la vivienda.",
+      "households": "<b>households</b>: Corresponde al número total de hogares que residen en unidades habitacionales dentro de una manzana. Ofrece contexto sobre la densidad poblacional y el uso de las propiedades.",
+      "median_house_value": "<b>median house value</b>: Se refiere al valor medio de las viviendas dentro de una manzana, medido en dólares estadounidenses. Aunque no es la variable objetivo de nuestra clasificación, es un indicador socioeconómico relevante que puede estar correlacionado con la ubicación.",
+      "city": "<b>city</b>: Es la variable objetivo creada para nuestro problema de clasificación. Indica si una vivienda está ubicada en <b>Sacramento</b> o en <b>San Francisco</b>."
+    },
+    "paragraph3": "Esta selección permitió que la visualización se centrara en las relaciones entre las características de las viviendas y su clasificación geográfica."
+  },
+
+
+
   "section-prediction": {
     "title": "Cómo funciona la predicción en un árbol de decisión",
     "description": "Durante el proceso de {prediction}, el árbol de decisión recibe una nueva entrada (o muestra) y la recorre desde el {root_to_leaf}, siguiendo las condiciones definidas en cada punto de decisión. En cada etapa, analiza el valor de una {feature} de la entrada y elige la {corresponding_branch} basándose en la condición (por ejemplo, si el valor es menor o mayor que un cierto límite). Este camino es {unique} y lleva directamente hasta una {leaf}, donde se registra la clase predicha (en clasificadores) o un valor numérico (en modelos de regresión). El proceso es {fast_interpretable}, funcionando como una secuencia lógica de decisiones que culmina en una conclusión final.",
@@ -74,6 +92,8 @@
     }
   },
   "cutoffs": {
+    "title": "Visualización de los cortes individualmente",
+    "paragraph": "Una forma de visualizar estos cortes es proyectando sobre una sola variable, para observar cómo ocurre la distribución univariada y determinar el punto que mejor separa las clases. A continuación, algunos ejemplos:",
     "feature_label": "Característica {number}",
     "characteristic": "Característica:",
     "value_range": "Rango de valores:",

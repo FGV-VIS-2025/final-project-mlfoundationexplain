@@ -112,6 +112,52 @@
 <!-- </div> -->
 
 
+
+
+
+
+
+
+<!-- Seção explicando o dataset usado -->
+
+<div
+  class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  style="background-color: #2e5a3d; color: white; margin-top: 80px;"
+>
+  <h2 class="text-3xl font-extrabold mb-6">
+    {$_('section-dataset.title')}
+  </h2>
+
+  <p>{@html $_('section-dataset.paragraph1')}</p>
+
+  <p>{@html $_('section-dataset.paragraph2')}</p>
+
+  <p>{@html $_('section-dataset.variables_intro')}</p>
+
+  <ul class="list-disc ml-6 space-y-2">
+    <li>{@html $_('section-dataset.variables.total_rooms')}</li>
+    <li>{@html $_('section-dataset.variables.total_bedrooms')}</li>
+    <li>{@html $_('section-dataset.variables.households')}</li>
+    <li>{@html $_('section-dataset.variables.median_house_value')}</li>
+    <li>{@html $_('section-dataset.variables.city')}</li>
+  </ul>
+
+  <p>{@html $_('section-dataset.paragraph3')}</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="max-w-7xl mx-auto pt-40 pb-10 text-justify  transition-colors duration-300 ">
 
   <h2 class="text-3xl font-extrabold pb-10">{$_('section-tree-creation.title')}</h2>
@@ -183,19 +229,20 @@
 </div>
 
 
-
-  <div class="max-w-7xl mx-auto  p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
-  style=" color: var(--color-text);">
+<div class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
+  style="color: var(--color-text);">
 
   <div class="max-w-7xl mx-auto px-6">
-    <p>Uma forma de ver esses corter é projentando em uma variável, para observar como ocorre a distribuição univariada e cortar no ponto onde é melhor dividida as clases. Abaixo alguns exemplo:</p>
+    <h2 class="text-3xl font-semibold text-center mb-4 py-8">{$_('cutoffs.title')}</h2>
+    <p>{@html $_('cutoffs.paragraph')}</p>
     <CuttOffs />
   </div>
 </div>
 
 
 
-<div class="max-w-7xl mx-auto mt-0 p-6 pt-20 pb-0 text-center  transition-colors duration-300  leading-relaxed space-y-6" >
+
+<div class="max-w-7xl mx-auto mt-0 p-0 pt-2 pb-0 text-center  transition-colors duration-300  leading-relaxed space-y-6" >
 
   <h2 class="text-5xl font-semibold mb-4 py-8">{$_('section-complete-tree.title')}</h2>
 
@@ -212,7 +259,7 @@
 
 </div>
 
-<div class="my-19 mt-40 mb-40">
+<div class="my-19 mt-10 mb-1">
   {#if treeJson}
     <DecisionTree treeData={treeJson} />
   {:else}
