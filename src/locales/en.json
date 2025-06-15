@@ -43,7 +43,7 @@
   },
 
   "section-dataset": {
-    "title": "About the Dataset",
+    "title": "About the Dataset used",
     "paragraph1": "The original dataset contains information about houses in specific districts of California, with summarized statistics based on the 1990 census data. For the specific purpose of our visualization — which focuses on the <b>classification of houses between Sacramento and San Francisco</b> — we selected and transformed variables. The goal was to focus on intrinsic property characteristics and location for the binary classification task.",
     "paragraph2": "Consequently, variables that did not directly contribute to describing property characteristics, or that became redundant for geographic classification after introducing the <code>city</code> variable, were removed.",
     "variables_intro": "The variables used in our visualization are:",
@@ -93,7 +93,9 @@
   },
   "cutoffs": {
     "title": "Individual Cutoff Visualization",
-    "paragraph": "One way to visualize these splits is by projecting onto a single variable, to observe how the univariate distribution occurs and determine the point that best separates the classes. Below are some examples:",
+     "paragraph": "One way to view these cutoffs is by projecting onto a single variable to observe how the univariate distribution behaves and to cut at the point where the classes are best separated.",
+    "paragraph2": "<p>The choice of the best cutoff point in a decision tree is made by evaluating, for each possible value of the variable, how the data split impacts the purity of the formed groups. In the graph above, the data distribution is shown as a histogram, separated by classes (San Francisco and Sacramento). The dashed line represents the selected cutoff point — the one that generates the lowest <strong>weighted impurity</strong> between the two sides (left and right).<br><br>Mathematically, this choice is made by minimizing the following weighted impurity function:</p>",
+    "paragraph3": "<p>Where:<br>– <strong>N<sub>left</sub></strong> and <strong>N<sub>right</sub></strong> are the number of samples in the left and right groups after the split.<br>– <strong>N<sub>total</sub></strong> is the total number of samples before the split.<br>– <strong>Impurity<sub>left</sub></strong> and <strong>Impurity<sub>right</sub></strong> are the impurities calculated on each side, which can be measured by <em>Gini Index</em>, <em>Entropy</em>, or another metric.<br><br>Below the histogram, the impurity graphs indicate how it varies across the possible cutoff values: the left and right impurity lines show how homogeneous the groups are after each possible division. The chosen cutoff point is where the weighted impurity reaches its lowest value, seeking the most efficient separation between the classes.<br>Below are some examples:</p>",
     "feature_label": "Feature {number}",
     "characteristic": "Characteristic:",
     "value_range": "Value range:",
