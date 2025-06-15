@@ -41,6 +41,23 @@
     "classification": "classificação",
     "regression": "regressão"
   },
+
+  "section-dataset": {
+    "title": "Sobre o Conjunto de Dados",
+    "paragraph1": "O conjunto de dados original contém informações sobre casas em distritos específicos da Califórnia, com estatísticas resumidas baseadas nos dados do censo de 1990. Para o propósito específico de nossa visualização, que foca na <b>classificação de casas entre Sacramento e São Francisco</b>, realizamos uma seleção e transformação das variáveis. O objetivo era concentrar-nos nas características intrínsecas da casa e na sua localização para a tarefa de classificação binária.",
+    "paragraph2": "Consequentemente, foram removidas variáveis que não contribuíam diretamente para a descrição das características da propriedade ou que eram redundantes para a classificação geográfica após a introdução da variável <code>city</code>.",
+    "variables_intro": "As variáveis utilizadas em nossa visualização são:",
+    "variables": {
+      "total_rooms": "<b>total rooms</b>: Representa o número total de cômodos dentro de um quarteirão. Esta variável contribui para entender o tamanho ou a capacidade de uma propriedade.",
+      "total_bedrooms": "<b>total bedrooms</b>: Indica o número total de quartos dentro de um quarteirão. Complementa <i>total rooms</i> ao fornecer uma medida mais específica sobre a composição dos imóveis.",
+      "households": "<b>households</b>: Corresponde ao número total de famílias que residem em unidades habitacionais dentro de um quarteirão. Oferece contexto sobre a densidade populacional e o uso das propriedades.",
+      "median_house_value": "<b>median house value</b>: É o valor médio das casas dentro de um quarteirão, medido em dólares americanos. Embora não seja o alvo da nossa classificação, esta variável é um indicador socioeconômico relevante que pode estar correlacionado com a localização.",
+      "city": "<b>city</b>: Esta é a variável-alvo criada para o nosso problema de classificação. Ela indica se uma casa está localizada em <b>Sacramento</b> ou <b>São Francisco</b>."
+    },
+    "paragraph3": "Essa seleção permitiu que a visualização se concentrasse nas relações entre as características das casas e sua classificação geográfica."
+  },
+
+
   "section-prediction": {
     "title": "Como funciona a previsão em uma árvore de decisão",
     "description": "Durante o processo de {prediction}, a árvore de decisão recebe uma nova entrada (ou amostra) e a percorre do {root_to_leaf}, seguindo as condições definidas em cada ponto de decisão. A cada etapa, ela analisa o valor de uma {feature} da entrada e escolhe o {corresponding_branch} com base na condição (por exemplo, se o valor é menor ou maior que um certo limite). Esse caminho é {unique} e leva diretamente até uma {leaf}, onde está registrada a classe prevista (em classificadores) ou um valor numérico (em modelos de regressão). O processo é {fast_interpretable}, funcionando como uma sequência lógica de decisões que culmina em uma conclusão final.",
