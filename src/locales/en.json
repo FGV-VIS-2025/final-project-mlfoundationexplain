@@ -281,6 +281,7 @@
     "item3": "Impurity metric charts (Gini Index and Entropy)",
     "item4": "Histograms illustrating univariate splits",
     "item5": "Dendrogram illustrating manual pruning of complex trees",
+    "item6": "Full tree and pruning options, allowing you to compare different methods of simplifying the structure.", 
     "accessibility": "The project was also developed with a focus on accessibility and customization, including:",
     "acc-list1": "Multilingual support (Portuguese, Spanish, and English)",
     "acc-list2": "Toggle between light and dark themes",

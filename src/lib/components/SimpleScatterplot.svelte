@@ -180,7 +180,6 @@
     proportionAbove = proporcao.map(d => ({ x: d.cut, y: d.proportionAbove }));
     ganho = proporcao.map(d => ({ x: d.cut, y: d.weightedEntropy - 0.1 }));
     melhorCorte = proporcao.reduce((min, r) => r.weightedEntropy < min.weightedEntropy ? r : min);
-    console.log(melhorCorte)
 
     // Calcular frequência máxima real por bin
     const binCounts = {};
