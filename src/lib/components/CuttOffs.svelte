@@ -100,7 +100,8 @@
         </div>
 
         <div class="flex-1">
-          <p class="text-gray-600 text-lg leading-relaxed mb-8 dark:text-gray-300">
+          <p class="text-gray-600 text-lg leading-relaxed mb-8 " style="color: var(--color-text);"
+>
             {$_(`cutoffs.steps.${step.feature}.description`)}
           </p>
 

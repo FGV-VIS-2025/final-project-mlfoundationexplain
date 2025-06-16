@@ -105,18 +105,20 @@
     "steps": {
       "total_rooms": {
         "title": "Total de Habitaciones",
-        "description": "Esta característica representa el número total de habitaciones en cada propiedad. Es una característica fundamental que captura el tamaño de la propiedad. Las propiedades con más habitaciones tienden a tener características diferentes y esta información es valiosa para el modelo. Observe cómo se distribuye esta característica en los datos y cómo establecemos un punto de corte para binarizar esta característica continua.",
+        "description": "Esta variable representa el número total de habitaciones en todas las viviendas de una manzana. Es una métrica que refleja, de forma agregada, el tamaño de las propiedades en esa área. Las manzanas con más habitaciones suelen indicar casas más grandes o una mayor densidad de viviendas. Esta característica es relevante para el modelo porque ayuda a identificar patrones en el mercado inmobiliario. En el gráfico, puedes observar cómo se distribuye esta variable y cómo definimos un punto de corte que mejor separa las clases, convirtiendo esta característica continua en una división binaria más interpretable.",
         "axis_label": "Total de Habitaciones"
       },
       "total_bedrooms": {
-        "title": "Dormitorios",
-        "description": "Esta característica captura específicamente los dormitorios, diferenciándose de la característica anterior que incluye todos los tipos de habitaciones. Es una característica importante para determinar la capacidad habitacional de la propiedad. Esta característica proporciona información específica sobre la funcionalidad residencial del inmueble.",
+        "title": "Total de Dormitorios",
+        "description": "Esta variable indica el número total de dormitorios dentro de una manzana. Complementa 'Total de Habitaciones' al proporcionar una medida más específica sobre la composición de las propiedades. Es una característica importante para determinar la capacidad habitacional de las viviendas. Esta variable ofrece información valiosa sobre el espacio funcional destinado a la vida residencial.",
         "axis_label": "Total de Dormitorios"
+
       },
       "households": {
-        "title": "Densidad de Hogares",
-        "description": "Esta característica representa la cantidad de hogares por región, capturando aspectos de densidad poblacional y urbanización. Es una característica contextual importante que refleja el ambiente donde se encuentra ubicada la propiedad. Esta información demográfica es valiosa para caracterizar el tipo de área.",
-        "axis_label": "Número de Hogares"
+        "title": "Total de Hogares",
+        "description": "Indica el número total de hogares — definidos como grupos de personas que residen en una misma unidad habitacional — dentro de una manzana. Esta variable refleja la estructura residencial de la zona y es un indicador clave de la densidad poblacional y las características del vecindario. Las manzanas con un mayor número de hogares pueden reflejar áreas más densamente pobladas o con mayor subdivisión residencial.",
+        "axis_label": "Total de Hogares"
+
       },
       "median_house_value": {
         "title": "Valor Mediano de las Casas",
@@ -211,27 +213,55 @@
   },
   "step3": {
     "steps": [
-      {
-        "title": "Profundidad 0 - Raíz del Árbol",
-        "content": "En la parte superior del árbol, tenemos la primera decisión basada en la condición <code>feature 1 ≤ 185300</code>. Esta división separa los datos en dos grandes grupos..."
-      },
-      {
-        "title": "Profundidad 1 - Primera División de Ramas",
-        "content": "El árbol ahora se divide en dos caminos principales. En el lado izquierdo..."
-      },
-      {
-        "title": "Profundidad 2 - Ramificaciones Detalladas",
-        "content": "A continuación, surgen nuevas divisiones, como <code>feature 1 ≤ 72600</code>..."
-      },
-      {
-        "title": "Profundidad 3 - Condiciones Muy Específicas",
-        "content": "En este nivel, tenemos divisiones más específicas, como <code>feature 0 ≤ 448</code>..."
-      },
-      {
-        "title": "Profundidad 4 - Hojas del Árbol",
-        "content": "Las hojas del árbol representan las predicciones finales: \"Sacramento\" o \"San Francisco\"..."
-      }
-    ],
+        {
+          "title": "Sin Divisiones",
+          "content": "El árbol clasifica todas las regiones según la clase más frecuente. Antes de realizar cualquier división, la clasificación sería 'San Francisco', que es la clase más común en los datos."
+        },
+        {
+          "title": "Profundidad 0 — Raíz del Árbol",
+          "content": "En la parte superior del árbol, tenemos la primera decisión basada en la condición <code>feature 1 ≤ 185300</code>. Esta división separa los datos en dos grandes grupos. Los colores indican la clase asignada a cada región respectiva."
+        },
+        {
+          "title": "Profundidad 1 — Primera División de las Ramas",
+          "content": "En este nivel, cada grupo generado por la división anterior se analiza por separado. El árbol aplica nuevas divisiones dentro de cada grupo, creando subdivisiones más específicas. Este proceso refleja la naturaleza recursiva de los árboles de decisión: cada rama se trata como un nuevo subproblema, donde el algoritmo busca localmente la mejor división para reducir la impureza."
+        },
+        {
+          "title": "Profundidad 2 — Ramificaciones Detalladas",
+          "content": "A continuación, aparecen nuevas divisiones, como <code>feature 1 ≤ 72600</code>. El algoritmo sigue probando todos los puntos de corte posibles en todas las variables disponibles y elige aquel que proporciona la mayor ganancia de información. Esta ganancia se calcula en función de una métrica de impureza, como la entropía o el índice de Gini, que exploraremos en las siguientes etapas."
+        },
+        {
+          "title": "Profundidad 3 — Divisiones Ortogonales",
+          "content": "Los árboles de decisión realizan divisiones ortogonales en el espacio de atributos, lo que significa que cada corte considera solo una variable a la vez, trazando una línea recta (o un plano en dimensiones superiores) perpendicular al eje de la variable seleccionada. Esto crea fronteras de decisión en forma de rectángulos en un espacio bidimensional o hiper-rectángulos (hipercajas) en espacios de mayor dimensión. Este tipo de partición funciona bien cuando los datos tienen patrones alineados con los ejes, pero puede ser limitante si las fronteras naturales son curvas o diagonales."
+        },
+        {
+          "title": "Profundidad 4 — Estabilidad",
+          "content": "Los árboles son modelos de alta varianza: pequeños cambios en los datos pueden generar árboles completamente diferentes. Por esta razón, se han desarrollado técnicas como Random Forests o Boosting para mejorar la robustez y reducir la varianza."
+        },
+        {
+          "title": "Profundidad 5 — Hojas del Árbol",
+          "content": "Las hojas del árbol corresponden a las predicciones finales del modelo: \"Sacramento\" o \"San Francisco\". Cada hoja representa una región del espacio de atributos donde el modelo toma una decisión. Visualmente, el color de cada rectángulo indica la clase asignada a esa región. Cualquier punto que caiga dentro de una de estas áreas será clasificado según el color correspondiente, reflejando la clase mayoritaria en esa subdivisión."
+        },
+        {
+          "title": "Profundidad 6 — Datos Interesantes",
+          "content": "Los árboles de decisión no se limitan a tareas de clasificación; también se pueden utilizar para problemas de regresión. En este caso, el valor predicho en cada hoja es el promedio de los valores objetivo de las muestras en ese nodo. El criterio de división suele ser el error cuadrático medio (MSE)."
+        },
+        {
+          "title": "Profundidad 7 — Interpretación Visual",
+          "content": "La estructura jerárquica del árbol es altamente interpretable, lo que la hace ideal para aplicaciones educativas, legales, médicas y empresariales donde las decisiones deben ser comprensibles y justificables."
+        },
+        {
+          "title": "Profundidad 8 — Crecimiento Recursivo",
+          "content": "La construcción de un árbol de decisión sigue un proceso recursivo de división. En cada paso, el algoritmo considera solo los datos que han llegado a ese nodo y elige la mejor división basada en una métrica de impureza. Esto permite que cada rama se especialice en una parte específica del espacio de atributos, adaptándose progresivamente a los patrones observados. Este crecimiento continúa hasta que se cumplen uno o más criterios de parada, como la profundidad máxima, el número mínimo de muestras por nodo o la pureza total de las hojas."
+        },
+        {
+          "title": "Profundidad 9 — Criterios de Parada",
+          "content": "El crecimiento del árbol no es infinito. Se detiene cuando se cumple uno o más criterios de parada. Esto puede suceder cuando: (1) el nodo se vuelve puro, es decir, todas las muestras pertenecen a la misma clase; (2) el número de muestras en el nodo es menor que un umbral mínimo predefinido; (3) se alcanza la profundidad máxima del árbol, definida por el usuario; o (4) no hay una ganancia significativa de información al realizar nuevas divisiones. Estos criterios controlan la complejidad del modelo y ayudan a prevenir el sobreajuste."
+        },
+        {
+          "title": "Profundidad 10 — Sobreajuste",
+          "content": "Si no se aplican restricciones, el árbol continuará dividiendo los datos hasta que cada hoja contenga solo una muestra, logrando un 100% de precisión en el conjunto de entrenamiento. Sin embargo, esto suele conducir al sobreajuste, donde el modelo se ajusta demasiado a los datos vistos y pierde la capacidad de generalizar a datos nuevos. Por eso, técnicas como la poda (pruning) son esenciales para limitar la complejidad y mejorar el rendimiento predictivo."
+        }
+      ],
     "step_not_available": "Etapa {number} no disponible."
   },
   "about": {
