@@ -321,21 +321,6 @@
   </div>
 </div>
 
-<div
-  class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
-  style="color: var(--color-text);"
->
-  <div class="max-w-7xl mx-auto px-6">
-    <h2 class="text-3xl font-semibold text-center mb-4 py-8">
-      {$_("cutoffs.title")}
-    </h2>
-    <p>{@html $_("cutoffs.paragraph")}</p>
-    <!-- <h2 class="text-3xl font-extrabold mb-6">{$_('section-gini.title')}</h2> -->
-    <!-- <p class="mb-4">{$_('section-gini.description')}</p> -->
-
-    <Gini />
-  </div>
-</div>
 
 <!-- 
 <div class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
