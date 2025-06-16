@@ -166,7 +166,7 @@
     "interactive_placeholder": "Here will be an interactive tree, where we build data and see it traverse the tree to the prediction"
   },
   "section-complete-tree": {
-    "title": "The Complete Tree: When Knowledge Becomes Excessive",
+    "title": "The complete tree: When knowledge becomes excessive",
     "description": "A decision tree that grows completely continues making divisions in the data space until each leaf contains only examples from a single class, thus achieving {accuracy} on the training set. Although this model perfectly memorizes the training data, it becomes like a student who memorized everything but cannot apply knowledge in new situations. The tree becomes very complex and specific, leading to {overfitting} - a reduced ability to generalize to new and unseen data.",
     "accuracy": "100% accuracy",
     "overfitting": "overfitting",
@@ -179,7 +179,7 @@
     "final_message": "Remember: a well-pruned tree is not just simpler - it is wiser, capturing the essence of patterns without getting lost in irrelevant details."
   },
   "pruning": {
-    "title": "Pruning Methods: Different Philosophies of Simplicity",
+    "title": "Pruning Methods: Different philosophies of simplicity",
     "description": "Select a pruning method to discover its unique strategy for finding the balance between complexity and generalization",
     "intro_context": "<strong>Why prune?</strong> A complete tree perfectly memorizes training data, but like a student who memorizes without understanding, it fails when facing new situations. Pruning is the art of finding the perfect balance: keeping the essential, discarding the irrelevant.",
     "philosophy_note": "💡 Each method represents a different philosophy to achieve this balance",

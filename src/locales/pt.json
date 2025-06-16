@@ -166,7 +166,7 @@
     "interactive_placeholder": "Aqui vai uma árvore interativa, onde montamos um dado e vemos percorrer a árvore até a previsão"
   },
   "section-complete-tree": {
-    "title": "A Árvore Completa: Quando o Conhecimento se Torna Excessivo",
+    "title": "A árvore completa: Quando o conhecimento se torna excessivo",
     "description": "Uma árvore de decisão que cresce completamente continua realizando divisões no espaço dos dados até que cada folha contenha apenas exemplos de uma única classe, alcançando assim {accuracy} no conjunto de treinamento. Embora esse modelo memorize perfeitamente os dados, ele se torna como um estudante que decorou tudo, mas não consegue aplicar o conhecimento em situações novas. A árvore fica muito complexa e específica, levando ao {overfitting} - uma menor capacidade de generalizar para dados novos e não vistos.",
     "accuracy": "100% de acurácia",
     "overfitting": "sobreajuste",

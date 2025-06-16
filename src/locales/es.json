@@ -166,7 +166,7 @@
     "interactive_placeholder": "Aquí irá un árbol interactivo, donde construimos un dato y vemos recorrer el árbol hasta la predicción"
   },
   "section-complete-tree": {
-    "title": "El Árbol Completo: Cuando el Conocimiento se Vuelve Excesivo",
+    "title": "El árbol completo: Cuando el conocimiento se vuelve excesivo",
     "description": "Un árbol de decisión que crece completamente continúa realizando divisiones en el espacio de los datos hasta que cada hoja contenga solo ejemplos de una única clase, alcanzando así {accuracy} en el conjunto de entrenamiento. Aunque este modelo memoriza perfectamente los datos de entrenamiento, se convierte como un estudiante que memorizó todo pero no puede aplicar el conocimiento en situaciones nuevas. El árbol se vuelve muy complejo y específico, llevando al {overfitting} - una menor capacidad de generalizar para datos nuevos y no vistos.",
     "accuracy": "100% de precisión",
     "overfitting": "sobreajuste",
@@ -179,7 +179,7 @@
     "final_message": "Recuerda: un árbol bien podado no es solo más simple - es más sabio, capturando la esencia de los patrones sin perderse en detalles irrelevantes."
   },
   "pruning": {
-    "title": "Métodos de Poda: Diferentes Filosofías de Simplicidad",
+    "title": "Métodos de poda: Diferentes filosofías de simplicidad",
     "description": "Selecciona un método de poda para descubrir su estrategia única para encontrar el equilibrio entre complejidad y generalización",
     "intro_context": "<strong>¿Por qué podar?</strong> Un árbol completo memoriza perfectamente los datos de entrenamiento, pero como un estudiante que memoriza sin entender, falla al enfrentar situaciones nuevas. La poda es el arte de encontrar el equilibrio perfecto: mantener lo esencial, descartar lo irrelevante.",
     "philosophy_note": "💡 Cada método representa una filosofía diferente para lograr este equilibrio",
