@@ -79,7 +79,7 @@ O desenvolvimento deste projeto seguiu uma metodologia estruturada em cinco etap
 
 ### 1. Conceituação e Planejamento
 
-Inicialmente, foram conduzidas discussões exploratórias sobre as possibilidades de datasets a serem implementados no projeto. Durante esta fase, delimitaram-se os diferentes tipos de gráficos e interações que seriam incorporados, estabelecendo-se as bases conceituais para a visualização interativa de árvores de decisão.
+Inicialmente, foram conduzidas discussões exploratórias sobre as possibilidades de datasets a serem implementados no projeto. Durante esta fase, foi defiido os diferentes tipos de gráficos e interações que seriam incorporados, estabelecendo-se as bases conceituais para a visualização interativa de árvores de decisão.
 
 ### 2. Processamento e Preparação dos Dados
 
@@ -87,7 +87,7 @@ Paralelamente ao desenvolvimento da disposição geral da página, foram realiza
 
 ### 3. Implementação Isolada das Visualizações
 
-As diferentes visualizações foram implementadas de forma modular e independente, permitindo o desenvolvimento e teste individual de cada componente gráfico antes da integração ao sistema principal.
+As diferentes visualizações foram implementadas de forma modular e independente, permitindo o desenvolvimento e teste individual de cada componente gráfico antes da integração ao sistema principal. JUntamente com seu respectivo texto explicativo.
 
 ### 4. Integração Iterativa e Feedback
 
@@ -114,7 +114,14 @@ Este projeto foi criado usando SvelteKit. Para rodar localmente:
 
 ### Paula Eduarda de Lima
 
-- 
+- Implementação do mecanismo de ScroolStory.
+- Design do site.
+- Implementação de opção de mudança de tema (Claro/Escuro).
+- Criação da árvore interativa dos cortes.
+- Criação da árvore interativa de predição.
+- Criação da árvore completa.
+- Textos descritivos sobre árvore de decisão, base de dados, cortes, previsão e cortes individuais.
+
 
 ### Mariana Fernandes Rocha
 
@@ -128,11 +135,6 @@ Este projeto foi criado usando SvelteKit. Para rodar localmente:
 - Integração das podas na vista da árvore completa.
 
 ---
+![ILustração do site](/static/ILustraçãoSite.png)
 
-## Personalização
-
-- Adicione, remova ou altere passos editando os componentes `Step1.svelte` e `Step2.svelte`.
-- Modifique a visualização em `Viz1.svelte`  e `Viz1.svelte` para adaptar gráficos e animações.
-
----
 
