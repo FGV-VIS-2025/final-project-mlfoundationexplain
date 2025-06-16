@@ -29,6 +29,20 @@
       {$_("pruning.description")}
     </p>
 
+    <!-- Introductory Context -->
+    <div
+      class="bg-[var(--color-background)] rounded-lg p-4 mb-6 border border-gray-200"
+    >
+      <p
+        class="text-sm text-[var(--color-text)] opacity-90 text-justify leading-relaxed"
+      >
+        {@html $_("pruning.intro_context")}
+      </p>
+      <p class="text-xs text-[var(--color-text)] opacity-75 mt-2 text-center">
+        <em>{$_("pruning.philosophy_note")}</em>
+      </p>
+    </div>
+
     <!-- Pruning Method Selector -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
       {#each pruningMethods as method}
@@ -105,9 +119,53 @@
             {currentMethod.name}
           </h4>
         </div>
-        <p class="text-sm text-[var(--color-text)] opacity-80">
+        <p class="text-sm text-[var(--color-text)] opacity-80 mb-3">
           {currentMethod.description}
         </p>
+
+        <!-- Additional Method Information -->
+        <div
+          class="bg-[var(--color-background-section)] rounded-lg p-3 mb-3 border border-opacity-20"
+          style="border-color: {currentMethod.color};"
+        >
+          {#if selectedPruningMethod === "original"}
+            <p
+              class="text-xs text-[var(--color-text)] opacity-75 leading-relaxed"
+            >
+              {@html $_("pruning.methods.original.detailed_info")}
+            </p>
+          {:else if selectedPruningMethod === "validacao"}
+            <p
+              class="text-xs text-[var(--color-text)] opacity-75 leading-relaxed"
+            >
+              {@html $_("pruning.methods.validacao.detailed_info")}
+            </p>
+          {:else if selectedPruningMethod === "profundidade_3"}
+            <p
+              class="text-xs text-[var(--color-text)] opacity-75 leading-relaxed"
+            >
+              {@html $_("pruning.methods.profundidade_3.detailed_info")}
+            </p>
+          {:else if selectedPruningMethod === "profundidade_4"}
+            <p
+              class="text-xs text-[var(--color-text)] opacity-75 leading-relaxed"
+            >
+              {@html $_("pruning.methods.profundidade_4.detailed_info")}
+            </p>
+          {:else if selectedPruningMethod === "custo_complexidade" || selectedPruningMethod === "custo_complexidade_001"}
+            <p
+              class="text-xs text-[var(--color-text)] opacity-75 leading-relaxed"
+            >
+              {@html $_("pruning.methods.custo_complexidade.detailed_info")}
+            </p>
+          {:else if selectedPruningMethod === "hibrida"}
+            <p
+              class="text-xs text-[var(--color-text)] opacity-75 leading-relaxed"
+            >
+              {@html $_("pruning.methods.hibrida.detailed_info")}
+            </p>
+          {/if}
+        </div>
 
         <!-- Show accuracy info if available -->
         {#if pruningData && pruningData.comparacion && pruningData.comparacion[currentMethod.id]}
