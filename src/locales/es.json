@@ -178,7 +178,33 @@
     "error": "Error al cargar el árbol. Por favor, intenta seleccionar otro método de poda.",
     "accuracy": "Precisión:",
     "nodes": "Nodos:",
-    "depth": "Profundidad:"
+    "depth": "Profundidad:",
+    "methods": {
+      "original": {
+        "name": "Sin Poda",
+        "description": "Árbol completo sin podas aplicadas"
+      },
+      "validacao": {
+        "name": "Poda por Validación",
+        "description": "Poda basada en mejora de precisión en validación"
+      },
+      "profundidade_3": {
+        "name": "Poda por Profundidad (3)",
+        "description": "Limita la profundidad máxima a 3 niveles"
+      },
+      "profundidade_4": {
+        "name": "Poda por Profundidad (4)",
+        "description": "Limita la profundidad máxima a 4 niveles"
+      },
+      "custo_complexidade_001": {
+        "name": "Costo-Complejidad (α=0.01)",
+        "description": "Poda por costo-complejidad con α=0.01"
+      },
+      "hibrida": {
+        "name": "Poda Híbrida",
+        "description": "Combina múltiples criterios de poda"
+      }
+    }
   },
   "footer": {
     "developed_by": "Desarrollado por Paula Eduarda de Lima, Mariana Fernandes Rocha y Joel Perca con SvelteKit & D3.js"

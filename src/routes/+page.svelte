@@ -6,6 +6,7 @@
   import CuttOffs from "$lib/components/CuttOffs.svelte";
   import Gini from "$lib/components/gini.svelte";
   import { _ } from "svelte-i18n";
+  import { locale } from "svelte-i18n";
 
   import DecisionTree from "$lib/components/Tree.svelte";
 
@@ -23,47 +24,41 @@
   const pruningMethods = [
     {
       id: "original",
-      name: "Sin Poda",
-      description: "Árbol completo sin podas aplicadas",
       color: "#e11d48",
       file: "housing_original.json",
     },
     {
       id: "validacao",
-      name: "Poda por Validación",
-      description: "Poda basada en mejora de precisión en validación",
       color: "#0891b2",
       file: "housing_validacao.json",
     },
     {
       id: "profundidade_3",
-      name: "Poda por Profundidad (3)",
-      description: "Limita la profundidad máxima a 3 niveles",
       color: "#059669",
       file: "housing_profundidade_3.json",
     },
     {
       id: "profundidade_4",
-      name: "Poda por Profundidad (4)",
-      description: "Limita la profundidad máxima a 4 niveles",
       color: "#7c3aed",
       file: "housing_profundidade_4.json",
     },
     {
       id: "custo_complexidade_001",
-      name: "Costo-Complejidad (α=0.01)",
-      description: "Poda por costo-complejidad con α=0.01",
       color: "#ea580c",
       file: "housing_custo_complexidade_alpha_0.01.json",
     },
     {
       id: "hibrida",
-      name: "Poda Híbrida",
-      description: "Combina múltiples criterios de poda",
       color: "#dc2626",
       file: "housing_hibrida.json",
     },
   ];
+
+  $: translatedPruningMethods = pruningMethods.map((method) => ({
+    ...method,
+    name: $_(`pruning.methods.${method.id}.name`),
+    description: $_(`pruning.methods.${method.id}.description`),
+  }));
 
   function convertToD3Format(cortes, featureNames) {
     if ("class" in cortes) {
@@ -399,7 +394,7 @@
   {selectedPruningMethod}
   {isLoadingTree}
   {pruningData}
-  {pruningMethods}
+  pruningMethods={translatedPruningMethods}
   on:pruningChange={(event) => handlePruningChange(event.detail)}
 />
 
