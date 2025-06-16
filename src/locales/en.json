@@ -178,7 +178,33 @@
     "error": "Error loading tree. Please try selecting another pruning method.",
     "accuracy": "Accuracy:",
     "nodes": "Nodes:",
-    "depth": "Depth:"
+    "depth": "Depth:",
+    "methods": {
+      "original": {
+        "name": "No Pruning",
+        "description": "Complete tree without any pruning applied"
+      },
+      "validacao": {
+        "name": "Validation Pruning",
+        "description": "Pruning based on validation accuracy improvement"
+      },
+      "profundidade_3": {
+        "name": "Depth Pruning (3)",
+        "description": "Limits maximum depth to 3 levels"
+      },
+      "profundidade_4": {
+        "name": "Depth Pruning (4)",
+        "description": "Limits maximum depth to 4 levels"
+      },
+      "custo_complexidade_001": {
+        "name": "Cost-Complexity (α=0.01)",
+        "description": "Cost-complexity pruning with α=0.01"
+      },
+      "hibrida": {
+        "name": "Hybrid Pruning",
+        "description": "Combines multiple pruning criteria"
+      }
+    }
   },
   "footer": {
     "developed_by": "Developed by Paula Eduarda de Lima, Mariana Fernandes Rocha and Joel Perca with SvelteKit & D3.js"
