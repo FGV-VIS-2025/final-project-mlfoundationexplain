@@ -280,6 +280,7 @@
     "item3": "Gráficos de las métricas de impureza (Índice de Gini y Entropía)",
     "item4": "Histogramas que ilustran los cortes univariados",
     "item5": "Dendrograma que ilustra la poda manual de árboles complejos",
+    "item6": "Opciones completas de árbol y poda, lo que le permite comparar diferentes métodos para simplificar la estructura.", 
     "accessibility": "El proyecto también fue desarrollado con enfoque en accesibilidad y personalización, incluyendo:",
     "acc-list1": "Soporte multilingüe (Portugués, Español e Inglés)",
     "acc-list2": "Alternancia entre temas claro y oscuro",

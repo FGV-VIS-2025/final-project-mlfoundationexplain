@@ -29,6 +29,7 @@
         <li>{$_('about.item3')}</li>
         <li>{$_('about.item4')}</li>
         <li>{$_('about.item5')}</li>
+        <li>{$_('about.item6')}</li>
       </ul>
 
     <br>
