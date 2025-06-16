@@ -51,7 +51,7 @@
       "total_rooms": "<b>total rooms</b>: Representa o número total de cômodos dentro de um quarteirão. Esta variável contribui para entender o tamanho ou a capacidade de uma propriedade.",
       "total_bedrooms": "<b>total bedrooms</b>: Indica o número total de quartos dentro de um quarteirão. Complementa <i>total rooms</i> ao fornecer uma medida mais específica sobre a composição dos imóveis.",
       "households": "<b>households</b>: Corresponde ao número total de famílias que residem em unidades habitacionais dentro de um quarteirão. Oferece contexto sobre a densidade populacional e o uso das propriedades.",
-      "median_house_value": "<b>median house value</b>: É o valor médio das casas dentro de um quarteirão, medido em dólares americanos. Embora não seja o alvo da nossa classificação, esta variável é um indicador socioeconômico relevante que pode estar correlacionado com a localização.",
+      "median_house_value": "<b>median house value</b>: É o valor mediano das casas dentro de um quarteirão, medido em dólares americanos. Embora não seja o alvo da nossa classificação, esta variável é um indicador socioeconômico relevante que pode estar correlacionado com a localização.",
       "city": "<b>city</b>: Esta é a variável-alvo criada para o nosso problema de classificação. Ela indica se uma casa está localizada em <b>Sacramento</b> ou <b>São Francisco</b>."
     },
     "paragraph3": "Essa seleção permitiu que a visualização se concentrasse nas relações entre as características das casas e sua classificação geográfica."
@@ -111,19 +111,19 @@
     "city_comparison": "Sacramento (púrpura) vs San Francisco (verde)",
     "steps": {
       "total_rooms": {
-        "title": "Total de Quartos",
-        "description": "Esta feature representa o número total de quartos em cada propriedade. É uma característica fundamental que captura o tamanho da propriedade. Propriedades com mais quartos tendem a ter características diferentes e esta informação é valiosa para o modelo. Observe como esta feature se distribui nos dados e como estabelecemos um ponto de corte para binarizar esta característica contínua.",
-        "axis_label": "Total de Quartos"
+        "title": "Total de Cômodos",
+        "description": "Esta variável representa o número total de cômodos em todas as residências de um quarteirão. É uma métrica que reflete, de forma agregada, o tamanho das propriedades naquela região. Essa característica é relevante para o modelo, pois ajuda a diferenciar padrões no mercado imobiliário. No gráfico, você pode observar como essa variável se distribui e como definimos um ponto de corte que melhor separa as classes, convertendo essa variável contínua em uma divisão binária mais interpretável.",
+        "axis_label": "Total de Cômodos"
       },
       "total_bedrooms": {
-        "title": "Quartos de Dormir",
-        "description": "Esta feature captura especificamente os quartos de dormir, diferindo da feature anterior que inclui todos os tipos de quartos. É uma característica importante para determinar a capacidade habitacional da propriedade. Esta feature fornece informação específica sobre a funcionalidade residencial do imóvel.",
-        "axis_label": "Total de Quartos de Dormir"
+        "title": "Total de Quartos",
+        "description": "Esta feature indica o número total de quartos dentro de um quarteirão. Complementa 'Total de Cômodos' ao fornecer uma medida mais específica sobre a composição dos imóveis. É uma característica importante para determinar a capacidade habitacional da propriedade. Esta feature fornece informação específica sobre a funcionalidade residencial do imóvel.",
+        "axis_label": "Total de Quartos"
       },
       "households": {
-        "title": "Densidade de Domicílios",
-        "description": "Esta feature representa a quantidade de domicílios por região, capturando aspectos de densidade populacional e urbanização. É uma característica contextual importante que reflete o ambiente onde a propriedade está localizada. Esta informação demográfica é valiosa para caracterizar o tipo de área.",
-        "axis_label": "Número de Domicílios"
+      "title": "Total de Domicílios",
+      "description": "Indica o número total de domicílios — ou seja, grupos de pessoas que residem em uma mesma unidade habitacional — dentro de um quarteirão. Esta variável fornece uma medida da estrutura residencial local, sendo um indicador relevante da densidade populacional e das características socioeconômicas da região. Áreas com mais domicílios podem refletir bairros mais densos ou com maior subdivisão de propriedades.",
+      "axis_label": "Total de Domicílios"
       },
       "median_house_value": {
         "title": "Valor Mediano das Casas",
@@ -188,24 +188,62 @@
   "step3": {
     "steps": [
       {
-        "title": "Profundidade 0 - Raiz da Árvore",
-        "content": "No topo da árvore, temos a primeira decisão baseada na condição <code>feature 1 ≤ 185300</code>. Esta divisão separa os dados em dois grandes grupos..."
+        "title": "Sem cortes",
+        "content": "Árvore classifica cada região de acordo com a classe predominante nela, antes de qualquer corte, a classificação seria 'San Francisco', a classe mais comum."
       },
       {
-        "title": "Profundidade 1 - Primeira Divisão dos Ramos",
-        "content": "A árvore agora se divide em dois caminhos principais. No lado esquerdo..."
+        "title": "Profundidade 0 - Raiz da Árvore",
+        "content": "No topo da árvore, temos a primeira decisão baseada na condição <code>feature 1 ≤ 185300</code>. Esta divisão separa os dados em dois grandes grupos. As cores indicam a classe atribuída na respectiva região."
+      },
+      {
+        "title": "Profundidade 1 — Primeira Divisão dos Ramos",
+        "content": "Neste nível, cada grupo gerado pela divisão anterior é analisado separadamente. A árvore aplica novos cortes dentro de cada grupo, criando subdivisões mais específicas. Esse processo reflete o funcionamento recursivo das árvores de decisão: cada ramo é tratado como um novo subproblema, onde o algoritmo busca a melhor divisão localmente para reduzir a impureza."
+
       },
       {
         "title": "Profundidade 2 - Ramificações Detalhadas",
-        "content": "Na sequência, surgem novas divisões, como <code>feature 1 ≤ 72600</code>..."
+        "content": "Na sequência, surgem novas divisões, como <code>feature 1 ≤ 72600</code>. O algoritmo continua testando todos os possíveis pontos de corte em todas as variáveis disponíveis e escolhe aquele que proporciona o maior ganho de informação. Esse ganho é calculado com base em uma métrica de impureza, como a entropia ou o índice de Gini, que será explorada nas próximas etapas."
       },
       {
-        "title": "Profundidade 3 - Condições Muito Específicas",
-        "content": "Neste nível, temos divisões mais específicas, como <code>feature 0 ≤ 448</code>..."
+        
+        "title": "Profundidade 3 — Divisões Ortogonais",
+        "content": "As árvores de decisão realizam divisões ortogonais no espaço de atributos, ou seja, cada corte considera uma única variável por vez, traçando uma linha reta (ou plano, em dimensões superiores) perpendicular ao eixo da variável escolhida. Isso cria fronteiras de decisão com formato retangular no espaço bidimensional e hiper-retângulos (ou hipercaixas) em espaços com mais variáveis. Esse tipo de particionamento funciona bem para dados com padrões alinhados aos eixos, mas pode ser limitante quando as fronteiras naturais dos dados são curvas ou diagonais."
+
+
       },
       {
-        "title": "Profundidade 4 - Folhas da Árvore",
-        "content": "As folhas da árvore representam as previsões finais: \"Sacramento\" ou \"San Francisco\"..."
+        
+        "title": "Profundidade 4 — Estabilidade",
+        "content": "Árvores são modelos de alta variância: pequenas mudanças nos dados podem levar a árvores completamente diferentes.Por isso, técnicas como Random Forests ou Boosting foram desenvolvidas para aumentar a robustez."
+
+
+      },
+       {
+        "title": "Profundidade 5 — Folhas da Árvore",
+        "content": "As folhas da árvore correspondem às previsões finais do modelo: \"Sacramento\" ou \"San Francisco\". Cada folha representa uma região do espaço de atributos onde o modelo chega a uma decisão. Visualmente, a cor de cada retângulo indica a classe atribuída a essa região. Assim, qualquer ponto que caia dentro de uma dessas áreas será classificado diretamente pela cor correspondente, refletindo a classe majoritária dos dados naquela subdivisão."
+
+
+      },
+      {
+       "title": "Profundidade 6 — Fatos interessante",
+        "content": "Árvores também podem ser usadas para problemas de regressão, não apenas classificação.Nesse caso, o valor previsto em cada folha é a média das amostras do nó, e o critério de divisão pode ser erro quadrático médio (MSE)."
+      },
+      {
+        
+        "title": "Profundidade 7 — Interpretação Visual",
+        "content": "A estrutura hierárquica da árvore é altamente interpretável, o que a torna ideal para aplicações educacionais, jurídicas, médicas e de negócios onde decisões precisam ser justificáveis."
+      },
+      {
+        "title": "Profundidade 8 — Crescimento Recursivo",
+        "content": "A construção de uma árvore de decisão segue um processo recursivo de divisão. A cada etapa, o algoritmo considera somente os dados que chegaram até aquele ponto e escolhe o melhor corte com base em uma métrica de impureza. Isso permite que cada ramo se especialize em uma parte específica do espaço de atributos, ajustando-se gradualmente aos padrões observados. Esse crescimento continua até que critérios de parada sejam atingidos, como profundidade máxima, número mínimo de amostras por nó ou pureza total das folhas."
+      },
+      {
+        "title": "Profundidade 9 — Critérios de Parada",
+        "content": "O crescimento da árvore não é infinito. Ele é interrompido quando um ou mais critérios de parada são atendidos. Isso pode ocorrer quando: (1) o nó se torna puro, ou seja, todas as amostras pertencem à mesma classe; (2) o número de amostras em um nó é menor que um limite mínimo pré-estabelecido; (3) a profundidade máxima da árvore, definida pelo usuário, é atingida; ou (4) não há ganho significativo em realizar novas divisões. Esses critérios controlam a complexidade do modelo e ajudam a evitar o sobreajuste aos dados."
+      },
+      {
+        "title": "Profundidade 10 — Overfitting",
+        "content": "Se não houver restrições, a árvore continuará dividindo os dados até que cada folha contenha apenas um exemplo, alcançando 100% de acurácia no conjunto de treino. No entanto, isso geralmente leva ao sobreajuste, ou overfitting, onde o modelo se ajusta demais aos dados vistos e perde a capacidade de generalizar para novos dados. É por isso que técnicas como poda (pruning) são usadas para limitar a complexidade e melhorar o desempenho preditivo."
       }
     ],
     "step_not_available": "Etapa {number} não disponível."

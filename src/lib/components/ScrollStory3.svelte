@@ -123,22 +123,18 @@
 
 <div>
   <div class="scroll-container">
-    <div class="steps">
-      {#each Array(totalSteps) as _, stepIndex}
-        <div
-          class="step"
-          bind:this={stepRefs[stepIndex]}
-          class:active={stepIndex === currentStep}
-        >
-          {#if stepIndex < 5}
-            <Step3 {stepIndex} />
-          {:else}
-            <p>Profundidade {stepIndex + 1}: Cortamos o espaço novamente...</p>
-          {/if}
-        </div>
-      {/each}
+   <div class="steps">
+  {#each Array(totalSteps) as _, stepIndex}
+  <div
+    class="step"
+    bind:this={stepRefs[stepIndex]}
+    class:active={stepIndex === currentStep}
+  >
+    <Step3 {stepIndex} />
+  </div>
+{/each}
+</div>
 
-    </div>
 
     <div class="viz">
     <div class="dual-tree">
@@ -223,7 +219,10 @@
   }
 
   .step.active {
-    border-color: #7b2291;
-    font-weight: bold;
+    border-color: var(--color-accent2);
+    /* font-weight: bold; */
   }
+
+
+
 </style>
