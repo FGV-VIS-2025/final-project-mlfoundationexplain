@@ -135,6 +135,12 @@ Este projeto foi criado usando SvelteKit. Para rodar localmente:
 - Integração das podas na vista da árvore completa.
 
 ---
+
+# Site no Tema claro
 ![ILustração do site](/static/ILustraçãoSite.png)
+
+
+# Site no Tema escuro
+![ILustração do site](/static/ILustraçãoSite2.png)
 
 
