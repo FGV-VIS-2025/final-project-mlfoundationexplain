@@ -170,7 +170,7 @@
     "description": "A decision tree that grows completely continues making divisions in the data space until each leaf contains only examples from a single class, thus achieving {accuracy} on the training set. Although this model perfectly memorizes the data, it tends to be very complex and specific, which can lead to {overfitting}, that is, a reduced ability to generalize to new and unseen data.",
     "accuracy": "100% accuracy",
     "overfitting": "overfitting",
-    "example_text": "See below how the complete tree generated with all features from our example data would look"
+    "example_text": "See below what the different versions of the decision tree would look like, with different pruning configurations!"
   },
   "pruning": {
     "title": "Decision Tree Pruning Methods",

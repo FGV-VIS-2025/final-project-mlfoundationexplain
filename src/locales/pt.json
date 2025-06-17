@@ -170,7 +170,7 @@
     "description": "Uma árvore de decisão que cresce completamente continua realizando divisões no espaço dos dados até que cada folha contenha apenas exemplos de uma única classe, alcançando assim {accuracy} no conjunto de treinamento. Embora esse modelo memorize perfeitamente os dados, ele tende a ser muito complexo e específico, o que pode levar ao {overfitting}, ou seja, a uma menor capacidade de generalizar para dados novos e não vistos.",
     "accuracy": "100% de acurácia",
     "overfitting": "sobreajuste",
-    "example_text": "Veja abaixo como ficaria a árvore completa gerada com todas as features dos nossos dados de exemplo"
+    "example_text": "Veja abaixo como ficaria as várias versões da árvore de decisão, com diferentes configurações de poda!"
   },
   "pruning": {
     "title": "Métodos de Poda de Árvores de Decisão",
