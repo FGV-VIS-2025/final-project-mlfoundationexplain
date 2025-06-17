@@ -166,45 +166,71 @@
     "interactive_placeholder": "Aqui vai uma árvore interativa, onde montamos um dado e vemos percorrer a árvore até a previsão"
   },
   "section-complete-tree": {
-    "title": "A Árvore Completa",
-    "description": "Uma árvore de decisão que cresce completamente continua realizando divisões no espaço dos dados até que cada folha contenha apenas exemplos de uma única classe, alcançando assim {accuracy} no conjunto de treinamento. Embora esse modelo memorize perfeitamente os dados, ele tende a ser muito complexo e específico, o que pode levar ao {overfitting}, ou seja, a uma menor capacidade de generalizar para dados novos e não vistos.",
+    "title": "A árvore completa: Quando o conhecimento se torna excessivo",
+    "description": "Uma árvore de decisão que cresce completamente continua realizando divisões no espaço dos dados até que cada folha contenha apenas exemplos de uma única classe, alcançando assim {accuracy} no conjunto de treinamento. Embora esse modelo memorize perfeitamente os dados, ele se torna como um estudante que decorou tudo, mas não consegue aplicar o conhecimento em situações novas. A árvore fica muito complexa e específica, levando ao {overfitting} - uma menor capacidade de generalizar para dados novos e não vistos.",
     "accuracy": "100% de acurácia",
     "overfitting": "sobreajuste",
-    "example_text": "Veja abaixo como ficaria as várias versões da árvore de decisão, com diferentes configurações de poda!"
+    "example_text": "Veja abaixo como ficaria as várias versões da árvore de decisão, com diferentes configurações de poda!",
+    "pruning_intro": "É aqui que entra a arte da {pruning}: ensinar nossa árvore a esquecer os detalhes irrelevantes e focar no que realmente importa.",
+    "pruning": "poda",
+    "methods_philosophy": "Cada método de poda representa uma filosofia diferente sobre como encontrar o equilíbrio perfeito entre complexidade e generalização:",
+    "lesson_title": "A Lição da Poda",
+    "lesson_text": "Cada método nos ensina algo diferente sobre o equilíbrio entre complexidade e generalização. Não existe um método universalmente melhor - a escolha depende dos seus dados, problema e objetivos.",
+    "final_message": "Lembre-se: uma árvore bem podada não é apenas mais simples - ela é mais sábia, capturando a essência dos padrões sem se perder nos detalhes irrelevantes."
   },
   "pruning": {
-    "title": "Métodos de Poda de Árvores de Decisão",
-    "description": "Selecione um método de poda para ver como afeta a estrutura da árvore de decisão",
+    "title": "Métodos de Poda: Diferentes Filosofias de Simplicidade",
+    "description": "Selecione um método de poda para descobrir sua estratégia única para encontrar o equilíbrio entre complexidade e generalização",
+    "intro_context": "<strong>Por que podar?</strong> Uma árvore completa memoriza perfeitamente os dados de treinamento, mas como um estudante que memoriza sem entender, falha ao enfrentar situações novas. A poda é a arte de encontrar o equilíbrio perfeito: manter o essencial, descartar o irrelevante.",
+    "philosophy_note": "💡 Cada método representa uma filosofia diferente para alcançar este equilíbrio",
     "selected_method": "Método Selecionado:",
     "loading": "Carregando árvore de decisão...",
     "error": "Erro ao carregar a árvore. Por favor, tente selecionar outro método de poda.",
-    "accuracy": "Precisão:",
+    "accuracy": "Acurácia:",
     "nodes": "Nós:",
     "depth": "Profundidade:",
     "methods": {
       "original": {
         "name": "Sem Poda",
-        "description": "Árvore completa sem podas aplicadas"
+        "description": "A árvore selvagem e natural - cresce livremente até máxima complexidade",
+        "philosophy": "Deixar a natureza seguir seu curso sem intervenção",
+        "detailed_info": "<strong>🌿 Filosofia:</strong> Deixar a natureza seguir seu curso. Esta é a árvore em seu estado mais puro, sem restrições.<br><strong>📊 Características:</strong> Máxima complexidade, 100% precisão no treinamento, alto risco de sobreajuste.<br><strong>🎯 Quando usar:</strong> Para entender a estrutura completa dos dados e como ponto de comparação."
       },
       "validacao": {
-        "name": "Poda por Validação",
-        "description": "Poda baseada na melhoria da precisão na validação"
+        "name": "Poda por Validação", 
+        "description": "A sabedoria da experiência - usa dados não vistos como conselheiros",
+        "philosophy": "Usar dados não vistos para guiar as decisões de poda",
+        "detailed_info": "<strong>🧠 Filosofia:</strong> A experiência como guia. Usa dados nunca vistos para avaliar cada decisão de poda.<br><strong>📊 Características:</strong> Equilíbrio entre complexidade e generalização, método mais confiável para dados reais.<br><strong>🎯 Quando usar:</strong> Quando você tem dados suficientes e quer o melhor balance automático."
       },
       "profundidade_3": {
-        "name": "Poda por Profundidade (3)",
-        "description": "Limita a profundidade máxima a 3 níveis"
+        "name": "Profundidade 3",
+        "description": "A regra da simplicidade extrema - foca apenas nos padrões mais evidentes",
+        "philosophy": "Às vezes, menos é mais",
+        "detailed_info": "<strong>✂️ Filosofia:</strong> Menos é mais. Apenas os padrões mais evidentes e fundamentais.<br><strong>📊 Características:</strong> Máxima simplicidade, alta interpretabilidade, baixo risco de sobreajuste.<br><strong>🎯 Quando usar:</strong> Para modelos muito simples, explicáveis e quando os dados têm padrões claros."
       },
       "profundidade_4": {
-        "name": "Poda por Profundidade (4)",
-        "description": "Limita a profundidade máxima a 4 níveis"
+        "name": "Profundidade 4", 
+        "description": "O meio-termo dourado - equilibra simplicidade e expressividade",
+        "philosophy": "Um passo além da simplicidade, mas ainda controlado",
+        "detailed_info": "<strong>⚖️ Filosofia:</strong> O meio-termo dourado. Um passo além da simplicidade extrema.<br><strong>📊 Características:</strong> Bom equilíbrio, permite interações moderadamente complexas, ainda interpretável.<br><strong>🎯 Quando usar:</strong> Opção versátil para a maioria dos casos práticos onde se precisa de mais expressividade."
       },
       "custo_complexidade_001": {
-        "name": "Custo-Complexidade (α=0.01)",
-        "description": "Poda por custo-complexidade com α=0.01"
+        "name": "Custo-Complexidade",
+        "description": "A matemática da elegância - cada galho deve justificar sua existência",
+        "philosophy": "Abordagem matematicamente fundamentada",
+        "detailed_info": "<strong>🔬 Filosofia:</strong> Cada ramo deve justificar sua existência matematicamente.<br><strong>📊 Características:</strong> Método sofisticado, controle preciso, encontra automaticamente o tamanho ideal.<br><strong>🎯 Quando usar:</strong> Quando você quer controle matemático rigoroso e otimização automática do tamanho."
+      },
+      "custo_complexidade": {
+        "name": "Custo-Complexidade",
+        "description": "A matemática da elegância - cada galho deve justificar sua existência",
+        "philosophy": "Abordagem matematicamente fundamentada",
+        "detailed_info": "<strong>🔬 Filosofia:</strong> Cada ramo deve justificar sua existência matematicamente.<br><strong>📊 Características:</strong> Método sofisticado, controle preciso, encontra automaticamente o tamanho ideal.<br><strong>🎯 Quando usar:</strong> Quando você quer controle matemático rigoroso e otimização automática do tamanho."
       },
       "hibrida": {
         "name": "Poda Híbrida",
-        "description": "Combina múltiplos critérios de poda"
+        "description": "A sabedoria coletiva - combina o melhor de várias abordagens",
+        "philosophy": "Por que escolher apenas uma abordagem?",
+        "detailed_info": "<strong>🤝 Filosofia:</strong> A sabedoria coletiva. Por que escolher apenas um enfoque quando pode combinar vários?<br><strong>📊 Características:</strong> Combina múltiplos critérios, mais robusto, processo de decisão sofisticado.<br><strong>🎯 Quando usar:</strong> Para obter a melhor performance possível combinando diferentes estratégias de poda."
       }
     }
   },

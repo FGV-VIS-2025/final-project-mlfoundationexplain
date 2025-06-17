@@ -166,15 +166,23 @@
     "interactive_placeholder": "Here will be an interactive tree, where we build data and see it traverse the tree to the prediction"
   },
   "section-complete-tree": {
-    "title": "The Complete Tree",
-    "description": "A decision tree that grows completely continues making divisions in the data space until each leaf contains only examples from a single class, thus achieving {accuracy} on the training set. Although this model perfectly memorizes the data, it tends to be very complex and specific, which can lead to {overfitting}, that is, a reduced ability to generalize to new and unseen data.",
+    "title": "The complete tree: When knowledge becomes excessive",
+    "description": "A decision tree that grows completely continues making divisions in the data space until each leaf contains only examples from a single class, thus achieving {accuracy} on the training set. Although this model perfectly memorizes the training data, it becomes like a student who memorized everything but cannot apply knowledge in new situations. The tree becomes very complex and specific, leading to {overfitting} - a reduced ability to generalize to new and unseen data.",
     "accuracy": "100% accuracy",
     "overfitting": "overfitting",
-    "example_text": "See below what the different versions of the decision tree would look like, with different pruning configurations!"
+    "example_text": "See below what the different versions of the decision tree would look like, with different pruning configurations!",
+    "pruning_intro": "This is where the art of {pruning} comes in: teaching our tree to forget irrelevant details and focus on what really matters.",
+    "pruning": "pruning",
+    "methods_philosophy": "Each pruning method represents a different philosophy on how to find the perfect balance between complexity and generalization:",
+    "lesson_title": "The Pruning Lesson",
+    "lesson_text": "Each method teaches us something different about the balance between complexity and generalization. There is no universally better method - the choice depends on your data, problem, and objectives.",
+    "final_message": "Remember: a well-pruned tree is not just simpler - it is wiser, capturing the essence of patterns without getting lost in irrelevant details."
   },
   "pruning": {
-    "title": "Decision Tree Pruning Methods",
-    "description": "Select a pruning method to see how it affects the decision tree structure",
+    "title": "Pruning Methods: Different philosophies of simplicity",
+    "description": "Select a pruning method to discover its unique strategy for finding the balance between complexity and generalization",
+    "intro_context": "<strong>Why prune?</strong> A complete tree perfectly memorizes training data, but like a student who memorizes without understanding, it fails when facing new situations. Pruning is the art of finding the perfect balance: keeping the essential, discarding the irrelevant.",
+    "philosophy_note": "💡 Each method represents a different philosophy to achieve this balance",
     "selected_method": "Selected Method:",
     "loading": "Loading decision tree...",
     "error": "Error loading tree. Please try selecting another pruning method.",
@@ -184,27 +192,45 @@
     "methods": {
       "original": {
         "name": "No Pruning",
-        "description": "Complete tree without any pruning applied"
+        "description": "The wild and natural tree - grows freely to maximum complexity",
+        "philosophy": "Let nature take its course without intervention",
+        "detailed_info": "<strong>🌿 Philosophy:</strong> Let nature take its course. This is the tree in its purest state, without restrictions.<br><strong>📊 Characteristics:</strong> Maximum complexity, 100% training accuracy, high risk of overfitting.<br><strong>🎯 When to use:</strong> To understand the complete data structure and as a comparison point."
       },
       "validacao": {
         "name": "Validation Pruning",
-        "description": "Pruning based on validation accuracy improvement"
+        "description": "The wisdom of experience - uses unseen data as advisors",
+        "philosophy": "Use unseen data to guide pruning decisions",
+        "detailed_info": "<strong>🧠 Philosophy:</strong> Experience as a guide. Uses never-seen data to evaluate each pruning decision.<br><strong>📊 Characteristics:</strong> Balance between complexity and generalization, most reliable method for real data.<br><strong>🎯 When to use:</strong> When you have sufficient data and want the best automatic balance."
       },
       "profundidade_3": {
-        "name": "Depth Pruning (3)",
-        "description": "Limits maximum depth to 3 levels"
+        "name": "Depth 3",
+        "description": "The rule of extreme simplicity - focuses only on the most evident patterns",
+        "philosophy": "Sometimes, less is more",
+        "detailed_info": "<strong>✂️ Philosophy:</strong> Less is more. Only the most evident and fundamental patterns.<br><strong>📊 Characteristics:</strong> Maximum simplicity, high interpretability, low overfitting risk.<br><strong>🎯 When to use:</strong> For very simple, explainable models when data has clear patterns."
       },
       "profundidade_4": {
-        "name": "Depth Pruning (4)",
-        "description": "Limits maximum depth to 4 levels"
+        "name": "Depth 4",
+        "description": "The golden middle ground - balances simplicity and expressiveness",
+        "philosophy": "One step beyond simplicity, but still controlled",
+        "detailed_info": "<strong>⚖️ Philosophy:</strong> The golden middle ground. One step beyond extreme simplicity.<br><strong>📊 Characteristics:</strong> Good balance, allows moderately complex interactions, still interpretable.<br><strong>🎯 When to use:</strong> Versatile option for most practical cases where more expressiveness is needed."
+      },
+      "custo_complexidade": {
+        "name": "Cost-Complexity",
+        "description": "The mathematics of elegance - each branch must justify its existence",
+        "philosophy": "Mathematically grounded approach",
+        "detailed_info": "<strong>🔬 Philosophy:</strong> Each branch must mathematically justify its existence.<br><strong>📊 Characteristics:</strong> Sophisticated method, precise control, automatically finds ideal size.<br><strong>🎯 When to use:</strong> When you want rigorous mathematical control and automatic size optimization."
       },
       "custo_complexidade_001": {
-        "name": "Cost-Complexity (α=0.01)",
-        "description": "Cost-complexity pruning with α=0.01"
+        "name": "Cost-Complexity",
+        "description": "The mathematics of elegance - each branch must justify its existence",
+        "philosophy": "Mathematically grounded approach",
+        "detailed_info": "<strong>🔬 Philosophy:</strong> Each branch must mathematically justify its existence.<br><strong>📊 Characteristics:</strong> Sophisticated method, precise control, automatically finds ideal size.<br><strong>🎯 When to use:</strong> When you want rigorous mathematical control and automatic size optimization."
       },
       "hibrida": {
         "name": "Hybrid Pruning",
-        "description": "Combines multiple pruning criteria"
+        "description": "The collective wisdom - combines the best of various approaches",
+        "philosophy": "Why choose just one approach?",
+        "detailed_info": "<strong>🤝 Philosophy:</strong> Collective wisdom. Why choose just one approach when you can combine several?<br><strong>📊 Characteristics:</strong> Combines multiple criteria, more robust, sophisticated decision process.<br><strong>🎯 When to use:</strong> To get the best possible performance by combining different pruning strategies."
       }
     }
   },

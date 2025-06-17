@@ -316,7 +316,6 @@
   </div>
 </div>
 
-
 <!-- 
 <div class="max-w-7xl mx-auto p-6 pt-20 pb-20 text-justify transition-colors duration-300 leading-relaxed space-y-6"
   style="color: var(--color-text);">
@@ -356,22 +355,43 @@
 </div>
 
 <div
-  class="max-w-7xl mx-auto mt-0 p-0 pt-2 pb-0 text-center transition-colors duration-300 leading-relaxed space-y-6"
+  class="max-w-7xl mx-auto mt-0 p-6 pt-2 pb-8 text-center transition-colors duration-300 leading-relaxed space-y-6"
 >
   <h2 class="text-5xl font-semibold mb-4 py-8">
     {$_("section-complete-tree.title")}
   </h2>
 
-  <p class="text-justify">
-    {@html $_("section-complete-tree.description", {
-      values: {
-        accuracy: `<span class="font-semibold">${$_("section-complete-tree.accuracy")}</span>`,
-        overfitting: `<span class="italic">${$_("section-complete-tree.overfitting")}</span>`,
-      },
-    })}
-  </p>
+  <div class="text-justify space-y-6">
+    <p>
+      {@html $_("section-complete-tree.description", {
+        values: {
+          accuracy: `<span class="font-semibold">${$_("section-complete-tree.accuracy")}</span>`,
+          overfitting: `<span class="italic">${$_("section-complete-tree.overfitting")}</span>`,
+        },
+      })}
+    </p>
 
-  <p class="text-justify"><b>{$_("section-complete-tree.example_text")}</b></p>
+    <p>
+      {@html $_("section-complete-tree.pruning_intro", {
+        values: {
+          pruning: `<span class="font-semibold">${$_("section-complete-tree.pruning")}</span>`,
+        },
+      })}
+    </p>
+
+    <div class="bg-[var(--color-background-section)] rounded-lg p-6 my-8">
+      <h3 class="text-2xl font-semibold mb-4 text-center">
+        {$_("section-complete-tree.lesson_title")}
+      </h3>
+      <p class="mb-4">{$_("section-complete-tree.methods_philosophy")}</p>
+      <p class="mb-4">{$_("section-complete-tree.lesson_text")}</p>
+      <p class="italic text-sm opacity-80">
+        {$_("section-complete-tree.final_message")}
+      </p>
+    </div>
+
+    <p class="font-medium"><b>{$_("section-complete-tree.example_text")}</b></p>
+  </div>
 </div>
 
 <!-- Pruning Controls Section -->
