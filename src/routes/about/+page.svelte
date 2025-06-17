@@ -64,7 +64,7 @@
     <br>
     <h2 class="text-3xl font-extrabold mb-6">{$_('about.article-title')}</h2>
     <p>
-      <a href="https://github.com/FGV-VIS-2025/final-project-mlfoundationexplain/blob/main/Artigo/relatorio.pdf" target="_blank" rel="noopener noreferrer">
+      <a href="https://github.com/FGV-VIS-2025/final-project-mlfoundationexplain/blob/main/FinalPaper.pdf" target="_blank" rel="noopener noreferrer">
         <span class="underline">{$_('about.click')}</span> {$_('about.article-text')}
       </a>
     </p>
@@ -75,13 +75,27 @@
       <iframe
         width="560"
         height="315"
-        src="https://www.youtube.com/embed/SEU_VIDEO_ID"
+        src="https://www.youtube.com/watch?v=tqfW72Lmkkg"
         title="Vídeo de apresentação"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen
       ></iframe>
     </div>
+
+     <h2 class="text-3xl font-extrabold mb-6" >{$_('about.video-teaer')}</h2>
+    <div>
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/watch?v=RuGu_VZ0Iws"
+        title="Vídeo de apresentação"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+    
     
     <br>
     <h2 class="text-3xl font-extrabold mb-6">{$_('about.team-members')}</h2>
