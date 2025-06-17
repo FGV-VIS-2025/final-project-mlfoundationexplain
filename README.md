@@ -125,7 +125,12 @@ Este projeto foi criado usando SvelteKit. Para rodar localmente:
 
 ### Mariana Fernandes Rocha
 
-- 
+- Pré processamento dos dados e treinamento de árvores sem poda
+- Confecção gráfico scatterplot com cortes no espaço ao longo da rolagem da tela
+- Confecção do gráfico de gini 
+- Adição de interação no gráfico com corte individuais com a métrica de impureza
+- Descrição do projeto na página sobre
+- Descrição do projeto em formato de artigo
 
 ### Joel Perca
 
