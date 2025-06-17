@@ -110,6 +110,14 @@ Este projeto foi criado usando SvelteKit. Para rodar localmente:
 
 ---
 
+## Videos
+
+[Vídeo de apresentação](https://www.youtube.com/watch?v=tqfW72Lmkkg)
+
+[Vídeo teaser](https://www.youtube.com/watch?v=RuGu_VZ0Iws)
+
+---
+
 ## Contribuidores
 
 ### Paula Eduarda de Lima

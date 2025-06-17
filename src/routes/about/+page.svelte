@@ -75,7 +75,7 @@
       <iframe
         width="560"
         height="315"
-        src="https://www.youtube.com/watch?v=tqfW72Lmkkg"
+        src="https://www.youtube.com/embed/tqfW72Lmkkg"
         title="Vídeo de apresentação"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -88,7 +88,7 @@
       <iframe
         width="560"
         height="315"
-        src="https://www.youtube.com/watch?v=RuGu_VZ0Iws"
+        src="https://www.youtube.com/embed/RuGu_VZ0Iws"
         title="Vídeo de apresentação"
         frameborder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
